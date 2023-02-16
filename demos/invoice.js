@@ -78,7 +78,7 @@ class Invoice extends Component
 								[
 									'<tr>',
 									[
-										'<th>', ['S.No.'], '</th>',
+										'<th>', ['#'], '</th>',
 										'<th>', ['Product Name'], '</th>',
 										'<th>', ['Quantity'], '</th>',
 										'<th>', ['Rate'], '</th>',

@@ -1,11 +1,11 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import block from "../lib/js/dom/block.js";
+import Component from "../lib/js/dom/Component.js";
+import createProxyStore from "../lib/js/core/createProxyStore.js";
 import createStore from "../lib/js/core/createStore.js";
 import createStream from "../lib/js/core/createStream.js";
-import Component from "../lib/js/dom/Component.js";
 import mount from "../lib/js/dom/mount.js";
 import throttle from "../node_modules/lodash-es/throttle.js";
-import createProxyStore from "../lib/js/core/createProxyStore.js";
 
 function saveEditorData(data)
 {
@@ -20,42 +20,41 @@ class Wysiwyg extends Component
 {
 	build()
 	{
-		const textarea = createStore();
-		const jsonData = createStore('');
-		const isSavingInProgress = createStore(false);
+		const textareaElement$ = createStore();
+		const isSaving$ = createStore(false);
+		const editor$ = createStore();
 
-		const jsonStringify = (v) => {
-			return jsonData(JSON.stringify(v));
+		const editorDataGetter = () => {
+			return editor$() ? editor$().getData() : null;
 		};
+		const editorDataStream = createStream();
+		const editorData$ = createProxyStore(editorDataGetter, editorDataStream);
+		editorData$.subscribe((val) => {
+			isSaving$(true);
+			saveEditorData(val)
+			.then((val) => {
+				return console.log(val);
+			})
+			.finally(() => {
+				return isSaving$(false);
+			});
+		});
+
+		const throttledEditorChange = throttle(() => {
+			editorDataStream(editorDataGetter());
+		}, 2500, {
+			leading: false,
+			trailing: true
+		});
+
+		editor$.subscribe((editor) => {
+			editorDataStream(editorDataGetter());
+			editor.model.document.on('change:data', throttledEditorChange);
+		});
 
 		this.afterAttachToDom.subscribe(() => {
-			ClassicEditor.create(textarea())
-			.then((editor) => {
-				const getter = () => {
-					return editor.getData();
-				};
-				const stream = createStream();
-				const editorDataProxy = createProxyStore(getter, stream);
-				const throttledEditorChange = throttle(() => {
-					stream(getter());
-				}, 2500, {
-					leading: false,
-					trailing: true
-				});
-				editor.model.document.on('change:data', throttledEditorChange);
-				jsonStringify(editorDataProxy());
-				editorDataProxy.subscribe(jsonStringify);
-				editorDataProxy.subscribe((val) => {
-					isSavingInProgress(true);
-					saveEditorData(val)
-					.then((val) => {
-						return console.log(val);
-					})
-					.finally(() => {
-						return isSavingInProgress(false);
-					});
-				});
-			})
+			ClassicEditor.create(textareaElement$())
+			.then((editor) => editor$(editor))
 			.catch((error) => {
 				console.error(error);
 			});
@@ -72,7 +71,7 @@ class Wysiwyg extends Component
 				[
 					'<textarea>', {
 						id: 'editor',
-						'<>': textarea,
+						'<>': textareaElement$,
 					},
 					[
 						() => '<p><i>Hello</i>, <b>World</b>!',
@@ -80,7 +79,7 @@ class Wysiwyg extends Component
 					'</textarea>',
 				],
 				'</div>',
-				block.if(isSavingInProgress, () => arrayToVirtualDom([
+				block.if(isSaving$, () => arrayToVirtualDom([
 					'<mark>', ['Auto saving...'], '</mark>',
 				])),
 				'<pre>', {
@@ -90,7 +89,7 @@ class Wysiwyg extends Component
 						'white-space': 'normal'
 					},
 				},
-				[jsonData],
+				[editorData$],
 				'</pre>',
 			],
 			'</div>',

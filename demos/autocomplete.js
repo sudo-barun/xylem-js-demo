@@ -40,7 +40,7 @@ class Autocomplete extends Component
 		const isSearching$ = createStore(false);
 		const inputElement$ = createStore();
 
-		const fillInput = (value) => flow([
+		const fillInput = flow([
 			inputValue$,
 			(value) => {
 				inputElement$().value = value;
@@ -48,7 +48,7 @@ class Autocomplete extends Component
 				$(inputElement$()).autocomplete('search');
 				return value;
 			},
-		])(value);
+		]);
 
 		this.afterAttachToDom.subscribe(() => {
 			$(inputElement$()).autocomplete({

@@ -1,0 +1,25 @@
+/*
+ * (c) Barun Kharel <kharelbarun@gmail.com>
+ */
+
+.container {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+@media (min-width: 720px) {
+	.container {
+		max-width: 720px;
+	}
+	.container {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+}
+@media (min-width: 1180px) {
+	.container {
+		max-width: 1180px;
+	}
+}

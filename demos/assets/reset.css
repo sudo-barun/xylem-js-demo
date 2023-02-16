@@ -1,0 +1,17 @@
+/*
+ * (c) Barun Kharel <kharelbarun@gmail.com>
+ */
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	font-family: inherit;
+	font-size: inherit;
+}

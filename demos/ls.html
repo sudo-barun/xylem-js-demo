@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demos</title>
+
+<style>
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+.link-grid {
+	display: grid;
+	gap: 5px;
+}
+
+@media screen and (min-width: 500px) {
+	.link-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.link-grid li {
+	background-color: #f0f0f0;
+}
+
+.link-grid li:hover {
+	background-color: #e8e8e8;
+}
+
+.link-grid a {
+	padding: 20px;
+	display: block;
+	text-align: center;
+}
+
+</style>
+
+</head>
+<body>
+
+<div>
+	<ul class="link-grid">
+		<li>
+			<a href="./autocomplete.html">Auto complete</a>
+		</li>
+		<li>
+			<a href="./counter.html">Counter</a>
+		</li>
+		<li>
+			<a href="./dynamic-title.html">Dynamic title</a>
+		</li>
+		<li>
+			<a href="./gallery.html">Gallery</a>
+		</li>
+		<li>
+			<a href="./invoice.html">Invoice</a>
+		</li>
+		<li>
+			<a href="./todo-list.html">Todo list</a>
+		</li>
+		<li>
+			<a href="./wiggle.html">Wiggle</a>
+		</li>
+		<li>
+			<a href="./wysiwyg.html">WYSIWYG editor</a>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>

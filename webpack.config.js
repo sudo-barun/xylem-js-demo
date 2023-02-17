@@ -6,6 +6,7 @@ const entryFiles = [
 	'dynamic-title',
 	'gallery',
 	'invoice',
+	'resume',
 	'todo-list',
 	'tri-state-checkbox',
 	'wiggle',

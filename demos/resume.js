@@ -101,7 +101,7 @@ class Root extends Component
 							'<button>', {
 								class: 'btn btn-outline-secondary float-end',
 								hidden: map(isEditMode$, (v) => !v),
-								'@click': () => onReset(),
+								'@click': onReset,
 							},
 							['Reset'],
 							'</button>',

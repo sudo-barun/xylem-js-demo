@@ -25,7 +25,7 @@ class Wysiwyg extends Component
 		const editor$ = createStore();
 
 		const editorDataGetter = () => {
-			return editor$() ? editor$().getData() : null;
+			return editor$() ? editor$().getData() : textareaElement$().innerText;
 		};
 		const editorDataStream = createStream();
 		const editorData$ = createProxyStore(editorDataGetter, editorDataStream);
@@ -48,7 +48,6 @@ class Wysiwyg extends Component
 		});
 
 		editor$.subscribe((editor) => {
-			editorDataStream(editorDataGetter());
 			editor.model.document.on('change:data', throttledEditorChange);
 		});
 

@@ -39,7 +39,7 @@ function truncateTodos(todos, total)
 	if (todos.length > total) {
 		const removeCount = todos.length - total;
 		todos = todos.slice(0, total);
-		todos.push(`${removeCount}, items has been excluded.`);
+		todos.push(`${removeCount} items has been excluded.`);
 		return todos;
 	}
 	return todos;

@@ -7,6 +7,7 @@ import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import mount from "../lib/js/dom/mount.js";
 import map from "../lib/js/core/map.js";
+import reduce from "../lib/js/core/reduce.js";
 
 const allNames$ = getAllNames$();
 
@@ -140,7 +141,7 @@ class Root extends Component
 			'<div>', { class: 'container' },
 			[
 				'<button>', {
-					'@click': () => isDisplayed$(!isDisplayed$()),
+					'@click': () => reduce(isDisplayed$, (v) => !v),
 				},
 				[
 					map(isDisplayed$, (v) => v ? 'Destroy' : 'Create'),

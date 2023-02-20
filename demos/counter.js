@@ -26,7 +26,7 @@ class Counter extends Component
 				],
 				'</p>',
 				'<button>', {
-					'@click': reduce(count$, (v) => v + 1),
+					'@click': () => reduce(count$, (v) => v + 1),
 					'disabled': map(count$, (v) => v + 1 > MAX)
 				},
 				['Click'],

@@ -10,6 +10,7 @@ import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
 import push from "../lib/js/core/push.js";
+import reduce from "../lib/js/core/reduce.js";
 import splice from "../lib/js/core/splice.js";
 
 function getProjectViewModel({title='',completionDate='',skills=[''],url='',description=''} = {})
@@ -67,7 +68,7 @@ class Root extends Component
 
 		const isEditMode$ = createStore(false);
 
-		const onReset = () => resume$({...resume$()});
+		const onReset = () => reduce(resume$, (v) => ({...v}));
 		const onSave = (resume) => {
 			resume$(resume);
 			isEditMode$(false);

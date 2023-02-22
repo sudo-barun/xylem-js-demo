@@ -5,7 +5,7 @@ import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import deriveStoreFromObject from "../lib/js/core/deriveStoreFromObject.js";
+import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import map from "../lib/js/core/map.js";
@@ -24,7 +24,7 @@ function getTableEntry(index)
 	const productName$ = createStore(`Item ${index + 1}`);
 	const quantity$ = createStore('1');
 	const rate$ = createStore('');
-	const price$ = map(deriveStoreFromObject({
+	const price$ = map(combineNamedStores({
 		quantity: quantity$,
 		rate: rate$
 	}), (v) => isNumericString(v.quantity) && isNumericString(v.rate) ? v.quantity * v.rate : null);
@@ -43,7 +43,7 @@ class Invoice extends Component
 	{
 		const tableData$ = createArrayStore(Array(5).fill().map((_, index) => getTableEntry(index)));
 
-		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => deriveStoreFromObject({
+		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedStores({
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
@@ -59,7 +59,7 @@ class Invoice extends Component
 		  totalPrice$: totalPrice$
 		};
 		console.log('viewModel', viewModel);
-		const normalizedModel$ = deriveStoreFromObject({
+		const normalizedModel$ = combineNamedStores({
 		  tableData: normalizedTableData$,
 		  totalPrice: totalPrice$
 		});

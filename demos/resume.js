@@ -3,8 +3,8 @@ import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import deriveStoreFromArray from "../lib/js/core/deriveStoreFromArray.js";
-import deriveStoreFromObject from "../lib/js/core/deriveStoreFromObject.js";
+import combineStores from "../lib/js/core/combineStores.js";
+import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
@@ -230,7 +230,7 @@ class ResumeForm extends Component
 		const address$ = createStore(resume.address);
 		const projects$ = createArrayStore(resume.projects.map(getProjectViewModel));
 
-		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => deriveStoreFromObject({
+		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedStores({
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
@@ -238,7 +238,7 @@ class ResumeForm extends Component
 			url: project.url$,
 		}));
 
-		const normalizedResume$ = deriveStoreFromObject({
+		const normalizedResume$ = combineNamedStores({
 			fullName: fullName$,
 			email: email$,
 			address: address$,
@@ -409,7 +409,7 @@ class ResumeForm extends Component
 														'<label>', {
 															class: 'input-group-text',
 															for: map(
-																deriveStoreFromArray([index$, index$2]),
+																combineStores([index$, index$2]),
 																([i,i2])=>`project-${i}-skill-${i2}`,
 															),
 														},
@@ -418,7 +418,7 @@ class ResumeForm extends Component
 														'<input>', {
 															class: 'form-control',
 															id: map(
-																deriveStoreFromArray([index$, index$2]),
+																combineStores([index$, index$2]),
 																([i,i2])=>`project-${i}-skill-${i2}`,
 															),
 															value: skill$(),

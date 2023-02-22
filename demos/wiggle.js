@@ -3,7 +3,7 @@ import map from "../lib/js/core/map.js";
 import block from "../lib/js/dom/block.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
-import deriveStoreFromObject from "../lib/js/core/deriveStoreFromObject.js";
+import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import mount from "../lib/js/dom/mount.js";
 
@@ -84,7 +84,7 @@ class Wiggle extends Component
 			place: selectedPlace$,
 		};
 
-		const normalizedViewModel$ = deriveStoreFromObject(viewModel);
+		const normalizedViewModel$ = combineNamedStores(viewModel);
 
 		const formHasError$ = map(normalizedViewModel$, (v) => {
 			return ! (v.country && v.activity && v.place);
@@ -171,7 +171,7 @@ class Wiggle extends Component
 						'<button>', {
 							type: 'submit',
 							class: 'btn btn-primary float-end',
-							disabled: map(deriveStoreFromObject({
+							disabled: map(combineNamedStores({
 								formHasError: formHasError$,
 								submitInProgress: submitInProgress$,
 							}), (v) => v.formHasError || v.submitInProgress),

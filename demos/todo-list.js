@@ -5,7 +5,7 @@ import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import deriveStoreFromObject from "../lib/js/core/deriveStoreFromObject.js";
+import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import GoToTop from "./components/GoToTop.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
@@ -60,18 +60,18 @@ class TodoComponent extends Component
 		}
 
 		todos$().map((todo) => {
-			return deriveStoreFromObject({
+			return combineNamedStores({
 				text: createStore(todo.text),
 				isCompleted: todo.isCompleted$
 			});
 		});
 
-		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => deriveStoreFromObject({
+		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedStores({
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$
 		}));
 
-		const normalizedModel$ = deriveStoreFromObject({
+		const normalizedModel$ = combineNamedStores({
 			newTodo: newTodo$,
 			todos: normalizedTodos$
 		});
@@ -116,7 +116,15 @@ class TodoComponent extends Component
 									[
 										'<form>', {
 											class: 'input-group mb-3 w-75 mx-auto',
-											'@submit': (ev) => ev.preventDefault(),
+											'@submit': (ev) => {
+												ev.preventDefault();
+												todos$.mutate(unshift, {
+													text: newTodo$().trim(),
+													isCompleted$: createStore(false)
+												});
+												newTodo$('');
+												inputElement$().value = '';
+											},
 										},
 										[
 											'<input>', {
@@ -125,16 +133,9 @@ class TodoComponent extends Component
 												'@input': (ev) => newTodo$(ev.target.value),
 											},
 											'<button>', {
+												type: 'submit',
 												class: 'btn btn-outline-secondary',
 												disabled: map(newTodo$, (v) => v.trim() === ''),
-												'@click': () => {
-													todos$.mutate(unshift, {
-														text: newTodo$().trim(),
-														isCompleted$: createStore(false)
-													});
-													newTodo$('');
-													inputElement$().value = '';
-												},
 											},
 											['Add'],
 											'</button>',
@@ -177,8 +178,8 @@ class TodoComponent extends Component
 											[
 												'<input>', {
 													type: 'checkbox',
-													id: map(index$, (v) => `todo-item-${v}`),
 													class: 'form-check-input',
+													id: map(index$, (v) => `todo-item-${v}`),
 													checked: todo.isCompleted$,
 													'@change': (ev) => {
 														todo.isCompleted$(ev.target.checked);

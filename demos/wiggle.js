@@ -10,7 +10,8 @@ import mount from "../lib/js/dom/mount.js";
 const countriesData = {
 	'Nepal': {
 		'Heritage Tour': [ 'Pashupati' ],
-		'Trekking': [ 'Everest Base Camp', 'ABC Trekking' ],
+		'Trekking': [ 'Everest Base Camp', 'Annapurna Base Camp' ],
+		'Easy Trek': [ 'Annapurna Base Camp', 'Langtang' ],
 	},
 	'India': {
 		'Heritage Tour': [ 'Taj Mahal', 'Varanasi' ],
@@ -56,6 +57,9 @@ class Wiggle extends Component
 			wiggleIfValueChanged(activitySelectElement$, activityHasWiggle$, () => {
 				const activities = countriesData[country] ?? {};
 				activitiesOfSelectedCountry$(Object.keys(activities));
+				if (activitiesOfSelectedCountry$().includes(selectedActivity$())) {
+					activitySelectElement$().value = selectedActivity$();
+				}
 			});
 			setSelectedActivityWithWiggle(activitySelectElement$().value);
 		};
@@ -67,6 +71,9 @@ class Wiggle extends Component
 				const activitiesData = countriesData[selectedCountry$()] ?? {};
 				const places = activitiesData[activity] ?? [];
 				placesOfSelectedActivity$(places);
+				if (placesOfSelectedActivity$().includes(selectedPlace$())) {
+					placeSelectElement$().value = selectedPlace$();
+				}
 			});
 			selectedPlace$(placeSelectElement$().value);
 		};

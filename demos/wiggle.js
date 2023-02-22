@@ -2,8 +2,9 @@ import createStore from "../lib/js/core/createStore.js";
 import map from "../lib/js/core/map.js";
 import block from "../lib/js/dom/block.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import Component from "../lib/js/dom/Component.js";
+import combineStores from "../lib/js/core/combineStores.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import Component from "../lib/js/dom/Component.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import mount from "../lib/js/dom/mount.js";
 
@@ -171,10 +172,10 @@ class Wiggle extends Component
 						'<button>', {
 							type: 'submit',
 							class: 'btn btn-primary float-end',
-							disabled: map(combineNamedStores({
-								formHasError: formHasError$,
-								submitInProgress: submitInProgress$,
-							}), (v) => v.formHasError || v.submitInProgress),
+							disabled: map(
+								combineStores([formHasError$, submitInProgress$]),
+								([hasError, inProgress]) => hasError || inProgress
+							),
 						},
 						['Submit'],
 						'</button>',

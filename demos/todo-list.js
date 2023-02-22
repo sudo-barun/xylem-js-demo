@@ -1,3 +1,5 @@
+import "../lib/js/registerSplice.js";
+import "../lib/js/registerUnshift.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";

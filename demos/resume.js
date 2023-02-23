@@ -117,6 +117,7 @@ class Root extends Component
 						.else(() => [
 							new ResumeView({resume$: resume$.readonly}),
 						])
+						.endIf(),
 					],
 					'</div>',
 				],
@@ -193,7 +194,8 @@ class ResumeView extends Component
 								'</div>',
 							],
 							'</li>',
-						])),
+						]))
+						.endForEach(),
 					],
 					'</ol>',
 				],
@@ -440,7 +442,8 @@ class ResumeForm extends Component
 													'</div>',
 												],
 												'</div>',
-											])),
+											]))
+											.endForEach(),
 										],
 										'</div>',
 										'<div>', { class: 'clearfix' },
@@ -494,7 +497,8 @@ class ResumeForm extends Component
 							],
 							'</div>',
 						]);
-					}),
+					})
+					.endForEach(),
 				],
 				'</div>',
 				'<div>', { class: 'mt-3 clearfix' },

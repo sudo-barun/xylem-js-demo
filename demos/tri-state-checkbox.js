@@ -93,7 +93,8 @@ class TriStateCheckbox extends Component
 						],
 						'</div>',
 					]);
-				}),
+				})
+				.endForEach(),
 			],
 			'</div>',
 		]);

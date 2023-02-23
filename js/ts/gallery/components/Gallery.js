@@ -24,7 +24,8 @@ export default class Gallery extends Component {
                             image,
                             onOpenPreview: () => openPreview(index$()),
                         }),
-                    ]),
+                    ])
+                        .endForEach(),
                 ],
                 '</div>',
                 block.if(previewImage$, () => [
@@ -36,7 +37,8 @@ export default class Gallery extends Component {
                         onShowNext: () => showNext(),
                         onClose: () => closePreview(),
                     }),
-                ]),
+                ])
+                    .endIf(),
             ],
             '</div>'
         ]);

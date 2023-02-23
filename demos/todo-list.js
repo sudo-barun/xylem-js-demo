@@ -204,14 +204,17 @@ class TodoComponent extends Component
 												'</button>',
 											],
 											'</div>',
-										])),
+										]))
+										.endForEach(),
 									],
 									'<div>',
-								])).else(() => arrayToVirtualDom([
+								]))
+								.else(() => arrayToVirtualDom([
 									'<div>', { class: 'text-secondary text-center' },
 									['The todo list is empty.'],
 									'</div>',
-								])),
+								]))
+								.endIf(),
 							],
 							'</div>',
 							'<div>', { class: 'col-lg-4' },

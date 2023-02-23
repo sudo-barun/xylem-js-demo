@@ -53,13 +53,15 @@ export default class Root extends Component {
                                 '<div>', { class: 'gallery-empty-text' },
                                 ['No image available'],
                                 '</div>',
-                            ])),
+                            ]))
+                                .endIf(),
                         ]))
                             .else(() => arrayToVirtualDom([
                             '<div>', { class: 'gallery-fail-text' },
                             ['Failed to load image due to error'],
                             '</div>',
-                        ])),
+                        ]))
+                            .endIf(),
                     ]))
                         .else(() => arrayToVirtualDom([
                         '<div>', { class: 'gallery gallery-loading container gallery-container' },
@@ -110,7 +112,8 @@ export default class Root extends Component {
                             '</div>',
                         ],
                         '</div>',
-                    ])),
+                    ]))
+                        .endIf(),
                 ],
                 '</div>',
                 '<footer>', { class: 'footer' },

@@ -80,7 +80,8 @@ class Wysiwyg extends Component
 				'</div>',
 				block.if(isSaving$, () => arrayToVirtualDom([
 					'<mark>', ['Auto saving...'], '</mark>',
-				])),
+				]))
+				.endIf(),
 				'<pre>', {
 					style: {
 						border: '5px solid #ccc',

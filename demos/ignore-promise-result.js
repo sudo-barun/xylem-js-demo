@@ -92,7 +92,7 @@ class Root extends Component
 				'</div>',
 				block.if(isShown$, () => [
 					new IgnorePromiseResult(),
-				]),
+				]).endIf(),
 			],
 			'</div>',
 		]);

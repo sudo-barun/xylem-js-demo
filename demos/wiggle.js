@@ -114,7 +114,7 @@ class Wiggle extends Component
 								'<option>', { value: '' }, [ 'Select Country'], '</option>',
 								block.forEach(countries, (country) => arrayToVirtualDom([
 									'<option>', [country], '</option>',
-								])),
+								])).endForEach(),
 							],
 							'</select>',
 						],
@@ -137,7 +137,7 @@ class Wiggle extends Component
 								'<option>', { value: '' }, [ 'Select Activity'], '</option>',
 								block.forEach(activitiesOfSelectedCountry$, (activity) => arrayToVirtualDom([
 									'<option>', [activity], '</option>',
-								]))
+								])).endForEach(),
 							],
 							'</select>',
 						],
@@ -160,7 +160,7 @@ class Wiggle extends Component
 								'<option>', { value: '' }, [ 'Select Place'], '</option>',
 								block.forEach(placesOfSelectedActivity$, (place) => arrayToVirtualDom([
 									'<option>', [place], '</option>',
-								])),
+								])).endForEach(),
 							],
 							'</select>',
 						],

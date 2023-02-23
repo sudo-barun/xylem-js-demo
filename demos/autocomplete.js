@@ -116,7 +116,8 @@ class Autocomplete extends Component
 						'<mark>',
 						['searching...'],
 						'</mark>',
-					])),
+					]))
+					.endIf(),
 				],
 				'</label>',
 				'<pre>',
@@ -137,7 +138,10 @@ class Root extends Component
 		const isDisplayed$ = createStore(true);
 
 		return arrayToVirtualDom([
-			block.if(isDisplayed$, () => arrayToVirtualDom([new Autocomplete()])),
+			block.if(isDisplayed$, () => arrayToVirtualDom([
+				new Autocomplete(),
+			]))
+			.endIf(),
 			'<div>', { class: 'container' },
 			[
 				'<button>', {

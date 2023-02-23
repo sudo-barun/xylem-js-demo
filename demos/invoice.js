@@ -158,6 +158,7 @@ class Invoice extends Component
 										],
 										'</tr>',
 									]))
+									.endForEach(),
 								],
 								'</tbody>',
 								'<tfoot>',

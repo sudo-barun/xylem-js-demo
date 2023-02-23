@@ -38,7 +38,8 @@ class Gallery extends Component<Attributes>
 							image,
 							onOpenPreview: () => openPreview(index$()),
 						}),
-					]),
+					])
+					.endForEach(),
 				],
 				'</div>',
 				block.if(previewImage$, () => [
@@ -50,7 +51,8 @@ class Gallery extends Component<Attributes>
 						onShowNext: () => showNext(),
 						onClose: ()=> closePreview(),
 					}),
-				]),
+				])
+				.endIf(),
 			],
 			'</div>'
 		]);

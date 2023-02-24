@@ -4,7 +4,9 @@ import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
+import createProxyStore from "../lib/js/core/createProxyStore.js";
 import createStore from "../lib/js/core/createStore.js";
+import createStream from "../lib/js/core/createStream.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
@@ -47,7 +49,7 @@ class Invoice extends Component
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
-			price: row.price$
+			price: createProxyStore(row.price$, createStream()),
 		}));
 		const totalPrice$ = map(normalizedTableData$, (tableData) => {
 			return tableData.reduce((acc, row) => {
@@ -61,8 +63,9 @@ class Invoice extends Component
 		console.log('viewModel', viewModel);
 		const normalizedModel$ = combineNamedStores({
 		  tableData: normalizedTableData$,
-		  totalPrice: totalPrice$
+		  totalPrice: createProxyStore(totalPrice$, createStream()),
 		});
+		normalizedModel$.subscribe(v => console.log(v))
 
 		return arrayToVirtualDom([
 			'<div>', { class: 'container mt-3' },

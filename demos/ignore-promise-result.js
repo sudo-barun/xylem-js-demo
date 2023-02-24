@@ -1,8 +1,8 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createProxyStream from "../lib/js/core/createProxyStream.js";
 import createStore from "../lib/js/core/createStore.js";
+import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import reduce from "../lib/js/core/reduce.js";
@@ -90,7 +90,7 @@ class Root extends Component
 					'</button>',
 				],
 				'</div>',
-				block.if(isShown$, () => [
+				if_(isShown$, () => [
 					new IgnorePromiseResult(),
 				]).endIf(),
 			],

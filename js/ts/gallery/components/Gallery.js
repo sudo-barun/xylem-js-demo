@@ -1,7 +1,8 @@
 import arrayToVirtualDom from "../../../lib/ts/dom/arrayToVirtualDom.js";
-import block from "../../../lib/ts/dom/block.js";
 import Component from "../../../lib/ts/dom/Component.js";
 import createStore from "../../../lib/ts/core/createStore.js";
+import forEach from "../../../lib/ts/dom/forEach.js";
+import if_ from "../../../lib/ts/dom/if_.js";
 import Item from "./Item.js";
 import Preview from "./Preview.js";
 export default class Gallery extends Component {
@@ -19,7 +20,7 @@ export default class Gallery extends Component {
             [
                 '<div>', { class: '-image-list' },
                 [
-                    block.forEach(images$, (image, index$) => [
+                    forEach(images$, (image, index$) => [
                         new Item({
                             image,
                             onOpenPreview: () => openPreview(index$()),
@@ -28,7 +29,7 @@ export default class Gallery extends Component {
                         .endForEach(),
                 ],
                 '</div>',
-                block.if(previewImage$, () => [
+                if_(previewImage$, () => [
                     new Preview({
                         image: previewImage$.readonly,
                         hasPrevious: hasPrevious$.readonly,

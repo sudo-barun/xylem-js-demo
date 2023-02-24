@@ -1,12 +1,13 @@
 import "../lib/js/registerSplice.js";
 import "../lib/js/registerUnshift.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import forEach from "../lib/js/dom/forEach.js";
 import GoToTop from "./components/GoToTop.js";
+import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
@@ -170,10 +171,10 @@ class TodoComponent extends Component
 									todos$.length$,
 								],
 								'</div>',
-								block.if(todos$.length$, () => arrayToVirtualDom([
+								if_(todos$.length$, () => arrayToVirtualDom([
 									'<div>', { class: 'list-group' },
 									[
-										block.forEach(todos$, (todo, index$) => arrayToVirtualDom([
+										forEach(todos$, (todo, index$) => arrayToVirtualDom([
 											'<div>', { class: 'list-group-item' },
 											[
 												'<input>', {

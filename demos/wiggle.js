@@ -1,11 +1,11 @@
 import createStore from "../lib/js/core/createStore.js";
 import map from "../lib/js/core/map.js";
-import block from "../lib/js/dom/block.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import combineStores from "../lib/js/core/combineStores.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import Component from "../lib/js/dom/Component.js";
 import flow from "../node_modules/lodash-es/flow.js";
+import forEach from "../lib/js/dom/forEach.js";
 import mount from "../lib/js/dom/mount.js";
 
 const countriesData = {
@@ -112,7 +112,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Country'], '</option>',
-								block.forEach(countries, (country) => arrayToVirtualDom([
+								forEach(countries, (country) => arrayToVirtualDom([
 									'<option>', [country], '</option>',
 								])).endForEach(),
 							],
@@ -135,7 +135,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Activity'], '</option>',
-								block.forEach(activitiesOfSelectedCountry$, (activity) => arrayToVirtualDom([
+								forEach(activitiesOfSelectedCountry$, (activity) => arrayToVirtualDom([
 									'<option>', [activity], '</option>',
 								])).endForEach(),
 							],
@@ -158,7 +158,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Place'], '</option>',
-								block.forEach(placesOfSelectedActivity$, (place) => arrayToVirtualDom([
+								forEach(placesOfSelectedActivity$, (place) => arrayToVirtualDom([
 									'<option>', [place], '</option>',
 								])).endForEach(),
 							],

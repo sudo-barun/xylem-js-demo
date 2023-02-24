@@ -1,13 +1,13 @@
 import "../lib/js/registerSplice.js";
 import "../lib/js/registerPush.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
+import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
-import flow from "../node_modules/lodash-es/flow.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
+import flow from "../node_modules/lodash-es/flow.js";
+import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
@@ -92,7 +92,7 @@ class Invoice extends Component
 								'</thead>',
 								'<tbody>',
 								[
-									block.forEach(tableData$, (rowData, index$) => arrayToVirtualDom([
+									forEach(tableData$, (rowData, index$) => arrayToVirtualDom([
 										'<tr>', [
 											'<td>',
 											[map(index$, (v) => v + 1)],

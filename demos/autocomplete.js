@@ -1,10 +1,10 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import axios from "../node_modules/axios/dist/esm/axios.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
+import if_ from "../lib/js/dom/if_.js";
 import mount from "../lib/js/dom/mount.js";
 import map from "../lib/js/core/map.js";
 import reduce from "../lib/js/core/reduce.js";
@@ -112,7 +112,7 @@ class Autocomplete extends Component
 						'<>': inputElement$,
 					},
 					' ',
-					block.if(isSearching$, () => arrayToVirtualDom([
+					if_(isSearching$, () => arrayToVirtualDom([
 						'<mark>',
 						['searching...'],
 						'</mark>',
@@ -138,7 +138,7 @@ class Root extends Component
 		const isDisplayed$ = createStore(true);
 
 		return arrayToVirtualDom([
-			block.if(isDisplayed$, () => arrayToVirtualDom([
+			if_(isDisplayed$, () => arrayToVirtualDom([
 				new Autocomplete(),
 			]))
 			.endIf(),

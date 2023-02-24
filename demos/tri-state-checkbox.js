@@ -1,7 +1,7 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
+import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 
@@ -68,7 +68,7 @@ class TriStateCheckbox extends Component
 					' selected)',
 				],
 				'</label>',
-				block.forEach(checkboxValue$s, function (item$, index$) {
+				forEach(checkboxValue$s, function (item$, index$) {
 					const checkboxElement$ = createStore();
 					const itemProxy$ = this.createProxyStore(item$);
 					this.afterAttachToDom.subscribe(() => {

@@ -1,9 +1,9 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createProxyStore from "../lib/js/core/createProxyStore.js";
 import createStore from "../lib/js/core/createStore.js";
 import createStream from "../lib/js/core/createStream.js";
+import if_ from "../lib/js/dom/if_.js";
 import mount from "../lib/js/dom/mount.js";
 import throttle from "../node_modules/lodash-es/throttle.js";
 
@@ -78,7 +78,7 @@ class Wysiwyg extends Component
 					'</textarea>',
 				],
 				'</div>',
-				block.if(isSaving$, () => arrayToVirtualDom([
+				if_(isSaving$, () => arrayToVirtualDom([
 					'<mark>', ['Auto saving...'], '</mark>',
 				]))
 				.endIf(),

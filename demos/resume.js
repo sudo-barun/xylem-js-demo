@@ -1,11 +1,12 @@
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import block from "../lib/js/dom/block.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
 import combineStores from "../lib/js/core/combineStores.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
 import flow from "../node_modules/lodash-es/flow.js";
+import forEach from "../lib/js/dom/forEach.js";
+import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
@@ -110,8 +111,7 @@ class Root extends Component
 						'<h1>', { class: 'h2' },
 						['Resumé'],
 						'</h1>',
-						block
-						.if(isEditMode$, () => [
+						if_(isEditMode$, () => [
 							new ResumeForm({resume$: resume$.readonly, onSave}),
 						])
 						.else(() => [
@@ -156,7 +156,7 @@ class ResumeView extends Component
 					'</h5>',
 					'<ol>',
 					[
-						block.forEach(resume.projects, (project) => arrayToVirtualDom([
+						forEach(resume.projects, (project) => arrayToVirtualDom([
 							'<li>', { class: 'my-3' },
 							[
 								'<div>',
@@ -325,7 +325,7 @@ class ResumeForm extends Component
 				'</h3>',
 				'<div>',
 				[
-					block.forEach(projects$, (project, index$) => {
+					forEach(projects$, (project, index$) => {
 						return arrayToVirtualDom([
 							'<div>', { class: 'card mt-3' },
 							[
@@ -403,7 +403,7 @@ class ResumeForm extends Component
 										'</label>',
 										'<div>',
 										[
-											block.forEach(project.skills$, (skill$, index$2) => arrayToVirtualDom([
+											forEach(project.skills$, (skill$, index$2) => arrayToVirtualDom([
 												'<div>', { class: 'card mb-3' },
 												[
 													'<div>', { class: 'input-group' },

@@ -1,8 +1,8 @@
 import arrayToVirtualDom from '../../../lib/ts/dom/arrayToVirtualDom.js';
-import block from '../../../lib/ts/dom/block.js';
 import Component from '../../../lib/ts/dom/Component.js';
 import createStore from '../../../lib/ts/core/createStore.js';
 import Gallery from './Gallery.js';
+import if_ from '../../../lib/ts/dom/if_.js';
 import Image from '../types/Image.js';
 import map from "../../../lib/ts/core/map.js";
 
@@ -50,9 +50,9 @@ class Root extends Component
 						'</p>',
 					],
 					'</div>',
-					block.if(hasImageRequestCompleted, () => arrayToVirtualDom([
-						block.if(hasImageRequestSucceed, () => arrayToVirtualDom([
-							block.if(map(galleryImages, (arr)=>arr.length), () => arrayToVirtualDom([
+					if_(hasImageRequestCompleted, () => arrayToVirtualDom([
+						if_(hasImageRequestSucceed, () => arrayToVirtualDom([
+							if_(map(galleryImages, (arr)=>arr.length), () => arrayToVirtualDom([
 								new Gallery({
 									images$: galleryImages,
 								}),

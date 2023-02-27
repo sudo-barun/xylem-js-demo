@@ -60,13 +60,6 @@ class TodoComponent extends Component
 			todos$(getTodoList(count));
 		}
 
-		todos$().map((todo) => {
-			return combineNamedStores({
-				text: createStore(todo.text),
-				isCompleted: todo.isCompleted$
-			});
-		});
-
 		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedStores({
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$

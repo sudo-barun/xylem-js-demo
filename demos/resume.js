@@ -1,3 +1,5 @@
+import "../lib/js/registerPush.js";
+import "../lib/js/registerSplice.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";

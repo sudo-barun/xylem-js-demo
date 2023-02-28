@@ -30,7 +30,7 @@ class Item extends Component<Attributes>
 					'aria-label': image.caption,
 				},
 				[
-					'<img>', {
+					'<img/>', {
 						src: image.url,
 					}
 				],

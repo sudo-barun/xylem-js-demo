@@ -15,7 +15,7 @@ export default class Item extends Component {
                     'aria-label': image.caption,
                 },
                 [
-                    '<img>', {
+                    '<img/>', {
                         src: image.url,
                     }
                 ],

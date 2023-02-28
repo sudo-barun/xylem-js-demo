@@ -121,7 +121,7 @@ class TodoComponent extends Component
 											},
 										},
 										[
-											'<input>', {
+											'<input/>', {
 												class: 'form-control',
 												'<>': inputElement$,
 												'@input': (ev) => newTodo$(ev.target.value),
@@ -170,7 +170,7 @@ class TodoComponent extends Component
 										forEach(todos$, (todo, index$) => arrayToVirtualDom([
 											'<div>', { class: 'list-group-item' },
 											[
-												'<input>', {
+												'<input/>', {
 													type: 'checkbox',
 													class: 'form-check-input',
 													id: map(index$, (v) => `todo-item-${v}`),
@@ -201,7 +201,7 @@ class TodoComponent extends Component
 										]))
 										.endForEach(),
 									],
-									'<div>',
+									'</div>',
 								]))
 								.else(() => arrayToVirtualDom([
 									'<div>', { class: 'text-secondary text-center' },

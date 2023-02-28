@@ -62,17 +62,19 @@ class Preview extends Component<Attributes>
 							class: '-close',
 							'@click': close,
 						},
+						'</button>',
 						'<button>', {
 							title: 'Previous',
 							class: '-control -left',
 							'.disabled': map(hasPrevious$, (x)=>!x),
 							'@click': showPrevious,
 						},
+						'</button>',
 						'<div>', { class: '-image-caption-container' },
 						[
 							'<div>', { class: '-image' },
 							[
-								'<img>', {
+								'<img/>', {
 									src: map(image$, (image) => image.url)
 								},
 							],
@@ -92,6 +94,7 @@ class Preview extends Component<Attributes>
 							'.disabled': map(hasNext$, (x)=>!x),
 							'@click': showNext,
 						},
+						'</button>',
 					],
 					'</div>',
 				],

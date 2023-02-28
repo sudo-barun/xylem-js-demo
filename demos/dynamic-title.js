@@ -29,7 +29,7 @@ class DynamicTitle extends Component
 				'<div>',
 				[
 					'Title text: ',
-					'<input>', {
+					'<input/>', {
 						value: titleText$,
 						'@input': (ev) => titleText$(ev.target.value),
 					},

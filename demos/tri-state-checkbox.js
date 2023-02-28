@@ -52,7 +52,7 @@ class TriStateCheckbox extends Component
 			[
 				'<label>',
 				[
-					'<input>', {
+					'<input/>', {
 						type: 'checkbox',
 						'@change': (ev) => {
 							const checked = ev.target.checked;
@@ -80,7 +80,7 @@ class TriStateCheckbox extends Component
 						[
 							'<label>',
 							[
-								'<input>', {
+								'<input/>', {
 									type: 'checkbox',
 									'@change': (ev) => {item$(ev.target.checked)},
 									'<>': checkboxElement$,

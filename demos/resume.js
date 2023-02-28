@@ -123,7 +123,9 @@ class Root extends Component
 					],
 					'</div>',
 				],
+				'</div>',
 			],
+			'</div>',
 		]);
 	}
 }
@@ -150,7 +152,7 @@ class ResumeView extends Component
 					'</div>',
 				],
 				'</div>',
-				'<hr>',
+				'<hr/>',
 				'<div>',
 				[
 					'<h5>', { class: 'my-4' },
@@ -270,7 +272,7 @@ class ResumeForm extends Component
 					},
 					['Full Name'],
 					'</label>',
-					'<input>', {
+					'<input/>', {
 						class: 'form-control',
 						id: 'full-name',
 						value: fullName$(),
@@ -290,7 +292,7 @@ class ResumeForm extends Component
 					},
 					['Email'],
 					'</label>',
-					'<input>', {
+					'<input/>', {
 						class: 'form-control',
 						id: 'email',
 						value: email$(),
@@ -310,7 +312,7 @@ class ResumeForm extends Component
 					},
 					['Address'],
 					'</label>',
-					'<input>', {
+					'<input/>', {
 						class: 'form-control',
 						id: 'address',
 						value: address$(),
@@ -344,7 +346,7 @@ class ResumeForm extends Component
 										},
 										['Project Title'],
 										'</label>',
-										'<input>', {
+										'<input/>', {
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-title`),
 											value: project.title$(),
@@ -384,7 +386,7 @@ class ResumeForm extends Component
 										},
 										['Completion date'],
 										'</label>',
-										'<input>', {
+										'<input/>', {
 											type: 'date',
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-completion-date`),
@@ -419,7 +421,7 @@ class ResumeForm extends Component
 														},
 														[ map(index$2, (i)=>`Skill ${i+1}`) ],
 														'</label>',
-														'<input>', {
+														'<input/>', {
 															class: 'form-control',
 															id: map(
 																combineStores([index$, index$2]),
@@ -460,6 +462,7 @@ class ResumeForm extends Component
 											['Add Skill'],
 											'</button>',
 										],
+										'</div>',
 									],
 									'</div>',
 									'<div>', { class: 'mb-3' },
@@ -470,7 +473,7 @@ class ResumeForm extends Component
 										},
 										['URL'],
 										'</label>',
-										'<input>', {
+										'<input/>', {
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-url`),
 											value: project.url$(),

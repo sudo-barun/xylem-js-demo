@@ -103,7 +103,7 @@ class Autocomplete extends Component
 				'<label>',
 				[
 					'Name: ',
-					'<input>', {
+					'<input/>', {
 						style: 'font-size: 1.25em',
 						'@input': flow([
 							(ev) => ev.target.value,

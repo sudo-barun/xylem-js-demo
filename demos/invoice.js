@@ -102,7 +102,7 @@ class Invoice extends Component
 											'</td>',
 											'<td>',
 											[
-												'<input>', {
+												'<input/>', {
 													class: 'form-control',
 													style: 'min-width: 5em',
 													value: rowData.productName$(),
@@ -115,7 +115,7 @@ class Invoice extends Component
 											'</td>',
 											'<td>',
 											[
-												'<input>', {
+												'<input/>', {
 													class: 'form-control',
 													style: 'min-width: 5em',
 													'.is-invalid': map(rowData.quantity$, (v) => !isNumericString(v)),
@@ -129,7 +129,7 @@ class Invoice extends Component
 											'</td>',
 											'<td>',
 											[
-												'<input>', {
+												'<input/>', {
 													class: 'form-control',
 													style: 'min-width: 5em',
 													'.is-invalid': map(rowData.rate$, (v) => !isNumericString(v)),

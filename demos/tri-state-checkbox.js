@@ -22,14 +22,15 @@ class TriStateCheckbox extends Component
 	{
 		const checkboxValue$s = Array(5).fill(false).map((v) => createStore(v));
 		const getCombinedState = () => {
-			if (checkboxValue$s.every((item$) => item$())) {
-				return ALL;
-			} else if (checkboxValue$s.every((item$) => !item$())) {
+			const checkedCount = checkboxValue$s.filter((item$) => item$()).length;
+			if (checkedCount === 0) {
 				return NONE;
+			} else if (checkedCount === checkboxValue$s.length) {
+				return ALL;
 			} else {
 				return SOME;
 			}
-		}
+		};
 		const combinedState$ = createStore(getCombinedState());
 		checkboxValue$s.forEach(item$ => item$.subscribe(() => {
 			combinedState$(getCombinedState());

@@ -15,12 +15,18 @@ class Counter extends Component
 		const count$ = createStore(INITIAL_VALUE);
 
 		return arrayToVirtualDom([
-			'<div>', { class: 'container' },
+			'<div>', { class: 'container', style: 'max-width: 500px' },
 			[
 				'<h2>', ['Counter'], '</h2>',
 				'<p>',
 				[
-					'You clicked: ', '<mark>', [count$], '</mark>', ' times.',
+					'You clicked ',
+					'<mark>', {
+						style: 'font-size: 2em; padding: 10px 10px 5px; display: inline-block',
+					},
+					[ count$ ],
+					'</mark>',
+					' times.',
 					' ',
 					'(max: ', MAX, ')',
 				],

@@ -44,7 +44,6 @@ class Form extends Component
 			radio: radioChecked$,
 		});
 
-		attrs.formData$(formData$());
 		formData$.subscribe(attrs.formData$);
 
 		return arrayToVirtualDom([
@@ -274,10 +273,10 @@ class App extends Component
 		let formData$ = createStore({
 			input: 'single-line text',
 			textarea: 'multi-line text',
-			singleCheckbox: true,
-			multiCheckbox: ['2'],
 			singleSelect: '1',
 			multiSelect: ['1','2'],
+			singleCheckbox: true,
+			multiCheckbox: ['2'],
 			radio: '3',
 		});
 

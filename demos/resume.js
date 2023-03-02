@@ -407,46 +407,50 @@ class ResumeForm extends Component
 										'</label>',
 										'<div>',
 										[
-											forEach(project.skills$, (skill$, index$2) => arrayToVirtualDom([
-												'<div>', { class: 'card mb-3' },
-												[
-													'<div>', { class: 'input-group' },
+											forEach(project.skills$, function (skill$, index$2) {
+												index$ = this.deriveStore(index$);
+
+												return arrayToVirtualDom([
+													'<div>', { class: 'card mb-3' },
 													[
-														'<label>', {
-															class: 'input-group-text',
-															for: map(
-																combineStores([index$, index$2]),
-																([i,i2])=>`project-${i}-skill-${i2}`,
-															),
-														},
-														[ map(index$2, (i)=>`Skill ${i+1}`) ],
-														'</label>',
-														'<input/>', {
-															class: 'form-control',
-															id: map(
-																combineStores([index$, index$2]),
-																([i,i2])=>`project-${i}-skill-${i2}`,
-															),
-															value: skill$(),
-															'@input': flow([
-																(ev) => ev.target.value,
-																skill$,
-															]),
-														},
-														'<button>', {
-															type: 'button',
-															class: 'btn btn-outline-danger',
-															'@click': () => {
-																project.skills$.mutate(splice, undefined, index$2);
+														'<div>', { class: 'input-group' },
+														[
+															'<label>', {
+																class: 'input-group-text',
+																for: map(
+																	combineStores([index$, index$2]),
+																	([i,i2])=>`project-${i}-skill-${i2}`,
+																),
 															},
-														},
-														['Remove'],
-														'</button>',
+															[ map(index$2, (i)=>`Skill ${i+1}`) ],
+															'</label>',
+															'<input/>', {
+																class: 'form-control',
+																id: map(
+																	combineStores([index$, index$2]),
+																	([i,i2])=>`project-${i}-skill-${i2}`,
+																),
+																value: skill$(),
+																'@input': flow([
+																	(ev) => ev.target.value,
+																	skill$,
+																]),
+															},
+															'<button>', {
+																type: 'button',
+																class: 'btn btn-outline-danger',
+																'@click': () => {
+																	project.skills$.mutate(splice, undefined, index$2);
+																},
+															},
+															['Remove'],
+															'</button>',
+														],
+														'</div>',
 													],
 													'</div>',
-												],
-												'</div>',
-											]))
+												]);
+											})
 											.endForEach(),
 										],
 										'</div>',

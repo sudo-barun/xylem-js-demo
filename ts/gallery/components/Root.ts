@@ -11,18 +11,20 @@ class Root extends Component
 {
 	build()
 	{
-		const galleryImages = createStore<Image[]>([]);
-		const hasImageRequestCompleted = createStore(false);
-		const hasImageRequestSucceed = createStore(false);
+		const galleryImages$ = createStore<Image[]>([]);
+		const hasImageRequestCompleted$ = createStore(false);
+		const hasImageRequestSucceed$ = createStore(false);
 
-		delayPromise(getImages(), 2000)
-		.then((images) => {
-			galleryImages(images);
-			hasImageRequestSucceed(true);
-		})
-		.catch(() => hasImageRequestSucceed(false))
-		.finally(() => hasImageRequestCompleted(true))
-		;
+		this.afterAttachToDom.subscribe(() => {
+			delayPromise(getImages(), 2000)
+			.then((images) => {
+				galleryImages$(images);
+				hasImageRequestSucceed$(true);
+			})
+			.catch(() => hasImageRequestSucceed$(false))
+			.finally(() => hasImageRequestCompleted$(true))
+			;
+		});
 
 		return arrayToVirtualDom([
 			'<div>', { class: 'section-wrapper'},
@@ -50,11 +52,11 @@ class Root extends Component
 						'</p>',
 					],
 					'</div>',
-					if_(hasImageRequestCompleted, () => arrayToVirtualDom([
-						if_(hasImageRequestSucceed, () => arrayToVirtualDom([
-							if_(map(galleryImages, (arr)=>arr.length), () => arrayToVirtualDom([
+					if_(hasImageRequestCompleted$, () => arrayToVirtualDom([
+						if_(hasImageRequestSucceed$, () => arrayToVirtualDom([
+							if_(map(galleryImages$, (arr)=>arr.length), () => arrayToVirtualDom([
 								new Gallery({
-									images$: galleryImages,
+									images$: galleryImages$,
 								}),
 							]))
 							.else(() => arrayToVirtualDom([

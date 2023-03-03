@@ -151,7 +151,7 @@ class Invoice extends Component
 												'<button>', {
 													class: 'btn btn-outline-danger',
 													'@click': () => {
-														tableData$.mutate(splice, undefined, index$);
+														tableData$.mutate(splice, index$);
 													}
 												},
 												['Remove'],

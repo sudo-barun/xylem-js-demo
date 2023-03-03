@@ -240,7 +240,7 @@ class ResumeForm extends Component
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
-			skills: normalizeArrayStore(project.skills$),
+			skills: normalizeArrayStore(project.skills$, v => v),
 			url: project.url$,
 		}));
 
@@ -440,7 +440,7 @@ class ResumeForm extends Component
 																type: 'button',
 																class: 'btn btn-outline-danger',
 																'@click': () => {
-																	project.skills$.mutate(splice, undefined, index$2);
+																	project.skills$.mutate(splice, index$2);
 																},
 															},
 															['Remove'],
@@ -496,7 +496,7 @@ class ResumeForm extends Component
 										type: 'button',
 										class: 'btn btn-outline-danger float-end',
 										'@click': () => {
-											projects$.mutate(splice, undefined, index$);
+											projects$.mutate(splice, index$);
 										},
 									},
 									['Remove'],

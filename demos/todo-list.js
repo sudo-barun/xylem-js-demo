@@ -148,7 +148,7 @@ class TodoComponent extends Component
 													return todos$()[index$()].isCompleted$();
 												});
 												index$Array.slice().reverse().forEach((index$) => {
-													todos$.mutate(splice, undefined, index$);
+													todos$.mutate(splice, index$);
 												});
 											}
 										},
@@ -191,7 +191,7 @@ class TodoComponent extends Component
 												'<button>', {
 													class: 'btn btn-sm btn-outline-danger float-end',
 													'@click': () => {
-														return todos$.mutate(splice, undefined, index$);
+														return todos$.mutate(splice, index$);
 													}
 												},
 												['Remove'],

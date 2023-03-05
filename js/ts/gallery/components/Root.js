@@ -5,12 +5,12 @@ import Gallery from './Gallery.js';
 import if_ from '../../../lib/ts/dom/if_.js';
 import map from "../../../lib/ts/core/map.js";
 export default class Root extends Component {
-    build() {
+    build(attrs) {
         const galleryImages$ = createStore([]);
         const hasImageRequestCompleted$ = createStore(false);
         const hasImageRequestSucceed$ = createStore(false);
         this.afterAttachToDom.subscribe(() => {
-            delayPromise(getImages(), 2000)
+            delayPromise(getImages(attrs.apiBaseUrl), 2000)
                 .then((images) => {
                 galleryImages$(images);
                 hasImageRequestSucceed$(true);
@@ -149,10 +149,10 @@ function delayPromise(promise, delay) {
 function setTimeoutPromisified(delay, ...args) {
     return new Promise(resolve => setTimeout(resolve, delay, ...args));
 }
-function getImages() {
-    return fetch(getUrl())
+function getImages(apiBaseUrl) {
+    return fetch(getUrl(apiBaseUrl))
         .then(response => response.json());
 }
-function getUrl() {
-    return env.APP_IMAGES_API_URL + '/image/';
+function getUrl(apiBaseUrl) {
+    return apiBaseUrl + '/image/';
 }

@@ -6,17 +6,21 @@ import if_ from '../../../lib/ts/dom/if_.js';
 import Image from '../types/Image.js';
 import map from "../../../lib/ts/core/map.js";
 
+type InjectedAttributes = {
+	apiBaseUrl: string,
+};
+
 export default
-class Root extends Component
+class Root extends Component<{}, InjectedAttributes>
 {
-	build()
+	build(attrs: InjectedAttributes)
 	{
 		const galleryImages$ = createStore<Image[]>([]);
 		const hasImageRequestCompleted$ = createStore(false);
 		const hasImageRequestSucceed$ = createStore(false);
 
 		this.afterAttachToDom.subscribe(() => {
-			delayPromise(getImages(), 2000)
+			delayPromise(getImages(attrs.apiBaseUrl), 2000)
 			.then((images) => {
 				galleryImages$(images);
 				hasImageRequestSucceed$(true);
@@ -162,14 +166,14 @@ function setTimeoutPromisified(delay: number, ...args: any[])
 	return new Promise(resolve => setTimeout(resolve, delay, ...args));
 }
 
-function getImages(): Promise<Image[]>
+function getImages(apiBaseUrl: string): Promise<Image[]>
 {
-	return fetch(getUrl())
+	return fetch(getUrl(apiBaseUrl))
 	.then(response => response.json())
 	;
 }
 
-function getUrl()
+function getUrl(apiBaseUrl: string)
 {
-	return env.APP_IMAGES_API_URL+'/image/';
+	return apiBaseUrl+'/image/';
 }

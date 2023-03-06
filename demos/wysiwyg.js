@@ -73,7 +73,7 @@ class Wysiwyg extends Component
 						'<>': textareaElement$,
 					},
 					[
-						() => '<p><i>Hello</i>, <b>World</b>!',
+						'<>', '<p><i>Hello</i>, <b>World</b>!', '</>',
 					],
 					'</textarea>',
 				],

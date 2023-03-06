@@ -173,7 +173,7 @@ class BonusColors extends Component
 			'<h2>', { class: 'h3 mt-4' },
 			[ 'Bonus Colors' ],
 			'</h2>',
-			'<div>', { class: '' },
+			'<div>',
 			[
 				forEach(BONUS_COLORS, (bonusColor, index$) => arrayToVirtualDom([
 					index$() !== 0 ? ' ' : '',

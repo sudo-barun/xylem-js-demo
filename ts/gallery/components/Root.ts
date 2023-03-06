@@ -13,14 +13,14 @@ type InjectedAttributes = {
 export default
 class Root extends Component<{}, InjectedAttributes>
 {
-	build(attrs: InjectedAttributes)
+	build({ apiBaseUrl }: InjectedAttributes)
 	{
 		const galleryImages$ = createStore<Image[]>([]);
 		const hasImageRequestCompleted$ = createStore(false);
 		const hasImageRequestSucceed$ = createStore(false);
 
 		this.afterAttachToDom.subscribe(() => {
-			delayPromise(getImages(attrs.apiBaseUrl), 2000)
+			delayPromise(getImages(apiBaseUrl), 2000)
 			.then((images) => {
 				galleryImages$(images);
 				hasImageRequestSucceed$(true);

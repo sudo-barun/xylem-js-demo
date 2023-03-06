@@ -5,12 +5,12 @@ import Gallery from './Gallery.js';
 import if_ from '../../../lib/ts/dom/if_.js';
 import map from "../../../lib/ts/core/map.js";
 export default class Root extends Component {
-    build(attrs) {
+    build({ apiBaseUrl }) {
         const galleryImages$ = createStore([]);
         const hasImageRequestCompleted$ = createStore(false);
         const hasImageRequestSucceed$ = createStore(false);
         this.afterAttachToDom.subscribe(() => {
-            delayPromise(getImages(attrs.apiBaseUrl), 2000)
+            delayPromise(getImages(apiBaseUrl), 2000)
                 .then((images) => {
                 galleryImages$(images);
                 hasImageRequestSucceed$(true);

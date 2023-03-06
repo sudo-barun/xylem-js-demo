@@ -51,24 +51,28 @@ class TriStateCheckbox extends Component
 		return arrayToVirtualDom([
 			'<div>', { class: 'container', style: 'max-width: 500px' },
 			[
-				'<label>',
+				'<div>',
 				[
-					'<input/>', {
-						type: 'checkbox',
-						'@change': (ev) => {
-							const checked = ev.target.checked;
-							checkboxValue$s.forEach((item$) => item$(checked));
+					'<label>',
+					[
+						'<input/>', {
+							type: 'checkbox',
+							'@change': (ev) => {
+								const checked = ev.target.checked;
+								checkboxValue$s.forEach((item$) => item$(checked));
+							},
+							'<>': topCheckboxElement$,
 						},
-						'<>': topCheckboxElement$,
-					},
-					' ',
-					'<b>', [ 'Select All' ], '</b>',
-					' ',
-					'(',
-					map(combinedState$, (v) => LABELS[v]),
-					' selected)',
+						' ',
+						'<b>', [ 'Select All' ], '</b>',
+						' ',
+						'(',
+						map(combinedState$, (v) => LABELS[v]),
+						' selected)',
+					],
+					'</label>',
 				],
-				'</label>',
+				'</div>',
 				forEach(checkboxValue$s, function (item$, index$) {
 					const checkboxElement$ = createStore();
 					const itemProxy$ = this.createProxyStore(item$);

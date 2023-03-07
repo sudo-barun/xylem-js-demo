@@ -116,9 +116,10 @@ class Invoice extends Component
 											'<td>',
 											[
 												'<input/>', {
-													class: 'form-control',
+													class: [ 'form-control', {
+														'is-invalid': map(rowData.quantity$, (v) => !isNumericString(v)),
+													}],
 													style: 'min-width: 5em',
-													'.is-invalid': map(rowData.quantity$, (v) => !isNumericString(v)),
 													value: rowData.quantity$(),
 													'@input': flow([
 														(ev) => ev.target.value,
@@ -130,9 +131,10 @@ class Invoice extends Component
 											'<td>',
 											[
 												'<input/>', {
-													class: 'form-control',
+													class: [ 'form-control', {
+														'is-invalid': map(rowData.rate$, (v) => !isNumericString(v)),
+													}],
 													style: 'min-width: 5em',
-													'.is-invalid': map(rowData.rate$, (v) => !isNumericString(v)),
 													value: rowData.rate$(),
 													'@input': flow([
 														(ev) => ev.target.value,

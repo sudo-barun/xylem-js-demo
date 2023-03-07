@@ -83,11 +83,7 @@ class Wysiwyg extends Component
 				]))
 				.endIf(),
 				'<pre>', {
-					style: {
-						border: '5px solid #ccc',
-						padding: '10px',
-						'white-space': 'normal'
-					},
+					style: 'border: 5px solid #ccc; padding: 10px; white-space: normal',
 				},
 				[editorData$],
 				'</pre>',

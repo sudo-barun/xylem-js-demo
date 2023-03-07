@@ -182,9 +182,10 @@ class TodoComponent extends Component
 												' ',
 												'<label>', {
 													for: map(index$, (v) => `todo-item-${v}`),
-													class: 'form-check-label',
-													'.text-muted': todo.isCompleted$,
-													'.text-decoration-line-through': todo.isCompleted$,
+													class: [ 'form-check-label', {
+														'text-muted': todo.isCompleted$,
+														'text-decoration-line-through': todo.isCompleted$,
+													}],
 												},
 												[todo.text],
 												'</label>',

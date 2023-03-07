@@ -65,8 +65,9 @@ class Preview extends Component<Attributes>
 						'</button>',
 						'<button>', {
 							title: 'Previous',
-							class: '-control -left',
-							'.disabled': map(hasPrevious$, (x)=>!x),
+							class: [ '-control -left', {
+								disabled: map(hasPrevious$, (x)=>!x),
+							}],
 							'@click': showPrevious,
 						},
 						'</button>',
@@ -90,8 +91,9 @@ class Preview extends Component<Attributes>
 						'</div>',
 						'<button>', {
 							title: 'Next',
-							class: '-control -right',
-							'.disabled': map(hasNext$, (x)=>!x),
+							class: [ '-control -right', {
+								disabled: map(hasNext$, (x)=>!x),
+							}],
 							'@click': showNext,
 						},
 						'</button>',

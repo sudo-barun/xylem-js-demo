@@ -178,9 +178,10 @@ class BonusColors extends Component
 				forEach(BONUS_COLORS, (bonusColor, index$) => arrayToVirtualDom([
 					index$() !== 0 ? ' ' : '',
 					'<span>', {
-						class: 'btn btn-outline-secondary fs-6 fw-bold',
+						class: [ 'btn btn-outline-secondary fs-6 fw-bold', {
+							disabled: map(colors$, v => v.includes(bonusColor)),
+						}],
 						draggable: 'true',
-						'.disabled': map(colors$, v => v.includes(bonusColor)),
 						'@dragstart': (ev) => {
 							ev.dataTransfer.setData(
 								'application/json',

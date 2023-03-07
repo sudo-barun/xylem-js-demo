@@ -124,9 +124,10 @@ class Wiggle extends Component
 							'<label>', { class: 'form-label' }, ['Activity '], '</label>',
 							'<select>', {
 								name: 'activity',
-								class: 'form-control',
+								class: [ 'form-control', {
+									wiggle: activityHasWiggle$,
+								}],
 								disabled: map(activitiesOfSelectedCountry$, v => !v.length),
-								'.wiggle': activityHasWiggle$,
 								'<>': activitySelectElement$,
 								'@change': flow([
 									(ev) => ev.target.value,
@@ -147,9 +148,10 @@ class Wiggle extends Component
 							'<label>', { class: 'form-label' }, ['Place '], '</label>',
 							'<select>', {
 								name: 'place',
-								class: 'form-control',
+								class: [ 'form-control', {
+									wiggle: placeHasWiggle$,
+								}],
 								disabled: map(placesOfSelectedActivity$, v => !v.length),
-								'.wiggle': placeHasWiggle$,
 								'<>': placeSelectElement$,
 								'@change': flow([
 									(ev) => ev.target.value,

@@ -5,19 +5,26 @@ import Gallery from './Gallery.js';
 import if_ from '../../../lib/ts/dom/if_.js';
 import map from "../../../lib/ts/core/map.js";
 export default class Root extends Component {
-    build({ apiBaseUrl }) {
+    build({ apiBaseUrl, initialData = null }) {
         const galleryImages$ = createStore([]);
         const hasImageRequestCompleted$ = createStore(false);
         const hasImageRequestSucceed$ = createStore(false);
-        this.afterAttachToDom.subscribe(() => {
-            delayPromise(getImages(apiBaseUrl), 2000)
-                .then((images) => {
-                galleryImages$(images);
-                hasImageRequestSucceed$(true);
-            })
-                .catch(() => hasImageRequestSucceed$(false))
-                .finally(() => hasImageRequestCompleted$(true));
-        });
+        if (initialData === null) {
+            this.afterAttachToDom.subscribe(() => {
+                delayPromise(getImages(apiBaseUrl), 2000)
+                    .then((images) => {
+                    galleryImages$(images);
+                    hasImageRequestSucceed$(true);
+                })
+                    .catch(() => hasImageRequestSucceed$(false))
+                    .finally(() => hasImageRequestCompleted$(true));
+            });
+        }
+        else {
+            galleryImages$(initialData.galleryImages);
+            hasImageRequestCompleted$(true);
+            hasImageRequestSucceed$(true);
+        }
         return arrayToVirtualDom([
             '<div>', { class: 'section-wrapper' },
             [

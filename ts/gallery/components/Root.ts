@@ -8,27 +8,34 @@ import map from "../../../lib/ts/core/map.js";
 
 type InjectedAttributes = {
 	apiBaseUrl: string,
+	initialData?: null|{ galleryImages: Image[] },
 };
 
 export default
 class Root extends Component<{}, InjectedAttributes>
 {
-	build({ apiBaseUrl }: InjectedAttributes)
+	build({ apiBaseUrl, initialData = null }: InjectedAttributes)
 	{
 		const galleryImages$ = createStore<Image[]>([]);
 		const hasImageRequestCompleted$ = createStore(false);
 		const hasImageRequestSucceed$ = createStore(false);
 
-		this.afterAttachToDom.subscribe(() => {
-			delayPromise(getImages(apiBaseUrl), 2000)
-			.then((images) => {
-				galleryImages$(images);
-				hasImageRequestSucceed$(true);
-			})
-			.catch(() => hasImageRequestSucceed$(false))
-			.finally(() => hasImageRequestCompleted$(true))
-			;
-		});
+		if (initialData === null) {
+			this.afterAttachToDom.subscribe(() => {
+				delayPromise(getImages(apiBaseUrl), 2000)
+				.then((images) => {
+					galleryImages$(images);
+					hasImageRequestSucceed$(true);
+				})
+				.catch(() => hasImageRequestSucceed$(false))
+				.finally(() => hasImageRequestCompleted$(true))
+				;
+			});
+		} else {
+			galleryImages$(initialData.galleryImages);
+			hasImageRequestCompleted$(true);
+			hasImageRequestSucceed$(true);
+		}
 
 		return arrayToVirtualDom([
 			'<div>', { class: 'section-wrapper'},

@@ -2,8 +2,8 @@ import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import createStore from "../lib/js/core/createStore.js";
 import Component from "../lib/js/dom/Component.js";
 import Element from "../lib/js/dom/Element.js";
+import { hydrateComponentItems } from "../lib/js/dom/hydrate.js";
 import mount from "../lib/js/dom/mount.js";
-import syncWithDom from "../lib/js/dom/syncWithDom.js";
 import Text from "../lib/js/dom/Text.js";
 
 class DynamicTitle extends Component
@@ -13,7 +13,11 @@ class DynamicTitle extends Component
 		const titleText$ = createStore('Dynamic Title');
 		const element = new Element('title', {}, [new Text(titleText$)]);
 
-		syncWithDom(element, document.querySelector('title'));
+		this.afterAttachToDom.subscribe(() => {
+			element.setup();
+			hydrateComponentItems([element], [document.getElementsByTagName('title')[0]]);
+			element.setupDom();
+		});
 
 		return arrayToVirtualDom([
 			'<div>', {

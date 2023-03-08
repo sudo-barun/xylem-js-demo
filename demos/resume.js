@@ -182,7 +182,10 @@ class ResumeView extends Component
 										'<span>', { class: 'badge text-bg-secondary' },
 										[skill],
 										'</span>',
-									])), ' ').flat(),
+									])), ' ').reduce((acc, item) => {
+										acc.push(...item);
+										return acc;
+									}, []),
 								],
 								'</div>',
 								'<div>',

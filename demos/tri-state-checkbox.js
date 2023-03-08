@@ -20,7 +20,7 @@ class TriStateCheckbox extends Component
 {
 	build()
 	{
-		const checkboxValue$s = Array(5).fill(false).map((v) => createStore(v));
+		const checkboxValue$s = Array.apply(null, Array(5)).map(() => false).map((v) => createStore(v));
 		const getCombinedState = () => {
 			const checkedCount = checkboxValue$s.filter((item$) => item$()).length;
 			if (checkedCount === 0) {

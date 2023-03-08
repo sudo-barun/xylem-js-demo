@@ -58,7 +58,7 @@ class Wiggle extends Component
 			wiggleIfValueChanged(activitySelectElement$, activityHasWiggle$, () => {
 				const activities = countriesData[country] ?? {};
 				activitiesOfSelectedCountry$(Object.keys(activities));
-				if (activitiesOfSelectedCountry$().includes(selectedActivity$())) {
+				if (activitiesOfSelectedCountry$().indexOf(selectedActivity$()) !== -1) {
 					activitySelectElement$().value = selectedActivity$();
 				}
 			});
@@ -72,7 +72,7 @@ class Wiggle extends Component
 				const activitiesData = countriesData[selectedCountry$()] ?? {};
 				const places = activitiesData[activity] ?? [];
 				placesOfSelectedActivity$(places);
-				if (placesOfSelectedActivity$().includes(selectedPlace$())) {
+				if (placesOfSelectedActivity$().indexOf(selectedPlace$()) !== -1) {
 					placeSelectElement$().value = selectedPlace$();
 				}
 			});

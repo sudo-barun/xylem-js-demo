@@ -34,7 +34,7 @@ function getTodoListItem(index)
 
 function getTodoList(count)
 {
-	return Array(count).fill().map((_, i) => getTodoListItem(i));
+	return Array.apply(null, Array(count)).map((_, i) => getTodoListItem(i));
 }
 
 function truncateTodos(todos, total)
@@ -76,7 +76,7 @@ class TodoComponent extends Component
 		};
 		console.log('viewModel', viewModel);
 
-		globalThis.todos$ = todos$;
+		window.todos$ = todos$;
 
 		return arrayToVirtualDom([
 			'<div>', { class: 'container mt-4 mb-5' },
@@ -100,7 +100,10 @@ class TodoComponent extends Component
 										},
 										[count],
 										'</button>',
-									]), ' ').flat(),
+									]), ' ').reduce((acc, item) => {
+										acc.push(...item);
+										return acc;
+									}, []),
 									' items',
 								],
 								'</div>',

@@ -43,7 +43,7 @@ class Invoice extends Component
 {
 	build()
 	{
-		const tableData$ = createArrayStore(Array(5).fill().map((_, index) => getTableEntry(index)));
+		const tableData$ = createArrayStore(Array.apply(null, Array(5)).map((_, index) => getTableEntry(index)));
 
 		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedStores({
 			productName: row.productName$,

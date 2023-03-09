@@ -1,7 +1,7 @@
 const path = require('path');
 
 const entryFiles = [
-	'gallery',
+	'generate-gallery-handler',
 ];
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 		return acc;
 	}, {}),
 	output: {
-		filename: '[name].bundle.js',
+		filename: '[name].bundle.cjs',
 		path: path.resolve(__dirname, 'demos-ssr/'),
 		environment: {
 			arrowFunction: false
@@ -33,7 +33,7 @@ module.exports = {
 							[
 								'@babel/preset-env',
 								{
-									targets: "ie 9"
+									targets: "node 10"
 								}
 							]
 						]

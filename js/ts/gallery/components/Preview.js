@@ -85,12 +85,15 @@ export default class Preview extends Component {
         function onKeydown(key) {
             switch (key) {
                 case 'ArrowLeft':
+                case 'Left':
                     showPrevious();
                     break;
                 case 'ArrowRight':
+                case 'Right':
                     showNext();
                     break;
                 case 'Escape':
+                case 'Esc':
                     close();
                     break;
             }

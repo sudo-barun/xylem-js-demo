@@ -22,8 +22,7 @@ body {
 <div id="root-container">__GENERATED_CONTENT__</div>
 
 <script>
-
-const listenerToPreventAnchorClick = function(ev) {
+function listenerToPreventAnchorClick(ev) {
 	if (document.getElementById('root-container').contains(ev.target)) {
 		ev.preventDefault();
 	}
@@ -32,42 +31,10 @@ document.addEventListener('click', listenerToPreventAnchorClick);
 
 </script>
 <script>
-const INITIAL_DATA = __INITIAL_DATA__;
+var INITIAL_DATA = __INITIAL_DATA__;
 </script>
-<script type="module">
-
-import hydrate from "./js/lib/ts/dom/hydrate.js";
-import Root from "./js/ts/gallery/components/Root.js";
-
-const component = new Root(INITIAL_DATA);
-component.setModifier(modifier);
-component.setup();
-console.log(component);
-hydrate(component, document.getElementById('root-container').childNodes);
-component.setupDom();
-
-document.removeEventListener('click', listenerToPreventAnchorClick);
-
-component.notifyAfterAttachToDom();
-
-function getInitialData()
-{
-	const initialDataJSON = document.body.attributes.getNamedItem('data-initial-data').value;
-	const initialData = JSON.parse(initialDataJSON);
-	return initialData;
-}
-
-function modifier(component)
-{
-	if (component instanceof Root) {
-		component.injectAttributes({
-			apiBaseUrl: 'http://localhost/projects/image-api-symfony/public',
-			initialData: INITIAL_DATA,
-		});
-	}
-}
-
-</script>
+<script type="module" src="gallery.js"></script>
+<script nomodule src="gallery.bundle.js"></script>
 
 </body>
 </html>

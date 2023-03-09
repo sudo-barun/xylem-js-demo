@@ -109,12 +109,15 @@ class Preview extends Component<Attributes>
 		{
 			switch (key) {
 				case 'ArrowLeft':
+				case 'Left':
 					showPrevious();
 					break;
 				case 'ArrowRight':
+				case 'Right':
 					showNext();
 					break;
 				case 'Escape':
+				case 'Esc':
 					close();
 					break;
 			}

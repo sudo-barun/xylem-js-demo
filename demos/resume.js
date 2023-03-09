@@ -1,5 +1,5 @@
 import "../lib/js/registerPush.js";
-import "../lib/js/registerSplice.js";
+import "../lib/js/registerRemove.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/core/createArrayStore.js";
@@ -14,7 +14,7 @@ import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
 import push from "../lib/js/core/push.js";
 import reduce from "../lib/js/core/reduce.js";
-import splice from "../lib/js/core/splice.js";
+import remove from "../lib/js/core/remove.js";
 
 function getProjectViewModel({title='',completionDate='',skills=[''],url='',description=''} = {})
 {
@@ -443,7 +443,7 @@ class ResumeForm extends Component
 																type: 'button',
 																class: 'btn btn-outline-danger',
 																'@click': () => {
-																	project.skills$.mutate(splice, index$2);
+																	project.skills$.mutate(remove, index$2);
 																},
 															},
 															['Remove'],
@@ -499,7 +499,7 @@ class ResumeForm extends Component
 										type: 'button',
 										class: 'btn btn-outline-danger float-end',
 										'@click': () => {
-											projects$.mutate(splice, index$);
+											projects$.mutate(remove, index$);
 										},
 									},
 									['Remove'],

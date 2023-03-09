@@ -1,4 +1,4 @@
-import "../lib/js/registerSplice.js";
+import "../lib/js/registerRemove.js";
 import "../lib/js/registerPush.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import combineNamedStores from "../lib/js/core/combineNamedStores.js";
@@ -14,7 +14,7 @@ import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
 import push from "../lib/js/core/push.js";
-import splice from "../lib/js/core/splice.js";
+import remove from "../lib/js/core/remove.js";
 
 function isNumericString(str)
 {
@@ -153,7 +153,7 @@ class Invoice extends Component
 												'<button>', {
 													class: 'btn btn-outline-danger',
 													'@click': () => {
-														tableData$.mutate(splice, index$);
+														tableData$.mutate(remove, index$);
 													}
 												},
 												['Remove'],

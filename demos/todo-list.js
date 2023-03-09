@@ -1,4 +1,4 @@
-import "../lib/js/registerSplice.js";
+import "../lib/js/registerRemove.js";
 import "../lib/js/registerUnshift.js";
 import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
@@ -11,7 +11,7 @@ import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
 import mount from "../lib/js/dom/mount.js";
 import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
-import splice from "../lib/js/core/splice.js";
+import remove from "../lib/js/core/remove.js";
 import unshift from "../lib/js/core/unshift.js";
 
 function intersperse(array, itemToInsert)
@@ -151,7 +151,7 @@ class TodoComponent extends Component
 													return todos$()[index$()].isCompleted$();
 												});
 												index$Array.slice().reverse().forEach((index$) => {
-													todos$.mutate(splice, index$);
+													todos$.mutate(remove, index$);
 												});
 											}
 										},
@@ -195,7 +195,7 @@ class TodoComponent extends Component
 												'<button>', {
 													class: 'btn btn-sm btn-outline-danger float-end',
 													'@click': () => {
-														return todos$.mutate(splice, index$);
+														return todos$.mutate(remove, index$);
 													}
 												},
 												['Remove'],

@@ -1,4 +1,4 @@
-import arrayToVirtualDom from "../../../lib/ts/dom/arrayToVirtualDom.js";
+import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
 import createStore from "../../../lib/ts/core/createStore.js";
 import forEach from "../../../lib/ts/dom/forEach.js";
@@ -7,7 +7,7 @@ import Item from "./Item.js";
 import Preview from "./Preview.js";
 export default class Gallery extends Component {
     build(attrs) {
-        const images$ = this.deriveStore(attrs.images$);
+        const images$ = this.bindDataNode(attrs.images$);
         const previewIndex$ = createStore(-1);
         const previewImage$ = createStore(null);
         const hasPrevious$ = createStore(false);
@@ -15,7 +15,7 @@ export default class Gallery extends Component {
         images$.subscribe(() => {
             closePreview();
         });
-        return arrayToVirtualDom([
+        return parseHTML([
             '<div>', { class: 'container gallery' },
             [
                 '<div>', { class: '-image-list' },

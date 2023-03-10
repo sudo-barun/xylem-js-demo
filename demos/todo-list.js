@@ -1,18 +1,18 @@
-import "../lib/js/registerRemove.js";
-import "../lib/js/registerUnshift.js";
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
+import "../lib/js/array/registerRemove.js";
+import "../lib/js/array/registerUnshift.js";
 import Component from "../lib/js/dom/Component.js";
-import createArrayStore from "../lib/js/core/createArrayStore.js";
+import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
 import forEach from "../lib/js/dom/forEach.js";
 import GoToTop from "./components/GoToTop.js";
 import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
-import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
-import remove from "../lib/js/core/remove.js";
-import unshift from "../lib/js/core/unshift.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
+import remove from "../lib/js/array/remove.js";
+import unshift from "../lib/js/array/unshift.js";
 
 function intersperse(array, itemToInsert)
 {
@@ -60,12 +60,12 @@ class TodoComponent extends Component
 			todos$(getTodoList(count));
 		}
 
-		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedStores({
+		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedDataNodes({
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$
 		}));
 
-		const normalizedModel$ = combineNamedStores({
+		const normalizedModel$ = combineNamedDataNodes({
 			newTodo: newTodo$,
 			todos: normalizedTodos$
 		});
@@ -78,7 +78,7 @@ class TodoComponent extends Component
 
 		window.todos$ = todos$;
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container mt-4 mb-5' },
 			[
 				'<div>', { class: 'row' },
@@ -167,10 +167,10 @@ class TodoComponent extends Component
 									todos$.length$,
 								],
 								'</div>',
-								if_(todos$.length$, () => arrayToVirtualDom([
+								if_(todos$.length$, () => parseHTML([
 									'<div>', { class: 'list-group' },
 									[
-										forEach(todos$, (todo, index$) => arrayToVirtualDom([
+										forEach(todos$, (todo, index$) => parseHTML([
 											'<div>', { class: 'list-group-item' },
 											[
 												'<input/>', {
@@ -207,7 +207,7 @@ class TodoComponent extends Component
 									],
 									'</div>',
 								]))
-								.else(() => arrayToVirtualDom([
+								.else(() => parseHTML([
 									'<div>', { class: 'text-secondary text-center' },
 									['The todo list is empty.'],
 									'</div>',
@@ -248,4 +248,4 @@ class TodoComponent extends Component
 	}
 }
 
-mount(new TodoComponent(), document.getElementById('root'));
+mountComponent(new TodoComponent(), document.getElementById('root'));

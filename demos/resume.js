@@ -1,20 +1,20 @@
-import "../lib/js/registerPush.js";
-import "../lib/js/registerRemove.js";
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
+import "../lib/js/array/registerPush.js";
+import "../lib/js/array/registerRemove.js";
 import Component from "../lib/js/dom/Component.js";
-import createArrayStore from "../lib/js/core/createArrayStore.js";
+import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import combineStores from "../lib/js/core/combineStores.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import combineDataNodes from "../lib/js/core/combineDataNodes.js";
+import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
 import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
-import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
-import push from "../lib/js/core/push.js";
-import reduce from "../lib/js/core/reduce.js";
-import remove from "../lib/js/core/remove.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
+import push from "../lib/js/array/push.js";
+import cumulate from "../lib/js/core/cumulate.js";
+import remove from "../lib/js/array/remove.js";
 
 function getProjectViewModel({title='',completionDate='',skills=[''],url='',description=''} = {})
 {
@@ -71,13 +71,13 @@ class Root extends Component
 
 		const isEditMode$ = createStore(false);
 
-		const onReset = () => reduce(resume$, (v) => ({...v}));
+		const onReset = () => cumulate(resume$, (v) => ({...v}));
 		const onSave = (resume) => {
 			resume$(resume);
 			isEditMode$(false);
 		};
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container my-4' },
 			[
 				'<div>', { class: 'row' },
@@ -136,7 +136,7 @@ class ResumeView extends Component
 	{
 		const resume = resume$();
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { style: 'border: 4px solid; padding: 50px;' },
 			[
 				'<div>', { class: 'mb-2' },
@@ -160,7 +160,7 @@ class ResumeView extends Component
 					'</h5>',
 					'<ol>',
 					[
-						forEach(resume.projects, (project) => arrayToVirtualDom([
+						forEach(resume.projects, (project) => parseHTML([
 							'<li>', { class: 'my-3' },
 							[
 								'<div>',
@@ -239,7 +239,7 @@ class ResumeForm extends Component
 		const address$ = createStore(resume.address);
 		const projects$ = createArrayStore(resume.projects.map(getProjectViewModel));
 
-		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedStores({
+		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedDataNodes({
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
@@ -247,7 +247,7 @@ class ResumeForm extends Component
 			url: project.url$,
 		}));
 
-		const normalizedResume$ = combineNamedStores({
+		const normalizedResume$ = combineNamedDataNodes({
 			fullName: fullName$,
 			email: email$,
 			address: address$,
@@ -259,7 +259,7 @@ class ResumeForm extends Component
 			console.log(JSON.stringify(v, null, 2));
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<form>', {
 				'@submit': (ev) => {
 					ev.preventDefault();
@@ -333,7 +333,7 @@ class ResumeForm extends Component
 				'<div>',
 				[
 					forEach(projects$, (project, index$) => {
-						return arrayToVirtualDom([
+						return parseHTML([
 							'<div>', { class: 'card mt-3' },
 							[
 								'<h5>', { class: 'card-header' },
@@ -411,9 +411,9 @@ class ResumeForm extends Component
 										'<div>',
 										[
 											forEach(project.skills$, function (skill$, index$2) {
-												index$ = this.deriveStore(index$);
+												index$ = this.bindDataNode(index$);
 
-												return arrayToVirtualDom([
+												return parseHTML([
 													'<div>', { class: 'card mb-3' },
 													[
 														'<div>', { class: 'input-group' },
@@ -421,7 +421,7 @@ class ResumeForm extends Component
 															'<label>', {
 																class: 'input-group-text',
 																for: map(
-																	combineStores([index$, index$2]),
+																	combineDataNodes([index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 															},
@@ -430,7 +430,7 @@ class ResumeForm extends Component
 															'<input/>', {
 																class: 'form-control',
 																id: map(
-																	combineStores([index$, index$2]),
+																	combineDataNodes([index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 																value: skill$(),
@@ -542,4 +542,4 @@ class ResumeForm extends Component
 	}
 }
 
-mount(new Root(), document.getElementById('root'));
+mountComponent(new Root(), document.getElementById('root'));

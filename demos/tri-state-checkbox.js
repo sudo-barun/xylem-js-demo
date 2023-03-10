@@ -1,9 +1,9 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
 import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
 
 const ALL = 1;
 const NONE = 0;
@@ -48,7 +48,7 @@ class TriStateCheckbox extends Component
 			});
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container', style: 'max-width: 500px' },
 			[
 				'<div>',
@@ -75,12 +75,12 @@ class TriStateCheckbox extends Component
 				'</div>',
 				forEach(checkboxValue$s, function (item$, index$) {
 					const checkboxElement$ = createStore();
-					const itemProxy$ = this.createProxyStore(item$);
+					const itemProxy$ = this.bindDataNode(item$);
 					this.afterAttachToDom.subscribe(() => {
 						checkboxElement$().checked = itemProxy$();
 						itemProxy$.subscribe((v) => checkboxElement$().checked = v);
 					});
-					return arrayToVirtualDom([
+					return parseHTML([
 						'<div>',
 						[
 							'<label>',
@@ -106,4 +106,4 @@ class TriStateCheckbox extends Component
 	}
 }
 
-mount(new TriStateCheckbox(), document.getElementById('root'));
+mountComponent(new TriStateCheckbox(), document.getElementById('root'));

@@ -1,15 +1,15 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
 import Component from "../lib/js/dom/Component.js";
-import createArrayStore from "../lib/js/core/createArrayStore.js";
+import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
 import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
-import move from "../lib/js/core/move.js";
-import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
-import push from "../lib/js/core/push.js";
-import "../lib/js/registerMove.js";
-import "../lib/js/registerPush.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import move from "../lib/js/array/move.js";
+import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
+import push from "../lib/js/array/push.js";
+import "../lib/js/array/registerMove.js";
+import "../lib/js/array/registerPush.js";
 
 const COLORS = Object.freeze([
 	'red',
@@ -32,7 +32,7 @@ class App extends Component
 	{
 		const colors$ = createStore(COLORS.slice());
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container mt-4 mb-5' },
 			[
 				'<div>', { class: 'row' },
@@ -99,12 +99,12 @@ class ColorList extends Component
 		const normalized = normalizeArrayStore(colors$, createStore);
 		normalized.subscribe(attrs.colors$);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'list-group' },
 			[
 				forEach(colors$, (color, index$) => {
 					const isDraggable$ = createStore(false);
-					return arrayToVirtualDom([
+					return parseHTML([
 						'<div>', {
 							class: 'list-group-item',
 							draggable: map(isDraggable$, String),
@@ -167,15 +167,15 @@ class BonusColors extends Component
 {
 	build(attrs)
 	{
-		const colors$ = this.deriveStore(attrs.colors$);
+		const colors$ = this.bindDataNode(attrs.colors$);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<h2>', { class: 'h3 mt-4' },
 			[ 'Bonus Colors' ],
 			'</h2>',
 			'<div>',
 			[
-				forEach(BONUS_COLORS, (bonusColor, index$) => arrayToVirtualDom([
+				forEach(BONUS_COLORS, (bonusColor, index$) => parseHTML([
 					index$() !== 0 ? ' ' : '',
 					'<span>', {
 						class: [ 'btn btn-outline-secondary fs-6 fw-bold', {
@@ -202,4 +202,4 @@ class BonusColors extends Component
 	}
 }
 
-mount(new App(), document.getElementById('app-container'));
+mountComponent(new App(), document.getElementById('app-container'));

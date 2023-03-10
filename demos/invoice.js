@@ -1,20 +1,20 @@
-import "../lib/js/registerRemove.js";
-import "../lib/js/registerPush.js";
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import "../lib/js/array/registerRemove.js";
+import "../lib/js/array/registerPush.js";
+import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
 import Component from "../lib/js/dom/Component.js";
-import createArrayStore from "../lib/js/core/createArrayStore.js";
-import createProxyStore from "../lib/js/core/createProxyStore.js";
+import createArrayStore from "../lib/js/array/createArrayStore.js";
+import createDataNode from "../lib/js/core/createDataNode.js";
 import createStore from "../lib/js/core/createStore.js";
-import createStream from "../lib/js/core/createStream.js";
+import createEmittableStream from "../lib/js/core/createEmittableStream.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
-import normalizeArrayStore from "../lib/js/core/normalizeArrayStore.js";
-import push from "../lib/js/core/push.js";
-import remove from "../lib/js/core/remove.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
+import push from "../lib/js/array/push.js";
+import remove from "../lib/js/array/remove.js";
 
 function isNumericString(str)
 {
@@ -26,7 +26,7 @@ function getTableEntry(index)
 	const productName$ = createStore(`Item ${index + 1}`);
 	const quantity$ = createStore('1');
 	const rate$ = createStore('');
-	const price$ = map(combineNamedStores({
+	const price$ = map(combineNamedDataNodes({
 		quantity: quantity$,
 		rate: rate$
 	}), (v) => isNumericString(v.quantity) && isNumericString(v.rate) ? v.quantity * v.rate : null);
@@ -45,11 +45,11 @@ class Invoice extends Component
 	{
 		const tableData$ = createArrayStore(Array.apply(null, Array(5)).map((_, index) => getTableEntry(index)));
 
-		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedStores({
+		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedDataNodes({
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
-			price: createProxyStore(row.price$, createStream()),
+			price: createDataNode(row.price$, createEmittableStream()),
 		}));
 		const totalPrice$ = map(normalizedTableData$, (tableData) => {
 			return tableData.reduce((acc, row) => {
@@ -61,13 +61,13 @@ class Invoice extends Component
 		  totalPrice$: totalPrice$
 		};
 		console.log('viewModel', viewModel);
-		const normalizedModel$ = combineNamedStores({
+		const normalizedModel$ = combineNamedDataNodes({
 		  tableData: normalizedTableData$,
-		  totalPrice: createProxyStore(totalPrice$, createStream()),
+		  totalPrice: createDataNode(totalPrice$, createEmittableStream()),
 		});
 		normalizedModel$.subscribe(v => console.log(v))
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container mt-3' },
 			[
 				'<div>', { class: 'row' },
@@ -95,7 +95,7 @@ class Invoice extends Component
 								'</thead>',
 								'<tbody>',
 								[
-									forEach(tableData$, (rowData, index$) => arrayToVirtualDom([
+									forEach(tableData$, (rowData, index$) => parseHTML([
 										'<tr>', [
 											'<td>',
 											[map(index$, (v) => v + 1)],
@@ -222,4 +222,4 @@ class Invoice extends Component
 	}
 }
 
-mount(new Invoice(), document.getElementById('root'));
+mountComponent(new Invoice(), document.getElementById('root'));

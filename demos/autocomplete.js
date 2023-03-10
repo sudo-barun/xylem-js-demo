@@ -1,13 +1,13 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import axios from "../node_modules/axios/dist/esm/axios.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import if_ from "../lib/js/dom/if_.js";
-import mount from "../lib/js/dom/mount.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
 import map from "../lib/js/core/map.js";
-import reduce from "../lib/js/core/reduce.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
+import cumulate from "../lib/js/core/cumulate.js";
 
 const allNames$ = getAllNames$();
 
@@ -67,7 +67,7 @@ class Autocomplete extends Component
 			$(inputElement$()).autocomplete('destroy');
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', {
 				class: 'container',
 				style: 'margin-top: 16px;'
@@ -112,7 +112,7 @@ class Autocomplete extends Component
 						'<>': inputElement$,
 					},
 					' ',
-					if_(isSearching$, () => arrayToVirtualDom([
+					if_(isSearching$, () => parseHTML([
 						'<mark>',
 						['searching...'],
 						'</mark>',
@@ -137,15 +137,15 @@ class Root extends Component
 	{
 		const isDisplayed$ = createStore(true);
 
-		return arrayToVirtualDom([
-			if_(isDisplayed$, () => arrayToVirtualDom([
+		return parseHTML([
+			if_(isDisplayed$, () => parseHTML([
 				new Autocomplete(),
 			]))
 			.endIf(),
 			'<div>', { class: 'container' },
 			[
 				'<button>', {
-					'@click': () => reduce(isDisplayed$, (v) => !v),
+					'@click': () => cumulate(isDisplayed$, (v) => !v),
 				},
 				[
 					map(isDisplayed$, (v) => v ? 'Destroy' : 'Create'),
@@ -157,4 +157,4 @@ class Root extends Component
 	}
 }
 
-mount(new Root(), document.getElementById('root'));
+mountComponent(new Root(), document.getElementById('root'));

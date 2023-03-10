@@ -1,12 +1,12 @@
 import createStore from "../lib/js/core/createStore.js";
-import map from "../lib/js/core/map.js";
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import combineStores from "../lib/js/core/combineStores.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import combineDataNodes from "../lib/js/core/combineDataNodes.js";
+import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
 import Component from "../lib/js/dom/Component.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
-import mount from "../lib/js/dom/mount.js";
+import map from "../lib/js/core/map.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
 
 const countriesData = {
 	'Nepal': {
@@ -85,13 +85,13 @@ class Wiggle extends Component
 			place: selectedPlace$,
 		};
 
-		const normalizedViewModel$ = combineNamedStores(viewModel);
+		const normalizedViewModel$ = combineNamedDataNodes(viewModel);
 
 		const formHasError$ = map(normalizedViewModel$, (v) => {
 			return ! (v.country && v.activity && v.place);
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container mt-4' },
 			[
 				'<div>', { class: 'h4' }, ['Travel Destination'], '</div>',
@@ -112,7 +112,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Country'], '</option>',
-								forEach(countries, (country) => arrayToVirtualDom([
+								forEach(countries, (country) => parseHTML([
 									'<option>', [country], '</option>',
 								])).endForEach(),
 							],
@@ -136,7 +136,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Activity'], '</option>',
-								forEach(activitiesOfSelectedCountry$, (activity) => arrayToVirtualDom([
+								forEach(activitiesOfSelectedCountry$, (activity) => parseHTML([
 									'<option>', [activity], '</option>',
 								])).endForEach(),
 							],
@@ -160,7 +160,7 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Place'], '</option>',
-								forEach(placesOfSelectedActivity$, (place) => arrayToVirtualDom([
+								forEach(placesOfSelectedActivity$, (place) => parseHTML([
 									'<option>', [place], '</option>',
 								])).endForEach(),
 							],
@@ -175,7 +175,7 @@ class Wiggle extends Component
 							type: 'submit',
 							class: 'btn btn-primary float-end',
 							disabled: map(
-								combineStores([formHasError$, submitInProgress$]),
+								combineDataNodes([formHasError$, submitInProgress$]),
 								([hasError, inProgress]) => hasError || inProgress
 							),
 						},
@@ -196,4 +196,4 @@ class Wiggle extends Component
 	}
 }
 
-mount(new Wiggle(), document.getElementById('root'));
+mountComponent(new Wiggle(), document.getElementById('root'));

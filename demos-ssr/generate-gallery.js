@@ -1,9 +1,6 @@
 import fs from "fs";
-import parse from "../js/lib/ts/server/parse.js";
 import Root from "../js/ts/gallery/components/Root.js";
-
-const component = new Root();
-component.setModifier(modifier);
+import stringifyComponent from "../js/lib/ts/server/stringifyComponent.js";
 
 let initialData = null;
 
@@ -13,7 +10,11 @@ if (process.argv[2]) {
 	initialData = JSON.parse(initialDataJSON);
 }
 
-console.log(parse(component));
+const component = new Root();
+component.setModifier(modifier);
+component.setup();
+
+console.log(stringifyComponent(component));
 
 
 

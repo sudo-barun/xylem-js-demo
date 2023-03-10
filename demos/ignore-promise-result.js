@@ -1,11 +1,11 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
 import Component from "../lib/js/dom/Component.js";
-import createProxyStream from "../lib/js/core/createProxyStream.js";
 import createStore from "../lib/js/core/createStore.js";
+import createStream from "../lib/js/core/createStream.js";
 import if_ from "../lib/js/dom/if_.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
-import reduce from "../lib/js/core/reduce.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import cumulate from "../lib/js/core/cumulate.js";
 
 function startRequest()
 {
@@ -20,7 +20,7 @@ function startRequest()
 function createSetUnsubscribe$(unsubscribe$)
 {
 	return (unsubscribe) => {
-		reduce(unsubscribe$, (oldUnsubscribe, newUnsubscribe) => {
+		cumulate(unsubscribe$, (oldUnsubscribe, newUnsubscribe) => {
 			if (oldUnsubscribe) {
 				oldUnsubscribe();
 			}
@@ -39,7 +39,7 @@ class IgnorePromiseResult extends Component
 		const setUnsubscribe$ = createSetUnsubscribe$(unsubscribe$);
 		this.beforeDetachFromDom.subscribe(() => setUnsubscribe$(null));
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>',
 			[
 				'<div>',
@@ -48,12 +48,12 @@ class IgnorePromiseResult extends Component
 						class: 'btn btn-outline-primary',
 						'@click': () => {
 							const requestPromise = startRequest();
-							const responseStream = createProxyStream((emit) => {
+							const responseStream = createStream((emit) => {
 								requestPromise.then(emit);
-								reduce(requestCount$, (v) => v+1);
+								cumulate(requestCount$, (v) => v+1);
 							});
 							setUnsubscribe$(responseStream.subscribe((v) => {
-								reduce(responseCount$, (v) => v+1);
+								cumulate(responseCount$, (v) => v+1);
 								console.log('Promise result: ', v);
 							}));
 						}
@@ -76,7 +76,7 @@ class Root extends Component
 	{
 		const isShown$ = createStore(true);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container', style: 'max-width: 500px' },
 			[
 				'<div>', { class: 'clearfix' },
@@ -84,7 +84,7 @@ class Root extends Component
 					'<mark>', [ 'Note: check the Console for response' ], '</mark>',
 					'<button>', {
 						class: 'btn btn-outline-secondary float-end',
-						'@click': () => reduce(isShown$, (v) => !v),
+						'@click': () => cumulate(isShown$, (v) => !v),
 					},
 					[ map(isShown$, (v) => v ? 'Hide' : 'Show') ],
 					'</button>',
@@ -99,4 +99,4 @@ class Root extends Component
 	}
 }
 
-mount(new Root(), document.getElementById('root'));
+mountComponent(new Root(), document.getElementById('root'));

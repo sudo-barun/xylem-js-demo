@@ -1,9 +1,9 @@
-import arrayToVirtualDom from "../../../lib/ts/dom/arrayToVirtualDom.js";
+import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
-import ComponentItem from "../../../lib/ts/types/ComponentItem.js";
-import createVoidStream from "../../../lib/ts/core/createVoidStream.js";
+import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
+import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
+import EmittableStream from "../../../lib/ts/types/EmittableStream.js";
 import Image from "../types/Image.js";
-import SourceStream from "../../../lib/ts/types/SourceStream.js";
 import Subscriber from "../../../lib/ts/types/Subscriber.js";
 
 type Attributes = {
@@ -14,14 +14,14 @@ type Attributes = {
 export default
 class Item extends Component<Attributes>
 {
-	build(attrs: Attributes): ComponentItem[]
+	build(attrs: Attributes): ComponentChildren
 	{
 		const image = attrs.image;
-		const openPreview: SourceStream<void> = createVoidStream();
+		const openPreview: EmittableStream<void> = createVoidStream();
 
 		openPreview.subscribe(attrs.onOpenPreview);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: '-image-list-item' },
 			[
 				'<a>', {

@@ -1,8 +1,8 @@
 import Component from '../../lib/ts/dom/Component.js';
-import mount from '../../lib/ts/dom/mount.js';
+import mountComponent from '../../lib/ts/dom/mountComponent.js';
 import Root from './components/Root.js';
 
-mount((() => {
+mountComponent((() => {
 	const component = new Root();
 	component.setModifier(modifier);
 	return component;

@@ -1,8 +1,8 @@
-import arrayToVirtualDom from "../../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../../lib/js/dom/Component.js";
 import createStore from "../../lib/js/core/createStore.js";
 import createStreamOfDomEvent from "../../lib/js/utilities/createStreamOfDomEvent.js";
 import map from "../../lib/js/core/map.js";
+import parseHTML from "../../lib/js/dom/parseHTML.js";
 import throttle from "../../node_modules/lodash-es/throttle.js";
 
 export default
@@ -20,7 +20,7 @@ class GoToTop extends Component
 		scrollStream.subscribe(throttledChangeVisibility);
 		this.beforeDetachFromDom.subscribe(scrollStream.unsubscribe);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<button>', {
 				class: 'btn btn-light',
 				style: 'position: fixed; right: 0; bottom: 0; margin: 8px;',

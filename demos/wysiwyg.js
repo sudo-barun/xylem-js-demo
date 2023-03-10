@@ -1,10 +1,10 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
 import Component from "../lib/js/dom/Component.js";
-import createProxyStore from "../lib/js/core/createProxyStore.js";
+import createDataNode from "../lib/js/core/createDataNode.js";
+import createEmittableStream from "../lib/js/core/createEmittableStream.js";
 import createStore from "../lib/js/core/createStore.js";
-import createStream from "../lib/js/core/createStream.js";
 import if_ from "../lib/js/dom/if_.js";
-import mount from "../lib/js/dom/mount.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
 import throttle from "../node_modules/lodash-es/throttle.js";
 
 function saveEditorData(data)
@@ -27,8 +27,8 @@ class Wysiwyg extends Component
 		const editorDataGetter = () => {
 			return editor$() ? editor$().getData() : textareaElement$().innerText;
 		};
-		const editorDataStream = createStream();
-		const editorData$ = createProxyStore(editorDataGetter, editorDataStream);
+		const editorDataStream = createEmittableStream();
+		const editorData$ = createDataNode(editorDataGetter, editorDataStream);
 		editorData$.subscribe((val) => {
 			isSaving$(true);
 			saveEditorData(val)
@@ -59,7 +59,7 @@ class Wysiwyg extends Component
 			});
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', {
 				class: 'container'
 			},
@@ -78,7 +78,7 @@ class Wysiwyg extends Component
 					'</textarea>',
 				],
 				'</div>',
-				if_(isSaving$, () => arrayToVirtualDom([
+				if_(isSaving$, () => parseHTML([
 					'<mark>', ['Auto saving...'], '</mark>',
 				]))
 				.endIf(),
@@ -93,4 +93,4 @@ class Wysiwyg extends Component
 	}
 }
 
-mount(new Wysiwyg(), document.getElementById('root'));
+mountComponent(new Wysiwyg(), document.getElementById('root'));

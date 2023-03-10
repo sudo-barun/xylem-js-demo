@@ -1,13 +1,13 @@
-import arrayToVirtualDom from "../../../lib/ts/dom/arrayToVirtualDom.js";
+import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
 import createStore from "../../../lib/ts/core/createStore.js";
-import createVoidStream from "../../../lib/ts/core/createVoidStream.js";
+import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
 import map from "../../../lib/ts/core/map.js";
 export default class Preview extends Component {
     build(attrs) {
-        const image$ = this.deriveStore(attrs.image);
-        const hasPrevious$ = this.deriveStore(attrs.hasPrevious);
-        const hasNext$ = this.deriveStore(attrs.hasNext);
+        const image$ = this.bindDataNode(attrs.image);
+        const hasPrevious$ = this.bindDataNode(attrs.hasPrevious);
+        const hasNext$ = this.bindDataNode(attrs.hasNext);
         const showPrevious = createVoidStream();
         const showNext = createVoidStream();
         const close = createVoidStream();
@@ -23,7 +23,7 @@ export default class Preview extends Component {
             previewElement$().blur();
             document.body.style.removeProperty('overflow');
         });
-        return arrayToVirtualDom([
+        return parseHTML([
             '<div>', {
                 class: '-preview',
                 tabindex: '-1',

@@ -1,4 +1,4 @@
-import arrayToVirtualDom from '../../../lib/ts/dom/arrayToVirtualDom.js';
+import parseHTML from '../../../lib/ts/dom/parseHTML.js';
 import Component from '../../../lib/ts/dom/Component.js';
 import createStore from '../../../lib/ts/core/createStore.js';
 import Gallery from './Gallery.js';
@@ -37,7 +37,7 @@ class Root extends Component<{}, InjectedAttributes>
 			hasImageRequestSucceed$(true);
 		}
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'section-wrapper'},
 			[
 				'<div>', { class: 'toolbar' },
@@ -63,28 +63,28 @@ class Root extends Component<{}, InjectedAttributes>
 						'</p>',
 					],
 					'</div>',
-					if_(hasImageRequestCompleted$, () => arrayToVirtualDom([
-						if_(hasImageRequestSucceed$, () => arrayToVirtualDom([
-							if_(map(galleryImages$, (arr)=>arr.length), () => arrayToVirtualDom([
+					if_(hasImageRequestCompleted$, () => parseHTML([
+						if_(hasImageRequestSucceed$, () => parseHTML([
+							if_(map(galleryImages$, (arr)=>arr.length), () => parseHTML([
 								new Gallery({
 									images$: galleryImages$,
 								}),
 							]))
-							.else(() => arrayToVirtualDom([
+							.else(() => parseHTML([
 								'<div>', { class: 'gallery-empty-text' },
 								[ 'No image available' ],
 								'</div>',
 							]))
 							.endIf(),
 						]))
-						.else(() => arrayToVirtualDom([
+						.else(() => parseHTML([
 							'<div>', { class: 'gallery-fail-text' },
 							[ 'Failed to load image due to error' ],
 							'</div>',
 						]))
 						.endIf(),
 					]))
-					.else(() => arrayToVirtualDom([
+					.else(() => parseHTML([
 						'<div>', { class: 'gallery gallery-loading container gallery-container' },
 						[
 							'<div>', { class: '-image-list' },

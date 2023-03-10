@@ -1,10 +1,10 @@
-import arrayToVirtualDom from "../lib/js/dom/arrayToVirtualDom.js";
-import combineNamedStores from "../lib/js/core/combineNamedStores.js";
+import parseHTML from "../lib/js/dom/parseHTML.js";
+import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
 import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
-import mount from "../lib/js/dom/mount.js";
+import mountComponent from "../lib/js/dom/mountComponent.js";
 
 class Form extends Component
 {
@@ -26,7 +26,7 @@ class Form extends Component
 		const isSubmitting$ = createStore(false);
 
 		const selectedMultiCheckboxes$ = map(
-			combineNamedStores(multiCheckboxChecked$s),
+			combineNamedDataNodes(multiCheckboxChecked$s),
 			(values) => Object.keys(values).reduce((acc, key) => {
 				if (values[key]) {
 					acc.push(key);
@@ -34,7 +34,7 @@ class Form extends Component
 				return acc;
 			}, [])
 		);
-		const formData$ = combineNamedStores({
+		const formData$ = combineNamedDataNodes({
 			input: inputValue$,
 			textarea: textareaValue$,
 			singleSelect: singleSelectSelected$,
@@ -46,7 +46,7 @@ class Form extends Component
 
 		formData$.subscribe(attrs.formData$);
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<form>', {
 				'@submit': (ev) => {
 					ev.preventDefault();
@@ -107,7 +107,7 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }) => arrayToVirtualDom([
+						], ({ value, text }) => parseHTML([
 							'<option>', {
 								value,
 								selected: singleSelectSelected$() === value,
@@ -143,7 +143,7 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }) => arrayToVirtualDom([
+						], ({ value, text }) => parseHTML([
 							'<option>', {
 								value,
 								selected: multiSelectSelected$().includes(value),
@@ -190,7 +190,7 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }, index$) => arrayToVirtualDom([
+						], ({ value, text }, index$) => parseHTML([
 							'<div>', { class: 'form-check form-check-inline' },
 							[
 								'<input/>', {
@@ -226,7 +226,7 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }, index$) => arrayToVirtualDom([
+						], ({ value, text }, index$) => parseHTML([
 							'<div>', { class: 'form-check form-check-inline' },
 							[
 								'<input/>', {
@@ -280,7 +280,7 @@ class App extends Component
 			radio: '3',
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', { class: 'container mt-4' },
 			[
 				'<div>', { class: 'row' },
@@ -319,4 +319,4 @@ class App extends Component
 	}
 }
 
-mount(new App(), document.getElementById('app-container'));
+mountComponent(new App(), document.getElementById('app-container'));

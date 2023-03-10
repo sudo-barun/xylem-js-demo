@@ -1,18 +1,18 @@
-import arrayToVirtualDom from "../../../lib/ts/dom/arrayToVirtualDom.js";
+import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
-import ComponentItem from "../../../lib/ts/types/ComponentItem.js";
+import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
 import createStore from "../../../lib/ts/core/createStore.js";
-import createVoidStream from "../../../lib/ts/core/createVoidStream.js";
+import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
+import DataNode from "../../../lib/ts/types/DataNode.js";
 import Image from "../types/Image.js";
 import map from "../../../lib/ts/core/map.js";
-import SourceStream from "../../../lib/ts/types/SourceStream.js";
-import Store from "../../../lib/ts/types/Store.js";
+import EmittableStream from "../../../lib/ts/types/EmittableStream.js";
 import Subscriber from "../../../lib/ts/types/Subscriber.js";
 
 type Attributes = {
-	image: Store<Image>,
-	hasPrevious: Store<boolean>,
-	hasNext: Store<boolean>,
+	image: DataNode<Image>,
+	hasPrevious: DataNode<boolean>,
+	hasNext: DataNode<boolean>,
 	onShowPrevious: Subscriber<void>,
 	onShowNext: Subscriber<void>,
 	onClose: Subscriber<void>,
@@ -21,15 +21,15 @@ type Attributes = {
 export default
 class Preview extends Component<Attributes>
 {
-	build(attrs: Attributes): ComponentItem[]
+	build(attrs: Attributes): ComponentChildren
 	{
-		const image$: Store<Image> = this.deriveStore(attrs.image);
-		const hasPrevious$: Store<boolean> = this.deriveStore(attrs.hasPrevious);
-		const hasNext$: Store<boolean> = this.deriveStore(attrs.hasNext);
+		const image$: DataNode<Image> = this.bindDataNode(attrs.image);
+		const hasPrevious$: DataNode<boolean> = this.bindDataNode(attrs.hasPrevious);
+		const hasNext$: DataNode<boolean> = this.bindDataNode(attrs.hasNext);
 
-		const showPrevious: SourceStream<void> = createVoidStream();
-		const showNext: SourceStream<void> = createVoidStream();
-		const close: SourceStream<void> = createVoidStream();
+		const showPrevious: EmittableStream<void> = createVoidStream();
+		const showNext: EmittableStream<void> = createVoidStream();
+		const close: EmittableStream<void> = createVoidStream();
 		const previewElement$ = createStore<HTMLElement>(undefined!);
 
 		showPrevious.subscribe(attrs.onShowPrevious);
@@ -45,7 +45,7 @@ class Preview extends Component<Attributes>
 			document.body.style.removeProperty('overflow');
 		});
 
-		return arrayToVirtualDom([
+		return parseHTML([
 			'<div>', {
 				class: '-preview',
 				tabindex: '-1',

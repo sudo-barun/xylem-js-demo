@@ -13,7 +13,7 @@ class GoToTop extends Component
 		const isVisible$ = createStore(false);
 
 		const throttledChangeVisibility = throttle(() => {
-			isVisible$(document.documentElement.scrollTop > window.innerHeight/2);
+			isVisible$._(document.documentElement.scrollTop > window.innerHeight/2);
 		}, 100, { leading: false, trailing: true });
 
 		const scrollStream = createStreamOfDomEvent(document, 'scroll');

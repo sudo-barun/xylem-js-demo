@@ -17,7 +17,7 @@ function getAllNames$()
 
 	axios.get('autocomplete.json')
 	.then((res) =>res.data)
-	.then(allNames$);
+	.then((v) => allNames$._(v));
 
 	return allNames$;
 }
@@ -27,7 +27,7 @@ function getSuggestions(input)
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			input = input.trim();
-			const suggestions = input ? allNames$().filter((name) => name.includes(input)) : [];
+			const suggestions = input ? allNames$._().filter((name) => name.includes(input)) : [];
 			resolve(suggestions);
 		}, 1000);
 	});
@@ -42,29 +42,29 @@ class Autocomplete extends Component
 		const inputElement$ = createStore();
 
 		const fillInput = flow([
-			inputValue$,
+			(v) => inputValue$._(v),
 			(value) => {
-				inputElement$().value = value;
-				inputElement$().focus();
-				$(inputElement$()).autocomplete('search');
+				inputElement$._().value = value;
+				inputElement$._().focus();
+				$(inputElement$._()).autocomplete('search');
 				return value;
 			},
 		]);
 
 		this.afterAttachToDom.subscribe(() => {
-			$(inputElement$()).autocomplete({
+			$(inputElement$._()).autocomplete({
 				source: (request, response) => {
 					getSuggestions(request.term).then(response);
 				},
 				delay: 500,
-				search: () => isSearching$(true),
-				response: () => isSearching$(false),
-				select: (_, ui) => inputValue$(ui.item.value),
+				search: () => isSearching$._(true),
+				response: () => isSearching$._(false),
+				select: (_, ui) => inputValue$._(ui.item.value),
 			});
 		});
 
 		this.beforeDetachFromDom.subscribe(() => {
-			$(inputElement$()).autocomplete('destroy');
+			$(inputElement$._()).autocomplete('destroy');
 		});
 
 		return parseHTML([
@@ -107,7 +107,7 @@ class Autocomplete extends Component
 						style: 'font-size: 1.25em',
 						'@input': flow([
 							(ev) => ev.target.value,
-							inputValue$,
+							(v) => inputValue$._(v),
 						]),
 						'<>': inputElement$,
 					},

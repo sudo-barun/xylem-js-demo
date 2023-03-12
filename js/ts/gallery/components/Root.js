@@ -13,17 +13,17 @@ export default class Root extends Component {
             this.afterAttachToDom.subscribe(() => {
                 delayPromise(getImages(apiBaseUrl), 2000)
                     .then((images) => {
-                    galleryImages$(images);
-                    hasImageRequestSucceed$(true);
+                    galleryImages$._(images);
+                    hasImageRequestSucceed$._(true);
                 })
-                    .catch(() => hasImageRequestSucceed$(false))
-                    .finally(() => hasImageRequestCompleted$(true));
+                    .catch(() => hasImageRequestSucceed$._(false))
+                    .finally(() => hasImageRequestCompleted$._(true));
             });
         }
         else {
-            galleryImages$(initialData.galleryImages);
-            hasImageRequestCompleted$(true);
-            hasImageRequestSucceed$(true);
+            galleryImages$._(initialData.galleryImages);
+            hasImageRequestCompleted$._(true);
+            hasImageRequestSucceed$._(true);
         }
         return parseHTML([
             '<div>', { class: 'section-wrapper' },

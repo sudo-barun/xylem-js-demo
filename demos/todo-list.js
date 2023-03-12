@@ -57,7 +57,7 @@ class TodoComponent extends Component
 		const inputElement$ = createStore();
 
 		function fillTodoList(count) {
-			todos$(getTodoList(count));
+			todos$._(getTodoList(count));
 		}
 
 		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedDataNodes({
@@ -116,18 +116,18 @@ class TodoComponent extends Component
 											'@submit': (ev) => {
 												ev.preventDefault();
 												todos$.mutate(unshift, {
-													text: newTodo$().trim(),
+													text: newTodo$._().trim(),
 													isCompleted$: createStore(false)
 												});
-												newTodo$('');
-												inputElement$().value = '';
+												newTodo$._('');
+												inputElement$._().value = '';
 											},
 										},
 										[
 											'<input/>', {
 												class: 'form-control',
 												'<>': inputElement$,
-												'@input': (ev) => newTodo$(ev.target.value),
+												'@input': (ev) => newTodo$._(ev.target.value),
 											},
 											'<button>', {
 												type: 'submit',
@@ -148,7 +148,7 @@ class TodoComponent extends Component
 											}),
 											'@click': () => {
 												const index$Array = todos$.index$Array.filter((index$) => {
-													return todos$()[index$()].isCompleted$();
+													return todos$._()[index$._()].isCompleted$._();
 												});
 												index$Array.slice().reverse().forEach((index$) => {
 													todos$.mutate(remove, index$);
@@ -179,7 +179,7 @@ class TodoComponent extends Component
 													id: map(index$, (v) => `todo-item-${v}`),
 													checked: todo.isCompleted$,
 													'@change': (ev) => {
-														todo.isCompleted$(ev.target.checked);
+														todo.isCompleted$._(ev.target.checked);
 													}
 												},
 												' ',
@@ -248,4 +248,6 @@ class TodoComponent extends Component
 	}
 }
 
-mountComponent(new TodoComponent(), document.getElementById('root'));
+const cmp = new TodoComponent();
+mountComponent(cmp, document.getElementById('root'));
+console.log(cmp)

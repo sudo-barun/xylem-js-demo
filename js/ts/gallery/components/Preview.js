@@ -1,26 +1,26 @@
 import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
+import createEmittableStream from "../../../lib/ts/core/createEmittableStream.js";
 import createStore from "../../../lib/ts/core/createStore.js";
-import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
 import map from "../../../lib/ts/core/map.js";
 export default class Preview extends Component {
     build(attrs) {
         const image$ = this.bindDataNode(attrs.image);
         const hasPrevious$ = this.bindDataNode(attrs.hasPrevious);
         const hasNext$ = this.bindDataNode(attrs.hasNext);
-        const showPrevious = createVoidStream();
-        const showNext = createVoidStream();
-        const close = createVoidStream();
+        const showPrevious = createEmittableStream();
+        const showNext = createEmittableStream();
+        const close = createEmittableStream();
         const previewElement$ = createStore(undefined);
         showPrevious.subscribe(attrs.onShowPrevious);
         showNext.subscribe(attrs.onShowNext);
         close.subscribe(attrs.onClose);
         this.afterAttachToDom.subscribe(() => {
             document.body.style.overflow = 'hidden';
-            previewElement$().focus();
+            previewElement$._().focus();
         });
         this.beforeDetachFromDom.subscribe(() => {
-            previewElement$().blur();
+            previewElement$._().blur();
             document.body.style.removeProperty('overflow');
         });
         return parseHTML([
@@ -38,7 +38,7 @@ export default class Preview extends Component {
                         '<button>', {
                             title: 'Close',
                             class: '-close',
-                            '@click': close,
+                            '@click': () => close._(),
                         },
                         '</button>',
                         '<button>', {
@@ -46,7 +46,7 @@ export default class Preview extends Component {
                             class: ['-control -left', {
                                     disabled: map(hasPrevious$, (x) => !x),
                                 }],
-                            '@click': showPrevious,
+                            '@click': () => showPrevious._(),
                         },
                         '</button>',
                         '<div>', { class: '-image-caption-container' },
@@ -72,7 +72,7 @@ export default class Preview extends Component {
                             class: ['-control -right', {
                                     disabled: map(hasNext$, (x) => !x),
                                 }],
-                            '@click': showNext,
+                            '@click': () => showNext._(),
                         },
                         '</button>',
                     ],
@@ -86,15 +86,15 @@ export default class Preview extends Component {
             switch (key) {
                 case 'ArrowLeft':
                 case 'Left':
-                    showPrevious();
+                    showPrevious._();
                     break;
                 case 'ArrowRight':
                 case 'Right':
-                    showNext();
+                    showNext._();
                     break;
                 case 'Escape':
                 case 'Esc':
-                    close();
+                    close._();
                     break;
             }
         }

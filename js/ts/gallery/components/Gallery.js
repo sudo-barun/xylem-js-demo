@@ -23,7 +23,7 @@ export default class Gallery extends Component {
                     forEach(images$, (image, index$) => [
                         new Item({
                             image,
-                            onOpenPreview: () => openPreview(index$()),
+                            onOpenPreview: () => openPreview(index$._()),
                         }),
                     ])
                         .endForEach(),
@@ -44,35 +44,35 @@ export default class Gallery extends Component {
             '</div>'
         ]);
         function resetPreview() {
-            previewIndex$(-1);
-            previewImage$(null);
+            previewIndex$._(-1);
+            previewImage$._(null);
         }
         function openPreview(index) {
-            previewIndex$(index);
-            previewImage$(images$()[index]);
+            previewIndex$._(index);
+            previewImage$._(images$._()[index]);
             updatePreviousNext(index);
         }
         function updatePreviousNext(previewIndex) {
-            hasPrevious$(previewIndex > 0);
-            hasNext$((previewIndex > -1) && (previewIndex < images$().length - 1));
+            hasPrevious$._(previewIndex > 0);
+            hasNext$._((previewIndex > -1) && (previewIndex < images$._().length - 1));
         }
         function showPrevious() {
-            if (previewIndex$() > 0) {
-                previewIndex$(previewIndex$() - 1);
-                previewImage$(images$()[previewIndex$()]);
-                updatePreviousNext(previewIndex$());
+            if (previewIndex$._() > 0) {
+                previewIndex$._(previewIndex$._() - 1);
+                previewImage$._(images$._()[previewIndex$._()]);
+                updatePreviousNext(previewIndex$._());
             }
         }
         function showNext() {
-            if (previewIndex$() < images$().length - 1) {
-                previewIndex$(previewIndex$() + 1);
-                previewImage$(images$()[previewIndex$()]);
-                updatePreviousNext(previewIndex$());
+            if (previewIndex$._() < images$._().length - 1) {
+                previewIndex$._(previewIndex$._() + 1);
+                previewImage$._(images$._()[previewIndex$._()]);
+                updatePreviousNext(previewIndex$._());
             }
         }
         function closePreview() {
             resetPreview();
-            updatePreviousNext(previewIndex$());
+            updatePreviousNext(previewIndex$._());
         }
     }
 }

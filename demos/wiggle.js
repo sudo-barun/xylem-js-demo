@@ -41,42 +41,42 @@ class Wiggle extends Component
 		const submitInProgress$ = createStore(false);
 
 		const wiggleIfValueChanged = (inputElement$, hasWiggle$, callback) => {
-			const oldValue = inputElement$().value;
+			const oldValue = inputElement$._().value;
 			callback();
-			const newValue = inputElement$().value;
+			const newValue = inputElement$._().value;
 			if (oldValue !== newValue) {
-				hasWiggle$(true);
+				hasWiggle$._(true);
 				setTimeout(() => {
-					hasWiggle$(false);
+					hasWiggle$._(false);
 				}, 1000);
 			}
 		};
 
 		const setSelectedCountryWithWiggle = (country) => {
-			selectedCountry$(country);
+			selectedCountry$._(country);
 
 			wiggleIfValueChanged(activitySelectElement$, activityHasWiggle$, () => {
 				const activities = countriesData[country] ?? {};
-				activitiesOfSelectedCountry$(Object.keys(activities));
-				if (activitiesOfSelectedCountry$().indexOf(selectedActivity$()) !== -1) {
-					activitySelectElement$().value = selectedActivity$();
+				activitiesOfSelectedCountry$._(Object.keys(activities));
+				if (activitiesOfSelectedCountry$._().indexOf(selectedActivity$._()) !== -1) {
+					activitySelectElement$._().value = selectedActivity$._();
 				}
 			});
-			setSelectedActivityWithWiggle(activitySelectElement$().value);
+			setSelectedActivityWithWiggle(activitySelectElement$._().value);
 		};
 
 		const setSelectedActivityWithWiggle = (activity) => {
-			selectedActivity$(activity);
+			selectedActivity$._(activity);
 
 			wiggleIfValueChanged(placeSelectElement$, placeHasWiggle$, () => {
-				const activitiesData = countriesData[selectedCountry$()] ?? {};
+				const activitiesData = countriesData[selectedCountry$._()] ?? {};
 				const places = activitiesData[activity] ?? [];
-				placesOfSelectedActivity$(places);
-				if (placesOfSelectedActivity$().indexOf(selectedPlace$()) !== -1) {
-					placeSelectElement$().value = selectedPlace$();
+				placesOfSelectedActivity$._(places);
+				if (placesOfSelectedActivity$._().indexOf(selectedPlace$._()) !== -1) {
+					placeSelectElement$._().value = selectedPlace$._();
 				}
 			});
-			selectedPlace$(placeSelectElement$().value);
+			selectedPlace$._(placeSelectElement$._().value);
 		};
 
 		const viewModel = {
@@ -155,7 +155,7 @@ class Wiggle extends Component
 								'<>': placeSelectElement$,
 								'@change': flow([
 									(ev) => ev.target.value,
-									selectedPlace$,
+									(v) => selectedPlace$._(v),
 								]),
 							},
 							[

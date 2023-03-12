@@ -20,11 +20,11 @@ function startRequest()
 function createSetUnsubscribe$(unsubscribe$)
 {
 	return (unsubscribe) => {
-		cumulate(unsubscribe$, (oldUnsubscribe, newUnsubscribe) => {
-			if (oldUnsubscribe) {
-				oldUnsubscribe();
+		cumulate(unsubscribe$, (oldUnsubscribe$, newUnsubscribe$) => {
+			if (oldUnsubscribe$) {
+				oldUnsubscribe$._();
 			}
-			return newUnsubscribe;
+			return newUnsubscribe$;
 		}, unsubscribe);
 	};
 }
@@ -49,7 +49,7 @@ class IgnorePromiseResult extends Component
 						'@click': () => {
 							const requestPromise = startRequest();
 							const responseStream = createStream((emit) => {
-								requestPromise.then(emit);
+								requestPromise.then((v) => emit._(v));
 								cumulate(requestCount$, (v) => v+1);
 							});
 							setUnsubscribe$(responseStream.subscribe((v) => {

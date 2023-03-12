@@ -1,7 +1,7 @@
 import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
 import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
-import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
+import createEmittableStream from "../../../lib/ts/core/createEmittableStream.js";
 import EmittableStream from "../../../lib/ts/types/EmittableStream.js";
 import Image from "../types/Image.js";
 import Subscriber from "../../../lib/ts/types/Subscriber.js";
@@ -17,7 +17,7 @@ class Item extends Component<Attributes>
 	build(attrs: Attributes): ComponentChildren
 	{
 		const image = attrs.image;
-		const openPreview: EmittableStream<void> = createVoidStream();
+		const openPreview: EmittableStream<void> = createEmittableStream();
 
 		openPreview.subscribe(attrs.onOpenPreview);
 
@@ -26,7 +26,7 @@ class Item extends Component<Attributes>
 			[
 				'<a>', {
 					href: '#',
-					'@click': (ev: Event)=> { ev.preventDefault(); openPreview(); },
+					'@click': (ev: Event)=> { ev.preventDefault(); openPreview._(); },
 					'aria-label': image.caption,
 				},
 				[

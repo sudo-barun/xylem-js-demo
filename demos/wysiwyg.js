@@ -24,24 +24,26 @@ class Wysiwyg extends Component
 		const isSaving$ = createStore(false);
 		const editor$ = createStore();
 
-		const editorDataGetter = () => {
-			return editor$() ? editor$().getData() : textareaElement$().innerText;
+		const editorDataGetter = {
+			_: () => {
+				return editor$._() ? editor$._().getData() : textareaElement$._().innerText;
+			},
 		};
 		const editorDataStream = createEmittableStream();
 		const editorData$ = createDataNode(editorDataGetter, editorDataStream);
 		editorData$.subscribe((val) => {
-			isSaving$(true);
+			isSaving$._(true);
 			saveEditorData(val)
 			.then((val) => {
 				return console.log(val);
 			})
 			.finally(() => {
-				return isSaving$(false);
+				return isSaving$._(false);
 			});
 		});
 
 		const throttledEditorChange = throttle(() => {
-			editorDataStream(editorDataGetter());
+			editorDataStream._(editorDataGetter._());
 		}, 2500, {
 			leading: false,
 			trailing: true
@@ -52,8 +54,8 @@ class Wysiwyg extends Component
 		});
 
 		this.afterAttachToDom.subscribe(() => {
-			ClassicEditor.create(textareaElement$())
-			.then((editor) => editor$(editor))
+			ClassicEditor.create(textareaElement$._())
+			.then((editor) => editor$._(editor))
 			.catch((error) => {
 				console.error(error);
 			});

@@ -39,7 +39,7 @@ class Counter extends Component
 				'</button>',
 				' ',
 				'<button>', {
-					'@click': () => count$(INITIAL_VALUE),
+					'@click': () => count$._(INITIAL_VALUE),
 					'disabled': map(count$, (v) => v === INITIAL_VALUE),
 				},
 				['Reset'],

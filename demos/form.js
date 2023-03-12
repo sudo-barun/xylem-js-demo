@@ -10,7 +10,7 @@ class Form extends Component
 {
 	build(attrs)
 	{
-		const data = attrs.formData$();
+		const data = attrs.formData$._();
 
 		const inputValue$ = createStore(data.input);
 		const textareaValue$ = createStore(data.textarea);
@@ -50,8 +50,8 @@ class Form extends Component
 			'<form>', {
 				'@submit': (ev) => {
 					ev.preventDefault();
-					isSubmitting$(true);
-					attrs.onSubmit().finally(() => isSubmitting$(false));
+					isSubmitting$._(true);
+					attrs.onSubmit().finally(() => isSubmitting$._(false));
 				},
 			},
 			[
@@ -66,8 +66,8 @@ class Form extends Component
 					'<input/>', {
 						id: 'input',
 						class: 'form-control',
-						value: inputValue$(),
-						'@input': (ev) => inputValue$(ev.target.value),
+						value: inputValue$._(),
+						'@input': (ev) => inputValue$._(ev.target.value),
 					},
 				],
 				'</div>',
@@ -82,9 +82,9 @@ class Form extends Component
 					'<textarea>', {
 						id: 'textarea',
 						class: 'form-control',
-						'@input': (ev) => textareaValue$(ev.target.value),
+						'@input': (ev) => textareaValue$._(ev.target.value),
 					},
-					[ textareaValue$() ],
+					[ textareaValue$._() ],
 					'</textarea>',
 				],
 				'</div>',
@@ -99,7 +99,7 @@ class Form extends Component
 					'<select>', {
 						id: 'single-select',
 						class: 'form-control',
-						'@change': (ev) => singleSelectSelected$(ev.target.value),
+						'@change': (ev) => singleSelectSelected$._(ev.target.value),
 					},
 					[
 						forEach([
@@ -110,7 +110,7 @@ class Form extends Component
 						], ({ value, text }) => parseHTML([
 							'<option>', {
 								value,
-								selected: singleSelectSelected$() === value,
+								selected: singleSelectSelected$._() === value,
 							},
 							[ text ],
 							'</option>',
@@ -135,7 +135,7 @@ class Form extends Component
 						'@change': (ev) => {
 							const checkedOptions = ev.target.querySelectorAll('option:checked');
 							const value = Array.from(checkedOptions, e => e.value);
-							multiSelectSelected$(value);
+							multiSelectSelected$._(value);
 						},
 					},
 					[
@@ -146,7 +146,7 @@ class Form extends Component
 						], ({ value, text }) => parseHTML([
 							'<option>', {
 								value,
-								selected: multiSelectSelected$().includes(value),
+								selected: multiSelectSelected$._().includes(value),
 							},
 							[ text ],
 							'</option>',
@@ -167,8 +167,8 @@ class Form extends Component
 							type: 'checkbox',
 							id: 'single-checkbox',
 							class: 'form-check-input',
-							checked: singleCheckboxChecked$(),
-							'@change': (ev) => singleCheckboxChecked$(ev.target.checked),
+							checked: singleCheckboxChecked$._(),
+							'@change': (ev) => singleCheckboxChecked$._(ev.target.checked),
 						},
 						'<label>', {
 							for: 'single-checkbox',
@@ -195,14 +195,14 @@ class Form extends Component
 							[
 								'<input/>', {
 									type: 'checkbox',
-									id: `checkbox-${index$()}`,
+									id: `checkbox-${index$._()}`,
 									class: 'form-check-input',
-									checked: multiCheckboxChecked$s[value](),
+									checked: multiCheckboxChecked$s[value]._(),
 									value,
-									'@change': (ev) => multiCheckboxChecked$s[value](ev.target.checked),
+									'@change': (ev) => multiCheckboxChecked$s[value]._(ev.target.checked),
 								},
 								'<label>', {
-									for: `checkbox-${index$()}`,
+									for: `checkbox-${index$._()}`,
 								},
 								[ text ],
 								'</label>',
@@ -232,14 +232,14 @@ class Form extends Component
 								'<input/>', {
 									type: 'radio',
 									name: 'number',
-									id: `radio-${index$()}`,
+									id: `radio-${index$._()}`,
 									class: 'form-check-input',
-									checked: value === radioChecked$(),
+									checked: value === radioChecked$._(),
 									value,
-									'@change': () => radioChecked$(value),
+									'@change': () => radioChecked$._(value),
 								},
 								'<label>', {
-									for: `radio-${index$()}`,
+									for: `radio-${index$._()}`,
 								},
 								[ text ],
 								'</label>',
@@ -293,7 +293,7 @@ class App extends Component
 							onSubmit: () => {
 								return new Promise((res) => {
 									console.log('using form data');
-									console.log(formData$());
+									console.log(formData$._());
 									setTimeout(() => res(), 1000);
 								});
 							},

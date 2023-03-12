@@ -3,10 +3,20 @@ export function createSubscribable(callback) {
     const emit = function (value) {
         subscribers.forEach(subscriber => {
             if (arguments.length) {
-                subscriber(value);
+                if (typeof subscriber === 'function') {
+                    subscriber(value);
+                }
+                else {
+                    subscriber._(value);
+                }
             }
             else {
-                subscriber();
+                if (typeof subscriber === 'function') {
+                    subscriber();
+                }
+                else {
+                    subscriber._();
+                }
             }
         });
     };
@@ -19,8 +29,10 @@ export function createSubscribable(callback) {
     };
     const subscribe = function (subscriber) {
         subscribers.push(subscriber);
-        return function () {
-            unsubscribe(subscriber);
+        return {
+            _: function () {
+                unsubscribe(subscriber);
+            },
         };
     };
     const emitter = {

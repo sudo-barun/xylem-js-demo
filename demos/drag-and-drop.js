@@ -95,7 +95,7 @@ class ColorList extends Component
 {
 	build(attrs)
 	{
-		const colors$ = createArrayStore(attrs.colors$().slice());
+		const colors$ = createArrayStore(attrs.colors$._().slice());
 		const normalized = normalizeArrayStore(colors$, createStore);
 		normalized.subscribe(attrs.colors$);
 
@@ -113,11 +113,11 @@ class ColorList extends Component
 									'application/json',
 									JSON.stringify({
 										source: 'colors',
-										index: index$(),
+										index: index$._(),
 									})
 								);
 							},
-							'@dragend': () => isDraggable$(false),
+							'@dragend': () => isDraggable$._(false),
 							'@drop': (ev) => {
 								ev.preventDefault();
 								let dropData;
@@ -128,14 +128,14 @@ class ColorList extends Component
 								}
 								if (dropData.source === 'colors') {
 									const droppedColorIndex = dropData.index;
-									if (droppedColorIndex === index$()) {
+									if (droppedColorIndex === index$._()) {
 										return;
 									}
 									colors$.mutate(move, droppedColorIndex, index$);
 								} else if (dropData.source === 'bonusColors') {
 									const droppedBonusIndex = dropData.index;
 									colors$.mutate(push, BONUS_COLORS[droppedBonusIndex]);
-									colors$.mutate(move, colors$().length - 1, index$);
+									colors$.mutate(move, colors$._().length - 1, index$);
 								}
 							},
 							'@dragover': (ev) => ev.preventDefault(),
@@ -147,8 +147,8 @@ class ColorList extends Component
 							'<span>', {
 								class: 'badge text-bg-light float-end fs-6',
 								style: 'cursor: move; margin-right: 16px',
-								'@mousedown': () => isDraggable$(true),
-								'@mouseup': () => isDraggable$(false),
+								'@mousedown': () => isDraggable$._(true),
+								'@mouseup': () => isDraggable$._(false),
 							},
 							[ '⇵' ],
 							'</span>',
@@ -176,7 +176,7 @@ class BonusColors extends Component
 			'<div>',
 			[
 				forEach(BONUS_COLORS, (bonusColor, index$) => parseHTML([
-					index$() !== 0 ? ' ' : '',
+					index$._() !== 0 ? ' ' : '',
 					'<span>', {
 						class: [ 'btn btn-outline-secondary fs-6 fw-bold', {
 							disabled: map(colors$, v => v.includes(bonusColor)),
@@ -187,7 +187,7 @@ class BonusColors extends Component
 								'application/json',
 								JSON.stringify({
 									source: 'bonusColors',
-									index: index$(),
+									index: index$._(),
 								})
 							);
 						},

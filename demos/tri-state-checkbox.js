@@ -22,7 +22,7 @@ class TriStateCheckbox extends Component
 	{
 		const checkboxValue$s = Array.apply(null, Array(5)).map(() => false).map((v) => createStore(v));
 		const getCombinedState = () => {
-			const checkedCount = checkboxValue$s.filter((item$) => item$()).length;
+			const checkedCount = checkboxValue$s.filter((item$) => item$._()).length;
 			if (checkedCount === 0) {
 				return NONE;
 			} else if (checkedCount === checkboxValue$s.length) {
@@ -33,18 +33,18 @@ class TriStateCheckbox extends Component
 		};
 		const combinedState$ = createStore(getCombinedState());
 		checkboxValue$s.forEach(item$ => item$.subscribe(() => {
-			combinedState$(getCombinedState());
+			combinedState$._(getCombinedState());
 		}));
 
 		const topCheckboxElement$ = createStore();
 
 		this.afterAttachToDom.subscribe(() => {
-			topCheckboxElement$().indeterminate = combinedState$() === SOME;
-			topCheckboxElement$().checked = combinedState$() === ALL;
+			topCheckboxElement$._().indeterminate = combinedState$._() === SOME;
+			topCheckboxElement$._().checked = combinedState$._() === ALL;
 
 			combinedState$.subscribe(() => {
-				topCheckboxElement$().indeterminate = combinedState$() === SOME;
-				topCheckboxElement$().checked = combinedState$() === ALL;
+				topCheckboxElement$._().indeterminate = combinedState$._() === SOME;
+				topCheckboxElement$._().checked = combinedState$._() === ALL;
 			});
 		});
 
@@ -59,7 +59,7 @@ class TriStateCheckbox extends Component
 							type: 'checkbox',
 							'@change': (ev) => {
 								const checked = ev.target.checked;
-								checkboxValue$s.forEach((item$) => item$(checked));
+								checkboxValue$s.forEach((item$) => item$._(checked));
 							},
 							'<>': topCheckboxElement$,
 						},
@@ -77,8 +77,8 @@ class TriStateCheckbox extends Component
 					const checkboxElement$ = createStore();
 					const itemProxy$ = this.bindDataNode(item$);
 					this.afterAttachToDom.subscribe(() => {
-						checkboxElement$().checked = itemProxy$();
-						itemProxy$.subscribe((v) => checkboxElement$().checked = v);
+						checkboxElement$._().checked = itemProxy$._();
+						itemProxy$.subscribe((v) => checkboxElement$._().checked = v);
 					});
 					return parseHTML([
 						'<div>',
@@ -87,7 +87,7 @@ class TriStateCheckbox extends Component
 							[
 								'<input/>', {
 									type: 'checkbox',
-									'@change': (ev) => {item$(ev.target.checked)},
+									'@change': (ev) => {item$._(ev.target.checked)},
 									'<>': checkboxElement$,
 								},
 								map(index$, v => ` Item ${v+1} (`),

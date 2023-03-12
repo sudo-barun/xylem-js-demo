@@ -105,10 +105,10 @@ class Invoice extends Component
 												'<input/>', {
 													class: 'form-control',
 													style: 'min-width: 5em',
-													value: rowData.productName$(),
+													value: rowData.productName$._(),
 													'@input': flow([
 														(ev) => ev.target.value,
-														rowData.productName$,
+														(v) => rowData.productName$._(v),
 													]),
 												},
 											],
@@ -120,10 +120,10 @@ class Invoice extends Component
 														'is-invalid': map(rowData.quantity$, (v) => !isNumericString(v)),
 													}],
 													style: 'min-width: 5em',
-													value: rowData.quantity$(),
+													value: rowData.quantity$._(),
 													'@input': flow([
 														(ev) => ev.target.value,
-														rowData.quantity$,
+														(v) => rowData.quantity$._(v),
 													]),
 												},
 											],
@@ -135,10 +135,10 @@ class Invoice extends Component
 														'is-invalid': map(rowData.rate$, (v) => !isNumericString(v)),
 													}],
 													style: 'min-width: 5em',
-													value: rowData.rate$(),
+													value: rowData.rate$._(),
 													'@input': flow([
 														(ev) => ev.target.value,
-														rowData.rate$,
+														(v) => rowData.rate$._(v),
 													]),
 												},
 											],
@@ -188,7 +188,7 @@ class Invoice extends Component
 											'<button>', {
 												class: 'btn btn-outline-primary',
 												'@click': () => {
-													tableData$.mutate(push, getTableEntry(tableData$().length));
+													tableData$.mutate(push, getTableEntry(tableData$._().length));
 												},
 											},
 											['Add'],

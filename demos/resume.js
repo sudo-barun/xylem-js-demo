@@ -73,8 +73,8 @@ class Root extends Component
 
 		const onReset = () => cumulate(resume$, (v) => ({...v}));
 		const onSave = (resume) => {
-			resume$(resume);
-			isEditMode$(false);
+			resume$._(resume);
+			isEditMode$._(false);
 		};
 
 		return parseHTML([
@@ -90,14 +90,14 @@ class Root extends Component
 							'<button>', {
 								class: 'btn btn-outline-secondary float-end',
 								hidden: isEditMode$,
-								'@click': () => isEditMode$(true),
+								'@click': () => isEditMode$._(true),
 							},
 							['Edit'],
 							'</button>',
 							'<button>', {
 								class: 'btn btn-outline-secondary float-end ms-2',
 								hidden: map(isEditMode$, (v) => !v),
-								'@click': () => isEditMode$(false),
+								'@click': () => isEditMode$._(false),
 							},
 							['Cancel'],
 							'</button>',
@@ -134,7 +134,7 @@ class ResumeView extends Component
 {
 	build({ resume$ })
 	{
-		const resume = resume$();
+		const resume = resume$._();
 
 		return parseHTML([
 			'<div>', { style: 'border: 4px solid; padding: 50px;' },
@@ -218,17 +218,17 @@ class ResumeForm extends Component
 	build({ resume$, onSave })
 	{
 		resume$.subscribe((v) => {
-			fullName$(v.fullName);
-			fullNameInputElement$().value = v.fullName;
-			email$(v.email);
-			emailInputElement$().value = v.email;
-			address$(v.address);
-			addressInputElement$().value = v.address;
+			fullName$._(v.fullName);
+			fullNameInputElement$._().value = v.fullName;
+			email$._(v.email);
+			emailInputElement$._().value = v.email;
+			address$._(v.address);
+			addressInputElement$._().value = v.address;
 
-			projects$(v.projects.map(getProjectViewModel));
+			projects$._(v.projects.map(getProjectViewModel));
 		});
 
-		const resume = resume$();
+		const resume = resume$._();
 
 		const fullNameInputElement$ = createStore();
 		const emailInputElement$ = createStore();
@@ -254,7 +254,7 @@ class ResumeForm extends Component
 			projects: normalizedProjects$,
 		});
 
-		console.log(JSON.stringify(normalizedResume$(), null, 2));
+		console.log(JSON.stringify(normalizedResume$._(), null, 2));
 		normalizedResume$.subscribe((v) => {
 			console.log(JSON.stringify(v, null, 2));
 		});
@@ -263,7 +263,7 @@ class ResumeForm extends Component
 			'<form>', {
 				'@submit': (ev) => {
 					ev.preventDefault();
-					onSave(normalizedResume$());
+					onSave(normalizedResume$._());
 				},
 			},
 			[
@@ -278,11 +278,11 @@ class ResumeForm extends Component
 					'<input/>', {
 						class: 'form-control',
 						id: 'full-name',
-						value: fullName$(),
+						value: fullName$._(),
 						'<>': fullNameInputElement$,
 						'@input': flow([
 							(ev) => ev.target.value,
-							fullName$,
+							(v) => fullName$._(v),
 						]),
 					},
 				],
@@ -298,11 +298,11 @@ class ResumeForm extends Component
 					'<input/>', {
 						class: 'form-control',
 						id: 'email',
-						value: email$(),
+						value: email$._(),
 						'<>': emailInputElement$,
 						'@input': flow([
 							(ev) => ev.target.value,
-							email$,
+							(v) => email$._(v),
 						]),
 					},
 				],
@@ -318,11 +318,11 @@ class ResumeForm extends Component
 					'<input/>', {
 						class: 'form-control',
 						id: 'address',
-						value: address$(),
+						value: address$._(),
 						'<>': addressInputElement$,
 						'@input': flow([
 							(ev) => ev.target.value,
-							address$,
+							(v) => address$._(v),
 						]),
 					},
 				],
@@ -352,10 +352,10 @@ class ResumeForm extends Component
 										'<input/>', {
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-title`),
-											value: project.title$(),
+											value: project.title$._(),
 											'@input': flow([
 												(ev) => ev.target.value,
-												project.title$,
+												(v) => project.title$._(v),
 											]),
 										},
 									],
@@ -374,10 +374,10 @@ class ResumeForm extends Component
 											id: map(index$, (i) => `project-${i}-description`),
 											'@input': flow([
 												(ev) => ev.target.value,
-												project.description$,
+												(v) => project.description$._(v),
 											]),
 										},
-										[project.description$()],
+										[project.description$._()],
 										'</textarea>',
 									],
 									'</div>',
@@ -393,10 +393,10 @@ class ResumeForm extends Component
 											type: 'date',
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-completion-date`),
-											value: project.completionDate$(),
+											value: project.completionDate$._(),
 											'@input': flow([
 												(ev) => ev.target.value,
-												project.completionDate$,
+												(v) => project.completionDate$._(v),
 											]),
 										},
 									],
@@ -433,10 +433,10 @@ class ResumeForm extends Component
 																	combineDataNodes([index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
-																value: skill$(),
+																value: skill$._(),
 																'@input': flow([
 																	(ev) => ev.target.value,
-																	skill$,
+																	(v) => skill$._(v),
 																]),
 															},
 															'<button>', {
@@ -483,10 +483,10 @@ class ResumeForm extends Component
 										'<input/>', {
 											class: 'form-control',
 											id: map(index$, (i) => `project-${i}-url`),
-											value: project.url$(),
+											value: project.url$._(),
 											'@input': flow([
 												(ev) => ev.target.value,
-												project.url$,
+												(v) => project.url$._(v),
 											]),
 										},
 									],

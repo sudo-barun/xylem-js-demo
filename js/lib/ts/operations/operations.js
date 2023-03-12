@@ -15,7 +15,7 @@ export function combinePipes(pipes) {
     });
     previousPipe;
     let emitterToReturn = createMappedSourceStream(function (emit, value) {
-        pipes[0](value);
+        pipes[0]._(value);
         // emit(value);
     });
     return emitterToReturn;

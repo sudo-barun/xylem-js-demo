@@ -1,8 +1,8 @@
 import parseHTML from "../../../lib/ts/dom/parseHTML.js";
 import Component from "../../../lib/ts/dom/Component.js";
 import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
+import createEmittableStream from "../../../lib/ts/core/createEmittableStream.js";
 import createStore from "../../../lib/ts/core/createStore.js";
-import createVoidStream from "../../../lib/ts/utilities/createVoidStream.js";
 import DataNode from "../../../lib/ts/types/DataNode.js";
 import Image from "../types/Image.js";
 import map from "../../../lib/ts/core/map.js";
@@ -27,9 +27,9 @@ class Preview extends Component<Attributes>
 		const hasPrevious$: DataNode<boolean> = this.bindDataNode(attrs.hasPrevious);
 		const hasNext$: DataNode<boolean> = this.bindDataNode(attrs.hasNext);
 
-		const showPrevious: EmittableStream<void> = createVoidStream();
-		const showNext: EmittableStream<void> = createVoidStream();
-		const close: EmittableStream<void> = createVoidStream();
+		const showPrevious: EmittableStream<void> = createEmittableStream();
+		const showNext: EmittableStream<void> = createEmittableStream();
+		const close: EmittableStream<void> = createEmittableStream();
 		const previewElement$ = createStore<HTMLElement>(undefined!);
 
 		showPrevious.subscribe(attrs.onShowPrevious);
@@ -38,10 +38,10 @@ class Preview extends Component<Attributes>
 
 		this.afterAttachToDom.subscribe(() => {
 			document.body.style.overflow = 'hidden';
-			previewElement$().focus();
+			previewElement$._().focus();
 		});
 		this.beforeDetachFromDom.subscribe(() => {
-			previewElement$().blur();
+			previewElement$._().blur();
 			document.body.style.removeProperty('overflow');
 		});
 
@@ -60,7 +60,7 @@ class Preview extends Component<Attributes>
 						'<button>', {
 							title: 'Close',
 							class: '-close',
-							'@click': close,
+							'@click': () => close._(),
 						},
 						'</button>',
 						'<button>', {
@@ -68,7 +68,7 @@ class Preview extends Component<Attributes>
 							class: [ '-control -left', {
 								disabled: map(hasPrevious$, (x)=>!x),
 							}],
-							'@click': showPrevious,
+							'@click': () => showPrevious._(),
 						},
 						'</button>',
 						'<div>', { class: '-image-caption-container' },
@@ -94,7 +94,7 @@ class Preview extends Component<Attributes>
 							class: [ '-control -right', {
 								disabled: map(hasNext$, (x)=>!x),
 							}],
-							'@click': showNext,
+							'@click': () => showNext._(),
 						},
 						'</button>',
 					],
@@ -110,15 +110,15 @@ class Preview extends Component<Attributes>
 			switch (key) {
 				case 'ArrowLeft':
 				case 'Left':
-					showPrevious();
+					showPrevious._();
 					break;
 				case 'ArrowRight':
 				case 'Right':
-					showNext();
+					showNext._();
 					break;
 				case 'Escape':
 				case 'Esc':
-					close();
+					close._();
 					break;
 			}
 		}

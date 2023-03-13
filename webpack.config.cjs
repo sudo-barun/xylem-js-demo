@@ -4,6 +4,7 @@ const entryFiles = [
 	'autocomplete',
 	'counter',
 	'dynamic-title',
+	'form',
 	'gallery',
 	'invoice',
 	'resume',

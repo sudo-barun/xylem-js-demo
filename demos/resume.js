@@ -410,8 +410,8 @@ class ResumeForm extends Component
 										'</label>',
 										'<div>',
 										[
-											forEach(project.skills$, function (skill$, index$2) {
-												index$ = this.bindDataNode(index$);
+											forEach(project.skills$, (skill$, index$2, forEachItem) => {
+												const indexProxy$ = forEachItem.bindDataNode(index$);
 
 												return parseHTML([
 													'<div>', { class: 'card mb-3' },
@@ -421,7 +421,7 @@ class ResumeForm extends Component
 															'<label>', {
 																class: 'input-group-text',
 																for: map(
-																	combineDataNodes([index$, index$2]),
+																	combineDataNodes([indexProxy$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 															},
@@ -430,7 +430,7 @@ class ResumeForm extends Component
 															'<input/>', {
 																class: 'form-control',
 																id: map(
-																	combineDataNodes([index$, index$2]),
+																	combineDataNodes([indexProxy$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 																value: skill$._(),

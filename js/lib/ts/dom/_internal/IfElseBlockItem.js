@@ -6,7 +6,13 @@ export default class IfElseBlockItem extends Component {
             this.reload();
         });
         if (isActive$._()) {
-            return attributes.build.apply(this);
+            const build = attributes.build;
+            if (typeof build === 'function') {
+                return build(this);
+            }
+            else {
+                return build._(this);
+            }
         }
         return [];
     }

@@ -18,7 +18,7 @@ class Gallery extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const images$ = this.bindDataNode(attrs.images$);
+		const images$ = this.bindSupplier(attrs.images$);
 		const previewIndex$: Store<number> = createStore(-1);
 		const previewImage$: Store<Image|null> = createStore(null);
 		const hasPrevious$: Store<boolean> = createStore(false);

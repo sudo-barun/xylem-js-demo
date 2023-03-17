@@ -1,9 +1,9 @@
 import "../lib/js/array/registerRemove.js";
 import "../lib/js/array/registerPush.js";
-import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
+import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/array/createArrayStore.js";
-import createDataNode from "../lib/js/core/createDataNode.js";
+import createSupplier from "../lib/js/core/createSupplier.js";
 import createStore from "../lib/js/core/createStore.js";
 import createEmittableStream from "../lib/js/core/createEmittableStream.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
@@ -26,7 +26,7 @@ function getTableEntry(index)
 	const productName$ = createStore(`Item ${index + 1}`);
 	const quantity$ = createStore('1');
 	const rate$ = createStore('');
-	const price$ = map(combineNamedDataNodes({
+	const price$ = map(combineNamedSuppliers({
 		quantity: quantity$,
 		rate: rate$
 	}), (v) => isNumericString(v.quantity) && isNumericString(v.rate) ? v.quantity * v.rate : null);
@@ -45,11 +45,11 @@ class Invoice extends Component
 	{
 		const tableData$ = createArrayStore(Array.apply(null, Array(5)).map((_, index) => getTableEntry(index)));
 
-		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedDataNodes({
+		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedSuppliers({
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
-			price: createDataNode(row.price$, createEmittableStream()),
+			price: createSupplier(row.price$, createEmittableStream()),
 		}));
 		const totalPrice$ = map(normalizedTableData$, (tableData) => {
 			return tableData.reduce((acc, row) => {
@@ -61,9 +61,9 @@ class Invoice extends Component
 		  totalPrice$: totalPrice$
 		};
 		console.log('viewModel', viewModel);
-		const normalizedModel$ = combineNamedDataNodes({
+		const normalizedModel$ = combineNamedSuppliers({
 		  tableData: normalizedTableData$,
-		  totalPrice: createDataNode(totalPrice$, createEmittableStream()),
+		  totalPrice: createSupplier(totalPrice$, createEmittableStream()),
 		});
 		normalizedModel$.subscribe(v => console.log(v))
 

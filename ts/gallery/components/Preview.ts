@@ -3,16 +3,16 @@ import Component from "../../../lib/ts/dom/Component.js";
 import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
 import createEmittableStream from "../../../lib/ts/core/createEmittableStream.js";
 import createStore from "../../../lib/ts/core/createStore.js";
-import DataNode from "../../../lib/ts/types/DataNode.js";
+import Supplier from "../../../lib/ts/types/Supplier.js";
 import Image from "../types/Image.js";
 import map from "../../../lib/ts/core/map.js";
 import EmittableStream from "../../../lib/ts/types/EmittableStream.js";
 import Subscriber from "../../../lib/ts/types/Subscriber.js";
 
 type Attributes = {
-	image: DataNode<Image>,
-	hasPrevious: DataNode<boolean>,
-	hasNext: DataNode<boolean>,
+	image: Supplier<Image>,
+	hasPrevious: Supplier<boolean>,
+	hasNext: Supplier<boolean>,
 	onShowPrevious: Subscriber<void>,
 	onShowNext: Subscriber<void>,
 	onClose: Subscriber<void>,
@@ -23,9 +23,9 @@ class Preview extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const image$: DataNode<Image> = this.bindDataNode(attrs.image);
-		const hasPrevious$: DataNode<boolean> = this.bindDataNode(attrs.hasPrevious);
-		const hasNext$: DataNode<boolean> = this.bindDataNode(attrs.hasNext);
+		const image$: Supplier<Image> = this.bindSupplier(attrs.image);
+		const hasPrevious$: Supplier<boolean> = this.bindSupplier(attrs.hasPrevious);
+		const hasNext$: Supplier<boolean> = this.bindSupplier(attrs.hasNext);
 
 		const showPrevious: EmittableStream<void> = createEmittableStream();
 		const showNext: EmittableStream<void> = createEmittableStream();

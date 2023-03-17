@@ -1,6 +1,6 @@
 import createStore from "../lib/js/core/createStore.js";
-import combineDataNodes from "../lib/js/core/combineDataNodes.js";
-import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
+import combineSuppliers from "../lib/js/core/combineSuppliers.js";
+import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
 import Component from "../lib/js/dom/Component.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
@@ -85,7 +85,7 @@ class Wiggle extends Component
 			place: selectedPlace$,
 		};
 
-		const normalizedViewModel$ = combineNamedDataNodes(viewModel);
+		const normalizedViewModel$ = combineNamedSuppliers(viewModel);
 
 		const formHasError$ = map(normalizedViewModel$, (v) => {
 			return ! (v.country && v.activity && v.place);
@@ -175,7 +175,7 @@ class Wiggle extends Component
 							type: 'submit',
 							class: 'btn btn-primary float-end',
 							disabled: map(
-								combineDataNodes([formHasError$, submitInProgress$]),
+								combineSuppliers([formHasError$, submitInProgress$]),
 								([hasError, inProgress]) => hasError || inProgress
 							),
 						},

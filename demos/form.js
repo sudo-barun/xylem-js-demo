@@ -1,5 +1,5 @@
 import parseHTML from "../lib/js/dom/parseHTML.js";
-import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
+import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
 import Component from "../lib/js/dom/Component.js";
 import createStore from "../lib/js/core/createStore.js";
 import forEach from "../lib/js/dom/forEach.js";
@@ -26,7 +26,7 @@ class Form extends Component
 		const isSubmitting$ = createStore(false);
 
 		const selectedMultiCheckboxes$ = map(
-			combineNamedDataNodes(multiCheckboxChecked$s),
+			combineNamedSuppliers(multiCheckboxChecked$s),
 			(values) => Object.keys(values).reduce((acc, key) => {
 				if (values[key]) {
 					acc.push(key);
@@ -34,7 +34,7 @@ class Form extends Component
 				return acc;
 			}, [])
 		);
-		const formData$ = combineNamedDataNodes({
+		const formData$ = combineNamedSuppliers({
 			input: inputValue$,
 			textarea: textareaValue$,
 			singleSelect: singleSelectSelected$,

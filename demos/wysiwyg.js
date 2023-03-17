@@ -1,5 +1,5 @@
 import Component from "../lib/js/dom/Component.js";
-import createDataNode from "../lib/js/core/createDataNode.js";
+import createSupplier from "../lib/js/core/createSupplier.js";
 import createEmittableStream from "../lib/js/core/createEmittableStream.js";
 import createStore from "../lib/js/core/createStore.js";
 import if_ from "../lib/js/dom/if_.js";
@@ -30,7 +30,7 @@ class Wysiwyg extends Component
 			},
 		};
 		const editorDataStream = createEmittableStream();
-		const editorData$ = createDataNode(editorDataGetter, editorDataStream);
+		const editorData$ = createSupplier(editorDataGetter, editorDataStream);
 		editorData$.subscribe((val) => {
 			isSaving$._(true);
 			saveEditorData(val)

@@ -167,7 +167,7 @@ class BonusColors extends Component
 {
 	build(attrs)
 	{
-		const colors$ = this.bindDataNode(attrs.colors$);
+		const colors$ = this.bindSupplier(attrs.colors$);
 
 		return parseHTML([
 			'<h2>', { class: 'h3 mt-4' },

@@ -75,7 +75,7 @@ class TriStateCheckbox extends Component
 				'</div>',
 				forEach(checkboxValue$s, (item$, index$, forEachItem) => {
 					const checkboxElement$ = createStore();
-					const itemProxy$ = forEachItem.bindDataNode(item$);
+					const itemProxy$ = forEachItem.bindSupplier(item$);
 					this.afterAttachToDom.subscribe(() => {
 						checkboxElement$._().checked = itemProxy$._();
 						itemProxy$.subscribe((v) => checkboxElement$._().checked = v);

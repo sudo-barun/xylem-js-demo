@@ -3,8 +3,8 @@ import "../lib/js/array/registerRemove.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import combineDataNodes from "../lib/js/core/combineDataNodes.js";
-import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
+import combineSuppliers from "../lib/js/core/combineSuppliers.js";
+import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../lib/js/dom/forEach.js";
 import if_ from "../lib/js/dom/if_.js";
@@ -239,7 +239,7 @@ class ResumeForm extends Component
 		const address$ = createStore(resume.address);
 		const projects$ = createArrayStore(resume.projects.map(getProjectViewModel));
 
-		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedDataNodes({
+		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedSuppliers({
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
@@ -247,7 +247,7 @@ class ResumeForm extends Component
 			url: project.url$,
 		}));
 
-		const normalizedResume$ = combineNamedDataNodes({
+		const normalizedResume$ = combineNamedSuppliers({
 			fullName: fullName$,
 			email: email$,
 			address: address$,
@@ -411,7 +411,7 @@ class ResumeForm extends Component
 										'<div>',
 										[
 											forEach(project.skills$, (skill$, index$2, forEachItem) => {
-												const indexProxy$ = forEachItem.bindDataNode(index$);
+												const indexProxy$ = forEachItem.bindSupplier(index$);
 
 												return parseHTML([
 													'<div>', { class: 'card mb-3' },
@@ -421,7 +421,7 @@ class ResumeForm extends Component
 															'<label>', {
 																class: 'input-group-text',
 																for: map(
-																	combineDataNodes([indexProxy$, index$2]),
+																	combineSuppliers([indexProxy$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 															},
@@ -430,7 +430,7 @@ class ResumeForm extends Component
 															'<input/>', {
 																class: 'form-control',
 																id: map(
-																	combineDataNodes([indexProxy$, index$2]),
+																	combineSuppliers([indexProxy$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 																value: skill$._(),

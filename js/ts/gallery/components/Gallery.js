@@ -7,7 +7,7 @@ import Item from "./Item.js";
 import Preview from "./Preview.js";
 export default class Gallery extends Component {
     build(attrs) {
-        const images$ = this.bindDataNode(attrs.images$);
+        const images$ = this.bindSupplier(attrs.images$);
         const previewIndex$ = createStore(-1);
         const previewImage$ = createStore(null);
         const hasPrevious$ = createStore(false);

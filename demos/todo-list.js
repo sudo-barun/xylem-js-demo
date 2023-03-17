@@ -3,7 +3,7 @@ import "../lib/js/array/registerUnshift.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
-import combineNamedDataNodes from "../lib/js/core/combineNamedDataNodes.js";
+import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
 import forEach from "../lib/js/dom/forEach.js";
 import GoToTop from "./components/GoToTop.js";
 import if_ from "../lib/js/dom/if_.js";
@@ -60,12 +60,12 @@ class TodoComponent extends Component
 			todos$._(getTodoList(count));
 		}
 
-		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedDataNodes({
+		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedSuppliers({
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$
 		}));
 
-		const normalizedModel$ = combineNamedDataNodes({
+		const normalizedModel$ = combineNamedSuppliers({
 			newTodo: newTodo$,
 			todos: normalizedTodos$
 		});

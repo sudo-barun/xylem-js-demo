@@ -5,11 +5,9 @@ import createStore from "../lib/js/core/createStore.js";
 import forEach from "../lib/js/dom/forEach.js";
 import map from "../lib/js/core/map.js";
 import mountComponent from "../lib/js/dom/mountComponent.js";
-import move from "../lib/js/array/move.js";
+import move from "../lib/js/array_action/move.js";
 import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
-import push from "../lib/js/array/push.js";
-import "../lib/js/array/registerMove.js";
-import "../lib/js/array/registerPush.js";
+import push from "../lib/js/array_action/push.js";
 
 const COLORS = Object.freeze([
 	'red',

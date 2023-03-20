@@ -1,5 +1,3 @@
-import "../lib/js/array/registerPush.js";
-import "../lib/js/array/registerRemove.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
@@ -12,9 +10,9 @@ import map from "../lib/js/core/map.js";
 import mountComponent from "../lib/js/dom/mountComponent.js";
 import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
 import parseHTML from "../lib/js/dom/parseHTML.js";
-import push from "../lib/js/array/push.js";
+import push from "../lib/js/array_action/push.js";
 import cumulate from "../lib/js/core/cumulate.js";
-import remove from "../lib/js/array/remove.js";
+import remove from "../lib/js/array_action/remove.js";
 
 function getProjectViewModel({title='',completionDate='',skills=[''],url='',description=''} = {})
 {

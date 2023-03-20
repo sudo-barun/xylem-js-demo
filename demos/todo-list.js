@@ -1,5 +1,3 @@
-import "../lib/js/array/registerRemove.js";
-import "../lib/js/array/registerUnshift.js";
 import Component from "../lib/js/dom/Component.js";
 import createArrayStore from "../lib/js/array/createArrayStore.js";
 import createStore from "../lib/js/core/createStore.js";
@@ -11,8 +9,8 @@ import map from "../lib/js/core/map.js";
 import mountComponent from "../lib/js/dom/mountComponent.js";
 import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
 import parseHTML from "../lib/js/dom/parseHTML.js";
-import remove from "../lib/js/array/remove.js";
-import unshift from "../lib/js/array/unshift.js";
+import remove from "../lib/js/array_action/remove.js";
+import unshift from "../lib/js/array_action/unshift.js";
 
 function intersperse(array, itemToInsert)
 {

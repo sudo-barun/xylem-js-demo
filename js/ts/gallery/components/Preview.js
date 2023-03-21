@@ -5,9 +5,9 @@ import createStore from "../../../lib/ts/core/createStore.js";
 import map from "../../../lib/ts/core/map.js";
 export default class Preview extends Component {
     build(attrs) {
-        const image$ = this.bindSupplier(attrs.image);
-        const hasPrevious$ = this.bindSupplier(attrs.hasPrevious);
-        const hasNext$ = this.bindSupplier(attrs.hasNext);
+        const image$ = this.bindSupplier(attrs.image$);
+        const hasPrevious$ = this.bindSupplier(attrs.hasPrevious$);
+        const hasNext$ = this.bindSupplier(attrs.hasNext$);
         const showPrevious = createEmittableStream();
         const showNext = createEmittableStream();
         const close = createEmittableStream();

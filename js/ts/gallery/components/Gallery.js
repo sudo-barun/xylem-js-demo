@@ -31,9 +31,9 @@ export default class Gallery extends Component {
                 '</div>',
                 if_(previewImage$, () => [
                     new Preview({
-                        image: previewImage$.readonly,
-                        hasPrevious: hasPrevious$.readonly,
-                        hasNext: hasNext$.readonly,
+                        image$: previewImage$.readonly,
+                        hasPrevious$: hasPrevious$.readonly,
+                        hasNext$: hasNext$.readonly,
                         onShowPrevious: () => showPrevious(),
                         onShowNext: () => showNext(),
                         onClose: () => closePreview(),

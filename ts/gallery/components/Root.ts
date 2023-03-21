@@ -4,7 +4,7 @@ import createStore from '../../../lib/ts/core/createStore.js';
 import Gallery from './Gallery.js';
 import if_ from '../../../lib/ts/dom/if_.js';
 import Image from '../types/Image.js';
-import map from "../../../lib/ts/core/map.js";
+import createArrayStore from '../../../lib/ts/array/createArrayStore.js';
 
 type InjectedAttributes = {
 	apiBaseUrl: string,
@@ -16,7 +16,7 @@ class Root extends Component<{}, InjectedAttributes>
 {
 	build({ apiBaseUrl, initialData = null }: InjectedAttributes)
 	{
-		const galleryImages$ = createStore<Image[]>([]);
+		const galleryImages$ = createArrayStore<Image>([]);
 		const hasImageRequestCompleted$ = createStore(false);
 		const hasImageRequestSucceed$ = createStore(false);
 
@@ -65,7 +65,7 @@ class Root extends Component<{}, InjectedAttributes>
 					'</div>',
 					if_(hasImageRequestCompleted$, () => parseHTML([
 						if_(hasImageRequestSucceed$, () => parseHTML([
-							if_(map(galleryImages$, (arr)=>arr.length), () => parseHTML([
+							if_(galleryImages$.length$, () => parseHTML([
 								new Gallery({
 									images$: galleryImages$,
 								}),

@@ -213,8 +213,10 @@ class ResumeView extends Component
 
 class ResumeForm extends Component
 {
-	build({ resume$, onSave })
+	build(attrs)
 	{
+		const { onSave } = attrs;
+		const resume$ = this.bindSupplier(attrs.resume$);
 		resume$.subscribe((v) => {
 			fullName$._(v.fullName);
 			fullNameInputElement$._().value = v.fullName;

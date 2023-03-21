@@ -44,9 +44,9 @@ class Gallery extends Component<Attributes>
 				'</div>',
 				if_(previewImage$, () => [
 					new Preview({
-						image: previewImage$.readonly as Store<Image>,
-						hasPrevious: hasPrevious$.readonly,
-						hasNext: hasNext$.readonly,
+						image$: previewImage$.readonly as Store<Image>,
+						hasPrevious$: hasPrevious$.readonly,
+						hasNext$: hasNext$.readonly,
 						onShowPrevious: () => showPrevious(),
 						onShowNext: () => showNext(),
 						onClose: ()=> closePreview(),

@@ -93,74 +93,80 @@ class Invoice extends Component
 								'</thead>',
 								'<tbody>',
 								[
-									forEach(tableData$, (rowData, index$) => parseHTML([
-										'<tr>', [
-											'<td>',
-											[map(index$, (v) => v + 1)],
-											'</td>',
-											'<td>',
-											[
-												'<input/>', {
-													class: 'form-control',
-													style: 'min-width: 5em',
-													value: rowData.productName$._(),
-													'@input': flow([
-														(ev) => ev.target.value,
-														(v) => rowData.productName$._(v),
-													]),
-												},
+									forEach(tableData$, (rowData, index$) => {
+										const productName$ = rowData.productName$;
+										const quantity$ = this.bindSupplier(rowData.quantity$);
+										const rate$ = this.bindSupplier(rowData.rate$);
+										const price$ = this.bindSupplier(rowData.price$);
+										return parseHTML([
+											'<tr>', [
+												'<td>',
+												[map(index$, (v) => v + 1)],
+												'</td>',
+												'<td>',
+												[
+													'<input/>', {
+														class: 'form-control',
+														style: 'min-width: 5em',
+														value: productName$._(),
+														'@input': flow([
+															(ev) => ev.target.value,
+															(v) => productName$._(v),
+														]),
+													},
+												],
+												'</td>',
+												'<td>',
+												[
+													'<input/>', {
+														class: [ 'form-control', {
+															'is-invalid': map(quantity$, (v) => !isNumericString(v)),
+														}],
+														style: 'min-width: 5em',
+														value: quantity$._(),
+														'@input': flow([
+															(ev) => ev.target.value,
+															(v) => quantity$._(v),
+														]),
+													},
+												],
+												'</td>',
+												'<td>',
+												[
+													'<input/>', {
+														class: [ 'form-control', {
+															'is-invalid': map(rate$, (v) => !isNumericString(v)),
+														}],
+														style: 'min-width: 5em',
+														value: rate$._(),
+														'@input': flow([
+															(ev) => ev.target.value,
+															(v) => rate$._(v),
+														]),
+													},
+												],
+												'</td>',
+												'<td>',
+												[
+													map(price$, (p) => p === null ? '–' : p),
+												],
+												'</td>',
+												'<td>',
+												[
+													'<button>', {
+														class: 'btn btn-outline-danger',
+														'@click': () => {
+															tableData$.mutate(remove, index$);
+														}
+													},
+													['Remove'],
+													'</button>',
+												],
+												'</td>',
 											],
-											'</td>',
-											'<td>',
-											[
-												'<input/>', {
-													class: [ 'form-control', {
-														'is-invalid': map(rowData.quantity$, (v) => !isNumericString(v)),
-													}],
-													style: 'min-width: 5em',
-													value: rowData.quantity$._(),
-													'@input': flow([
-														(ev) => ev.target.value,
-														(v) => rowData.quantity$._(v),
-													]),
-												},
-											],
-											'</td>',
-											'<td>',
-											[
-												'<input/>', {
-													class: [ 'form-control', {
-														'is-invalid': map(rowData.rate$, (v) => !isNumericString(v)),
-													}],
-													style: 'min-width: 5em',
-													value: rowData.rate$._(),
-													'@input': flow([
-														(ev) => ev.target.value,
-														(v) => rowData.rate$._(v),
-													]),
-												},
-											],
-											'</td>',
-											'<td>',
-											[
-												map(rowData.price$, (p) => p === null ? '–' : p),
-											],
-											'</td>',
-											'<td>',
-											[
-												'<button>', {
-													class: 'btn btn-outline-danger',
-													'@click': () => {
-														tableData$.mutate(remove, index$);
-													}
-												},
-												['Remove'],
-												'</button>',
-											],
-											'</td>',
-										],
-										'</tr>',
-									]))
+											'</tr>',
+										]);
+									})
 									.endForEach(),
 								],
 								'</tbody>',

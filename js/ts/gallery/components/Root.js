@@ -3,10 +3,10 @@ import Component from '../../../lib/ts/dom/Component.js';
 import createStore from '../../../lib/ts/core/createStore.js';
 import Gallery from './Gallery.js';
 import if_ from '../../../lib/ts/dom/if_.js';
-import map from "../../../lib/ts/core/map.js";
+import createArrayStore from '../../../lib/ts/array/createArrayStore.js';
 export default class Root extends Component {
     build({ apiBaseUrl, initialData = null }) {
-        const galleryImages$ = createStore([]);
+        const galleryImages$ = createArrayStore([]);
         const hasImageRequestCompleted$ = createStore(false);
         const hasImageRequestSucceed$ = createStore(false);
         if (initialData === null) {
@@ -53,7 +53,7 @@ export default class Root extends Component {
                     '</div>',
                     if_(hasImageRequestCompleted$, () => parseHTML([
                         if_(hasImageRequestSucceed$, () => parseHTML([
-                            if_(map(galleryImages$, (arr) => arr.length), () => parseHTML([
+                            if_(galleryImages$.length$, () => parseHTML([
                                 new Gallery({
                                     images$: galleryImages$,
                                 }),

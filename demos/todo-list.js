@@ -168,39 +168,42 @@ class TodoComponent extends Component
 								if_(todos$.length$, () => parseHTML([
 									'<div>', { class: 'list-group' },
 									[
-										forEach(todos$, (todo, index$) => parseHTML([
-											'<div>', { class: 'list-group-item' },
-											[
-												'<input/>', {
-													type: 'checkbox',
-													class: 'form-check-input',
-													id: map(index$, (v) => `todo-item-${v}`),
-													checked: todo.isCompleted$,
-													'@change': (ev) => {
-														todo.isCompleted$._(ev.target.checked);
-													}
-												},
-												' ',
-												'<label>', {
-													for: map(index$, (v) => `todo-item-${v}`),
-													class: [ 'form-check-label', {
-														'text-muted': todo.isCompleted$,
-														'text-decoration-line-through': todo.isCompleted$,
-													}],
-												},
-												[todo.text],
-												'</label>',
-												'<button>', {
-													class: 'btn btn-sm btn-outline-danger float-end',
-													'@click': () => {
-														todos$.mutate(remove, index$);
-													}
-												},
-												['Remove'],
-												'</button>',
-											],
-											'</div>',
-										]))
+										forEach(todos$, (todo, index$, forEachItem) => {
+											const isCompleted$ = forEachItem.bindSupplier(todo.isCompleted$);
+											return parseHTML([
+												'<div>', { class: 'list-group-item' },
+												[
+													'<input/>', {
+														type: 'checkbox',
+														class: 'form-check-input',
+														id: map(index$, (v) => `todo-item-${v}`),
+														checked: isCompleted$,
+														'@change': (ev) => {
+															isCompleted$._(ev.target.checked);
+														}
+													},
+													' ',
+													'<label>', {
+														for: map(index$, (v) => `todo-item-${v}`),
+														class: [ 'form-check-label', {
+															'text-muted': isCompleted$,
+															'text-decoration-line-through': isCompleted$,
+														}],
+													},
+													[todo.text],
+													'</label>',
+													'<button>', {
+														class: 'btn btn-sm btn-outline-danger float-end',
+														'@click': () => {
+															todos$.mutate(remove, index$);
+														}
+													},
+													['Remove'],
+													'</button>',
+												],
+												'</div>',
+											]);
+										})
 										.endForEach(),
 									],
 									'</div>',

@@ -91,7 +91,7 @@ class TriStateCheckbox extends Component
 									'<>': checkboxElement$,
 								},
 								map(index$, v => ` Item ${v+1} (`),
-								map(item$, (v) => v ? 'Selected' : 'Not selected'),
+								map(itemProxy$, (v) => v ? 'Selected' : 'Not selected'),
 								')'
 							],
 							'</label>',

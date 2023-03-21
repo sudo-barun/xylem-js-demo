@@ -10,9 +10,9 @@ import EmittableStream from "../../../lib/ts/types/EmittableStream.js";
 import Subscriber from "../../../lib/ts/types/Subscriber.js";
 
 type Attributes = {
-	image: Supplier<Image>,
-	hasPrevious: Supplier<boolean>,
-	hasNext: Supplier<boolean>,
+	image$: Supplier<Image>,
+	hasPrevious$: Supplier<boolean>,
+	hasNext$: Supplier<boolean>,
 	onShowPrevious: Subscriber<void>,
 	onShowNext: Subscriber<void>,
 	onClose: Subscriber<void>,
@@ -23,9 +23,9 @@ class Preview extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const image$: Supplier<Image> = this.bindSupplier(attrs.image);
-		const hasPrevious$: Supplier<boolean> = this.bindSupplier(attrs.hasPrevious);
-		const hasNext$: Supplier<boolean> = this.bindSupplier(attrs.hasNext);
+		const image$: Supplier<Image> = this.bindSupplier(attrs.image$);
+		const hasPrevious$: Supplier<boolean> = this.bindSupplier(attrs.hasPrevious$);
+		const hasNext$: Supplier<boolean> = this.bindSupplier(attrs.hasNext$);
 
 		const showPrevious: EmittableStream<void> = createEmittableStream();
 		const showNext: EmittableStream<void> = createEmittableStream();

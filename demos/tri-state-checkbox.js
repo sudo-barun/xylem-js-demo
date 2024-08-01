@@ -1,9 +1,9 @@
-import Component from "../lib/js/dom/Component.js";
-import createStore from "../lib/js/core/createStore.js";
-import forEach from "../lib/js/dom/forEach.js";
-import map from "../lib/js/core/map.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
-import parseHTML from "../lib/js/dom/parseHTML.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
+import forEach from "../node_modules/@xylem-js/xylem-js/js/dom/forEach.js";
+import map from "../node_modules/@xylem-js/xylem-js/js/core/map.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
 
 const ALL = 1;
 const NONE = 0;

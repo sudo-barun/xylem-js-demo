@@ -1,9 +1,9 @@
-import Component from "../lib/js/dom/Component.js";
-import createStore from "../lib/js/core/createStore.js";
-import cumulate from "../lib/js/core/cumulate.js";
-import map from "../lib/js/core/map.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
-import parseHTML from "../lib/js/dom/parseHTML.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
+import cumulate from "../node_modules/@xylem-js/xylem-js/js/core/cumulate.js";
+import map from "../node_modules/@xylem-js/xylem-js/js/core/map.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
 
 const INITIAL_VALUE = 0;
 const MAX = 5;

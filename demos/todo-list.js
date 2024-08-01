@@ -1,16 +1,16 @@
-import Component from "../lib/js/dom/Component.js";
-import createArrayStore from "../lib/js/array/createArrayStore.js";
-import createStore from "../lib/js/core/createStore.js";
-import combineNamedSuppliers from "../lib/js/core/combineNamedSuppliers.js";
-import forEach from "../lib/js/dom/forEach.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import createArrayStore from "../node_modules/@xylem-js/xylem-js/js/array/createArrayStore.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
+import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/js/core/combineNamedSuppliers.js";
+import forEach from "../node_modules/@xylem-js/xylem-js/js/dom/forEach.js";
 import GoToTop from "./components/GoToTop.js";
-import if_ from "../lib/js/dom/if_.js";
-import map from "../lib/js/core/map.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
-import normalizeArrayStore from "../lib/js/array/normalizeArrayStore.js";
-import parseHTML from "../lib/js/dom/parseHTML.js";
-import remove from "../lib/js/array_action/remove.js";
-import unshift from "../lib/js/array_action/unshift.js";
+import if_ from "../node_modules/@xylem-js/xylem-js/js/dom/if_.js";
+import map from "../node_modules/@xylem-js/xylem-js/js/core/map.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
+import normalizeArrayStore from "../node_modules/@xylem-js/xylem-js/js/array/normalizeArrayStore.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
+import remove from "../node_modules/@xylem-js/xylem-js/js/array_action/remove.js";
+import unshift from "../node_modules/@xylem-js/xylem-js/js/array_action/unshift.js";
 
 function intersperse(array, itemToInsert)
 {

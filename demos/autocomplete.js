@@ -1,13 +1,13 @@
 import axios from "../node_modules/axios/dist/esm/axios.js";
-import Component from "../lib/js/dom/Component.js";
-import createStore from "../lib/js/core/createStore.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
 import flow from "../node_modules/lodash-es/flow.js";
-import if_ from "../lib/js/dom/if_.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
-import map from "../lib/js/core/map.js";
-import parseHTML from "../lib/js/dom/parseHTML.js";
-import cumulate from "../lib/js/core/cumulate.js";
+import if_ from "../node_modules/@xylem-js/xylem-js/js/dom/if_.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
+import map from "../node_modules/@xylem-js/xylem-js/js/core/map.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
+import cumulate from "../node_modules/@xylem-js/xylem-js/js/core/cumulate.js";
 
 const allNames$ = getAllNames$();
 

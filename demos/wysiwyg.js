@@ -1,10 +1,10 @@
-import Component from "../lib/js/dom/Component.js";
-import createSupplier from "../lib/js/core/createSupplier.js";
-import createEmittableStream from "../lib/js/core/createEmittableStream.js";
-import createStore from "../lib/js/core/createStore.js";
-import if_ from "../lib/js/dom/if_.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
-import parseHTML from "../lib/js/dom/parseHTML.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import createSupplier from "../node_modules/@xylem-js/xylem-js/js/core/createSupplier.js";
+import createEmittableStream from "../node_modules/@xylem-js/xylem-js/js/core/createEmittableStream.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
+import if_ from "../node_modules/@xylem-js/xylem-js/js/dom/if_.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
 import throttle from "../node_modules/lodash-es/throttle.js";
 
 function saveEditorData(data)

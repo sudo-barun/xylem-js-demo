@@ -1,8 +1,8 @@
-import parseHTML from "../lib/js/dom/parseHTML.js";
-import createStore from "../lib/js/core/createStore.js";
-import Component from "../lib/js/dom/Component.js";
-import { hydrateComponentChildren } from "../lib/js/dom/hydrate.js";
-import mountComponent from "../lib/js/dom/mountComponent.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
+import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
+import { hydrateComponentChildren } from "../node_modules/@xylem-js/xylem-js/js/dom/hydrate.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
 
 class DynamicTitle extends Component
 {

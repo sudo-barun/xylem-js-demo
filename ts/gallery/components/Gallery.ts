@@ -1,13 +1,13 @@
-import parseHTML from "../../../lib/ts/dom/parseHTML.js";
-import Component from "../../../lib/ts/dom/Component.js";
-import ComponentChildren from "../../../lib/ts/types/ComponentChildren.js";
-import createStore from "../../../lib/ts/core/createStore.js";
-import forEach from "../../../lib/ts/dom/forEach.js";
-import if_ from "../../../lib/ts/dom/if_.js";
+import parseHTML from "../../../node_modules/@xylem-js/xylem-js/ts/dom/parseHTML.js";
+import Component from "../../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js";
+import ComponentChildren from "../../../node_modules/@xylem-js/xylem-js/ts/types/ComponentChildren.js";
+import createStore from "../../../node_modules/@xylem-js/xylem-js/ts/core/createStore.js";
+import forEach from "../../../node_modules/@xylem-js/xylem-js/ts/dom/forEach.js";
+import if_ from "../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js";
 import Image from "../types/Image.js";
 import Item from "./Item.js";
 import Preview from "./Preview.js";
-import Store from "../../../lib/ts/types/Store.js";
+import Store from "../../../node_modules/@xylem-js/xylem-js/ts/types/Store.js";
 
 type Attributes = {
 	images$: Store<Image[]>,

@@ -1,4 +1,4 @@
-import mountComponent from '../../lib/ts/dom/mountComponent.js';
+import mountComponent from '../../node_modules/@xylem-js/xylem-js/ts/dom/mountComponent.js';
 import Root from './components/Root.js';
 mountComponent((() => {
     const component = new Root();

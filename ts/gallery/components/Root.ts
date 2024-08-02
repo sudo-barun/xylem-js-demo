@@ -1,10 +1,10 @@
-import parseHTML from '../../../lib/ts/dom/parseHTML.js';
-import Component from '../../../lib/ts/dom/Component.js';
-import createStore from '../../../lib/ts/core/createStore.js';
+import parseHTML from '../../../node_modules/@xylem-js/xylem-js/ts/dom/parseHTML.js';
+import Component from '../../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js';
+import createStore from '../../../node_modules/@xylem-js/xylem-js/ts/core/createStore.js';
 import Gallery from './Gallery.js';
-import if_ from '../../../lib/ts/dom/if_.js';
+import if_ from '../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js';
 import Image from '../types/Image.js';
-import createArrayStore from '../../../lib/ts/array/createArrayStore.js';
+import createArrayStore from '../../../node_modules/@xylem-js/xylem-js/ts/array/createArrayStore.js';
 
 type InjectedAttributes = {
 	apiBaseUrl: string,

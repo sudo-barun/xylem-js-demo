@@ -1,8 +1,8 @@
-import parseHTML from "../../../lib/ts/dom/parseHTML.js";
-import Component from "../../../lib/ts/dom/Component.js";
-import createStore from "../../../lib/ts/core/createStore.js";
-import forEach from "../../../lib/ts/dom/forEach.js";
-import if_ from "../../../lib/ts/dom/if_.js";
+import parseHTML from "../../../node_modules/@xylem-js/xylem-js/ts/dom/parseHTML.js";
+import Component from "../../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js";
+import createStore from "../../../node_modules/@xylem-js/xylem-js/ts/core/createStore.js";
+import forEach from "../../../node_modules/@xylem-js/xylem-js/ts/dom/forEach.js";
+import if_ from "../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js";
 import Item from "./Item.js";
 import Preview from "./Preview.js";
 export default class Gallery extends Component {

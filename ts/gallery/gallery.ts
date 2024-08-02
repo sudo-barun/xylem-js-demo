@@ -1,5 +1,5 @@
-import Component from '../../lib/ts/dom/Component.js';
-import mountComponent from '../../lib/ts/dom/mountComponent.js';
+import Component from '../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js';
+import mountComponent from '../../node_modules/@xylem-js/xylem-js/ts/dom/mountComponent.js';
 import Root from './components/Root.js';
 
 mountComponent((() => {

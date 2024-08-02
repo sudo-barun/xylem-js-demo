@@ -1,8 +1,8 @@
-import parseHTML from "../../../lib/ts/dom/parseHTML.js";
-import Component from "../../../lib/ts/dom/Component.js";
-import createEmittableStream from "../../../lib/ts/core/createEmittableStream.js";
-import createStore from "../../../lib/ts/core/createStore.js";
-import map from "../../../lib/ts/core/map.js";
+import parseHTML from "../../../node_modules/@xylem-js/xylem-js/ts/dom/parseHTML.js";
+import Component from "../../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js";
+import createEmittableStream from "../../../node_modules/@xylem-js/xylem-js/ts/core/createEmittableStream.js";
+import createStore from "../../../node_modules/@xylem-js/xylem-js/ts/core/createStore.js";
+import map from "../../../node_modules/@xylem-js/xylem-js/ts/core/map.js";
 export default class Preview extends Component {
     build(attrs) {
         const image$ = this.bindSupplier(attrs.image$);

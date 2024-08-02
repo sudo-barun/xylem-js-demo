@@ -1,0 +1,55 @@
+/*
+ * (c) Barun Kharel <kharelbarun@gmail.com>
+ */
+
+.section-wrapper {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+.section-wrapper > .section-content {
+	flex-grow: 1;
+}
+
+.toolbar {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.toolbar {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	margin-bottom: 16px;
+}
+
+.toolbar .heading {
+	margin: 0;
+}
+
+.toolbar {
+	background-color: #1976d2;
+	color: white;
+}
+
+.section-content {
+	text-align: center;
+}
+
+.footer {
+	position: sticky;
+	bottom: 0;
+}
+
+.footer {
+	text-align: center;
+	margin-top: 32px;
+	padding: 8px 0;
+	border-top: 1px solid #f0f0f0;
+	background-color: #f8f8f8;
+	font-size: 14px;
+}

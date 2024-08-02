@@ -157,8 +157,15 @@ function setTimeoutPromisified(delay, ...args) {
     return new Promise(resolve => setTimeout(resolve, delay, ...args));
 }
 function getImages(apiBaseUrl) {
-    return fetch(getUrl(apiBaseUrl))
-        .then(response => response.json());
+    return fetch('https://picsum.photos/v2/list?page=10')
+        .then(response => response.json())
+        .then(images => images.slice(0, 10).map(image => ({
+        url: image.download_url,
+        caption: `${image.download_url} (by ${image.author})`,
+    })));
+    // return fetch(getUrl(apiBaseUrl))
+    // .then(response => response.json())
+    // ;
 }
 function getUrl(apiBaseUrl) {
     return apiBaseUrl + '/image/';

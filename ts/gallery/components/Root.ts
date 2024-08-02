@@ -175,12 +175,27 @@ function setTimeoutPromisified(delay: number, ...args: any[])
 
 function getImages(apiBaseUrl: string): Promise<Image[]>
 {
-	return fetch(getUrl(apiBaseUrl))
-	.then(response => response.json())
-	;
+	return fetch('https://picsum.photos/v2/list?page=10')
+	.then(response => response.json() as Promise<PicsumImage[]>)
+	.then(images => images.slice(0, 10).map(image => ({
+		url: image.download_url,
+		caption: `${image.download_url} (by ${image.author})`,
+	})));
+	// return fetch(getUrl(apiBaseUrl))
+	// .then(response => response.json())
+	// ;
 }
 
 function getUrl(apiBaseUrl: string)
 {
 	return apiBaseUrl+'/image/';
 }
+
+type PicsumImage = {
+	id: string,
+	author: string,
+	width: number,
+	height: number,
+	url: string,
+	download_url: string,
+};

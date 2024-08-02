@@ -58,7 +58,7 @@ class Root extends Component<{}, InjectedAttributes>
 						'<p>',
 						[
 							'<b>',['Gallery'],'</b>',
-							' is a ???? component made to showcase images.',
+							' is a XylemJS component made to showcase images.',
 						],
 						'</p>',
 					],
@@ -141,7 +141,7 @@ class Root extends Component<{}, InjectedAttributes>
 				[
 					'<div>', { class: 'container text-center' },
 					[
-						'Made with ???? by ', '<b>', ['Barun Kharel'], '</b>',
+						'Made with XylemJS by ', '<b>', ['Barun Kharel'], '</b>',
 					],
 					'</div>',
 				],

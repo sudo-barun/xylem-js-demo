@@ -1,4 +1,4 @@
-import hydrate from "./js/lib/ts/dom/hydrate.js";
+import hydrate from "./js/node_modules/@xylem-js/xylem-js/ts/dom/hydrate.js";
 import Root from "./js/ts/gallery/components/Root.js";
 
 const component = new Root(INITIAL_DATA);

@@ -5,13 +5,25 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 define('NODE_PATH', '');
-define('API_BASE_URL', '');
+// define('API_BASE_URL', '');
 
-$initialData = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
-$initialData['galleryImages'] = array_map(function ($image) {
-	$image['url'] = API_BASE_URL . $image['url'];
-	return $image;
-}, $initialData['galleryImages']);
+// $initialData = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
+// $initialData['galleryImages'] = array_map(function ($image) {
+// 	$image['url'] = API_BASE_URL . $image['url'];
+// 	return $image;
+// }, $initialData['galleryImages']);
+$galleryImages = json_decode(file_get_contents(__DIR__ . '/data-picsum-photos.json'), true);
+// $galleryImages = json_decode(file_get_contents('https://picsum.photos/v2/list?page=10'), true);
+$galleryImages = array_slice($galleryImages, 0, 10);
+$galleryImages = array_map(function ($image) {
+	return [
+		'url' => $image['download_url'],
+		'caption' => "{$image['download_url']} (by {$image['author']})",
+	];
+}, $galleryImages);
+$initialData = [
+	'galleryImages' => $galleryImages,
+];
 $jsonMinified = json_encode($initialData);
 
 $tempFile = tmpfile();

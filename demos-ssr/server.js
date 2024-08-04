@@ -2,8 +2,7 @@ import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as path from 'node:path';
 
-import "../js/lib/ts/core/createStore.js";
-import parse from "../js/lib/ts/server/parse.js";
+import stringifyComponent from "../js/node_modules/@xylem-js/xylem-js/ts/server/stringifyComponent.js";
 import Root from "../js/ts/gallery/components/Root.js";
 
 const PORT = 8000;
@@ -47,13 +46,14 @@ http.createServer(async (req, res) => {
 		const mimeType = MIME_TYPES[file.ext] || MIME_TYPES.default;
 		res.writeHead(statusCode, { 'Content-Type': mimeType });
 		file.stream.pipe(res);
-		console.log(`${req.method} ${req.url} ${statusCode}`);
+		console.log(`${new Date().toISOString()} ${req.method} ${req.url} ${statusCode}`);
 
 	} else {
 
 		const component = new Root();
 		component.setModifier(modifier);
-		const html = parse(component);
+		component.setup();
+		const html = stringifyComponent(component);
 
 		const fileContent = await fs.promises.readFile('gallery.html', 'utf-8');
 
@@ -75,14 +75,24 @@ http.createServer(async (req, res) => {
 console.log(`Server running at http://127.0.0.1:${PORT}/`);
 
 
-const API_BASE_URL = '';
+// const API_BASE_URL = '';
 
-const initialData = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
+// const initialData = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
 
-initialData.galleryImages = initialData.galleryImages.map((image) => {
-	image.url = API_BASE_URL + image.url;
-	return image;
-});
+// initialData.galleryImages = initialData.galleryImages.map((image) => {
+// 	image.url = API_BASE_URL + image.url;
+// 	return image;
+// });
+
+let galleryImages = JSON.parse(fs.readFileSync('data-picsum-photos.json', 'utf-8'));
+galleryImages = galleryImages.slice(0, 10);
+galleryImages = galleryImages.slice(0, 10).map((image) => ({
+	url: image.download_url,
+	caption: `${image.download_url} (by ${image.author}`,
+}));
+const initialData = {
+	galleryImages,
+};
 
 function modifier(component)
 {

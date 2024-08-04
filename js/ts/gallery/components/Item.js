@@ -17,6 +17,7 @@ export default class Item extends Component {
                 [
                     '<img/>', {
                         src: image.url,
+                        alt: image.caption,
                     }
                 ],
                 '</a>',

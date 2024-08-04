@@ -1,6 +1,6 @@
 import fs from "fs";
 import Root from "../js/ts/gallery/components/Root.js";
-import stringifyComponent from "../js/lib/ts/server/stringifyComponent.js";
+import stringifyComponent from "../js/node_modules/@xylem-js/xylem-js/ts/server/stringifyComponent.js";
 
 let initialData = null;
 

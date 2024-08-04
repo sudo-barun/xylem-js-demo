@@ -32,6 +32,7 @@ class Item extends Component<Attributes>
 				[
 					'<img/>', {
 						src: image.url,
+						alt: image.caption,
 					}
 				],
 				'</a>',

@@ -1,10 +1,9 @@
-import hydrate from "./js/node_modules/@xylem-js/xylem-js/ts/dom/hydrate.js";
-import Root from "./js/ts/gallery/components/Root.js";
+import hydrate from "../js/node_modules/@xylem-js/xylem-js/ts/dom/hydrate.js";
+import Root from "../js/ts/gallery/components/Root.js";
 
 const component = new Root(INITIAL_DATA);
 component.setModifier(modifier);
 component.setup();
-console.log(component);
 hydrate(component, document.getElementById('root-container').childNodes);
 component.setupDom();
 

@@ -1,27 +1,38 @@
 import parseHTML from '../../../node_modules/@xylem-js/xylem-js/ts/dom/parseHTML.js';
 import Component from '../../../node_modules/@xylem-js/xylem-js/ts/dom/Component.js';
 import createStore from '../../../node_modules/@xylem-js/xylem-js/ts/core/createStore.js';
+import map from '../../../node_modules/@xylem-js/xylem-js/ts/core/map.js';
 import Gallery from './Gallery.js';
 import if_ from '../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js';
 import createArrayStore from '../../../node_modules/@xylem-js/xylem-js/ts/array/createArrayStore.js';
+import axios from "../../../../node_modules/axios/dist/esm/axios.js";
+let page = 10;
+function randomizePage() {
+    page = Math.floor(Math.random() * 30) + 1;
+}
 export default class Root extends Component {
     build({ apiBaseUrl, initialData = null }) {
         const galleryImages$ = createArrayStore([]);
         const hasImageRequestCompleted$ = createStore(false);
         const hasImageRequestSucceed$ = createStore(false);
+        function loadData() {
+            hasImageRequestCompleted$._(false);
+            hasImageRequestSucceed$._(false);
+            delayPromise(getImages(apiBaseUrl), 2000)
+                .then((images) => {
+                galleryImages$._(images);
+                hasImageRequestSucceed$._(true);
+            })
+                .catch(() => hasImageRequestSucceed$._(false))
+                .finally(() => hasImageRequestCompleted$._(true));
+        }
         if (initialData === null) {
             this.afterAttachToDom.subscribe(() => {
-                delayPromise(getImages(apiBaseUrl), 2000)
-                    .then((images) => {
-                    galleryImages$._(images);
-                    hasImageRequestSucceed$._(true);
-                })
-                    .catch(() => hasImageRequestSucceed$._(false))
-                    .finally(() => hasImageRequestCompleted$._(true));
+                loadData();
             });
         }
         else {
-            galleryImages$._(initialData.galleryImages);
+            galleryImages$._(normalizeImage(initialData.galleryImages));
             hasImageRequestCompleted$._(true);
             hasImageRequestSucceed$._(true);
         }
@@ -49,6 +60,25 @@ export default class Root extends Component {
                             ' is a XylemJS component made to showcase images.',
                         ],
                         '</p>',
+                    ],
+                    '</div>',
+                    '<div>', {
+                        class: 'container',
+                        style: 'display: flex; justify-content: end; gap: 8px',
+                    },
+                    [
+                        '<button>', {
+                            'class': 'refresh-button',
+                            'disabled': map(hasImageRequestCompleted$, v => !v),
+                            '@click': () => {
+                                randomizePage(),
+                                    loadData();
+                            },
+                        },
+                        [
+                            'Random',
+                        ],
+                        '</button>',
                     ],
                     '</div>',
                     if_(hasImageRequestCompleted$, () => parseHTML([
@@ -156,16 +186,39 @@ function delayPromise(promise, delay) {
 function setTimeoutPromisified(delay, ...args) {
     return new Promise(resolve => setTimeout(resolve, delay, ...args));
 }
+let ajaxLib;
+if (typeof window !== 'undefined') {
+    ajaxLib = Object.hasOwn(window, 'fetch') ? 'fetch' : 'axios';
+}
+else {
+    ajaxLib = 'fetch';
+}
 function getImages(apiBaseUrl) {
-    return fetch('https://picsum.photos/v2/list?page=10')
-        .then(response => response.json())
-        .then(images => images.slice(0, 10).map(image => ({
+    if (ajaxLib === 'fetch')
+        return fetch(`https://picsum.photos/v2/list?page=${page}`)
+            .then(response => response.json())
+            .then(images => normalizeImage(images));
+    else
+        return axios(`https://picsum.photos/v2/list?page=${page}`)
+            .then(response => response.data)
+            .then(images => normalizeImage(images));
+}
+function normalizeImage(images) {
+    return images.slice(0, 10).map(image => ({
+        author: image.author,
         url: image.download_url,
+        thumbnail: {
+            url: image.download_url.replace(/https:\/\/picsum.photos\/id\/([0-9]+)\/([0-9]+)\/([0-9]+)/, (_, id) => `https://picsum.photos/id/${id}/200`),
+            width: 200,
+            height: 200,
+        },
+        preview: {
+            url: image.download_url.replace(/https:\/\/picsum.photos\/id\/([0-9]+)\/([0-9]+)\/([0-9]+)/, (_, id) => `https://picsum.photos/id/${id}/1000`),
+            width: 1000,
+            height: 1000,
+        },
         caption: `${image.download_url} (by ${image.author})`,
-    })));
-    // return fetch(getUrl(apiBaseUrl))
-    // .then(response => response.json())
-    // ;
+    }));
 }
 function getUrl(apiBaseUrl) {
     return apiBaseUrl + '/image/';

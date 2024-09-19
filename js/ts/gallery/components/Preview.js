@@ -71,15 +71,15 @@ export default class Preview extends Component {
                                                 '-is-previous': map(combineSuppliers([images$.length$, showingPrevious$, index$]), ([l, sp, i]) => (l > 1) && sp && (i === 0)),
                                                 '-is-next': map(combineSuppliers([images$.length$, showingNext$, index$]), ([l, sn, i]) => (l > 1) && sn && (i === 1)),
                                             }],
-                                        '@transitionend': (ev) => {
-                                            console.log(ev);
-                                        },
                                     },
                                     [
                                         '<div>', { class: '-image' },
                                         [
                                             '<img/>', {
-                                                src: image.url,
+                                                src: image.preview.url,
+                                                alt: '',
+                                                width: image.preview.width,
+                                                height: image.preview.height,
                                             },
                                         ],
                                         '</div>',

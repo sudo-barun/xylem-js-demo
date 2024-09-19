@@ -97,23 +97,23 @@ class Preview extends Component<Attributes>
 									'<div>', {
 										class: [ '-image-caption-container', {
 											'-is-previous': map(
-												combineSuppliers([ images$.length$, showingPrevious$, index$ ]),
+												combineSuppliers<[number, boolean, number]>([ images$.length$, showingPrevious$, index$ ]),
 												([ l, sp, i ]) => (l > 1) && sp && (i === 0)
 											),
 											'-is-next': map(
-												combineSuppliers([ images$.length$, showingNext$, index$ ]),
+												combineSuppliers<[number, boolean, number]>([ images$.length$, showingNext$, index$ ]),
 												([ l, sn, i ]) => (l > 1) && sn && (i === 1)
 											),
 										}],
-										'@transitionend': (ev: Event) => {
-											console.log(ev);
-										},
 									},
 									[
 										'<div>', { class: '-image' },
 										[
 											'<img/>', {
-												src: image.url,
+												src: image.preview.url,
+												alt: '',
+												width: image.preview.width,
+												height: image.preview.height,
 											},
 										],
 										'</div>',

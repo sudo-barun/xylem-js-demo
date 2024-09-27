@@ -1,15 +1,12 @@
-import hydrate from "../js/node_modules/@xylem-js/xylem-js/ts/dom/hydrate.js";
+import hydrateComponent from "../js/node_modules/@xylem-js/xylem-js/ts/dom/hydrateComponent.js";
 import Root from "../js/ts/gallery/components/Root.js";
 
 const component = new Root(INITIAL_DATA);
 component.setModifier(modifier);
-component.setup();
-hydrate(component, document.getElementById('root-container').childNodes);
-component.setupDom();
+
+hydrateComponent(component, document.getElementById('root-container').childNodes);
 
 document.removeEventListener('click', listenerToPreventAnchorClick);
-
-component.notifyAfterAttachToDom();
 
 function modifier(component)
 {

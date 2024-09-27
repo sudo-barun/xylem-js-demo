@@ -10,6 +10,7 @@ module.exports = {
 	mode: 'development',
 	entry: entryFiles.reduce((acc,file)=>{
 		acc[file] = [
+			'core-js/es/promise/index',
 			`./demos-ssr/${file}.js`,
 		];
 		return acc;

@@ -7,9 +7,6 @@ import if_ from '../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js';
 import Image from '../types/Image.js';
 import createArrayStore from '../../../node_modules/@xylem-js/xylem-js/ts/array/createArrayStore.js';
 
-import type axiosType from '../../../node_modules/axios/index';
-import axios from "../../../../node_modules/axios/dist/esm/axios.js";
-
 type InjectedAttributes = {
 	apiBaseUrl: string,
 	initialData?: null|{ galleryImages: PicsumImage[] },
@@ -208,9 +205,9 @@ function setTimeoutPromisified(delay: number, ...args: any[])
 	return new Promise(resolve => setTimeout(resolve, delay, ...args));
 }
 
-let ajaxLib: 'fetch' | 'axios';
+let ajaxLib: 'fetch' | 'xhr';
 if (typeof window !== 'undefined') {
-	ajaxLib = Object.hasOwn(window, 'fetch') ? 'fetch' : 'axios';
+	ajaxLib = typeof window.fetch !== 'undefined' ? 'fetch' : 'xhr';
 } else {
 	ajaxLib = 'fetch';
 }
@@ -224,10 +221,14 @@ function getImages(apiBaseUrl: string): Promise<Image[]>
 	;
 
 	else
-	return (axios as typeof axiosType)(`https://picsum.photos/v2/list?page=${page}`)
-		.then(response => response.data as PicsumImage[])
-		.then(images => normalizeImage(images))
-	;
+	return new Promise<PicsumImage[]>((res) => {
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', `https://picsum.photos/v2/list?page=${page}`)
+		xhr.addEventListener('load', function () {
+			res(JSON.parse(xhr.responseText) as PicsumImage[]);
+		})
+		xhr.send();
+	}).then(images => normalizeImage(images));
 }
 
 function normalizeImage(images: PicsumImage[]): Image[]

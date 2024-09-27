@@ -5,7 +5,6 @@ import map from '../../../node_modules/@xylem-js/xylem-js/ts/core/map.js';
 import Gallery from './Gallery.js';
 import if_ from '../../../node_modules/@xylem-js/xylem-js/ts/dom/if_.js';
 import createArrayStore from '../../../node_modules/@xylem-js/xylem-js/ts/array/createArrayStore.js';
-import axios from "../../../../node_modules/axios/dist/esm/axios.js";
 let page = 10;
 function randomizePage() {
     page = Math.floor(Math.random() * 30) + 1;
@@ -188,7 +187,7 @@ function setTimeoutPromisified(delay, ...args) {
 }
 let ajaxLib;
 if (typeof window !== 'undefined') {
-    ajaxLib = Object.hasOwn(window, 'fetch') ? 'fetch' : 'axios';
+    ajaxLib = typeof window.fetch !== 'undefined' ? 'fetch' : 'xhr';
 }
 else {
     ajaxLib = 'fetch';
@@ -199,9 +198,14 @@ function getImages(apiBaseUrl) {
             .then(response => response.json())
             .then(images => normalizeImage(images));
     else
-        return axios(`https://picsum.photos/v2/list?page=${page}`)
-            .then(response => response.data)
-            .then(images => normalizeImage(images));
+        return new Promise((res) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `https://picsum.photos/v2/list?page=${page}`);
+            xhr.addEventListener('load', function () {
+                res(JSON.parse(xhr.responseText));
+            });
+            xhr.send();
+        }).then(images => normalizeImage(images));
 }
 function normalizeImage(images) {
     return images.slice(0, 10).map(image => ({

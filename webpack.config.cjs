@@ -20,6 +20,7 @@ module.exports = {
 	mode: 'development',
 	entry: entryFiles.reduce((acc,file)=>{
 		acc[file] = [
+			'core-js/es/promise/index',
 			// 'core-js',
 			`./demos/${file}.js`,
 		];
@@ -36,7 +37,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.m?js$/,
-				exclude: /node_modules\/(?!(axios))/,
+				// exclude: /node_modules\/(?!(axios))/,
 				// use: {
 				// 	loader: 'babel-loader',
 				// 	options: {

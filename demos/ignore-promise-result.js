@@ -1,11 +1,11 @@
-import parseHTML from "../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
-import Component from "../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
-import createStore from "../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
-import createStream from "../node_modules/@xylem-js/xylem-js/js/core/createStream.js";
-import if_ from "../node_modules/@xylem-js/xylem-js/js/dom/if_.js";
-import map from "../node_modules/@xylem-js/xylem-js/js/core/map.js";
-import mountComponent from "../node_modules/@xylem-js/xylem-js/js/dom/mountComponent.js";
-import cumulate from "../node_modules/@xylem-js/xylem-js/js/core/cumulate.js";
+import parseHTML from "../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
+import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
+import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
+import createStream from "../node_modules/@xylem-js/xylem-js/core/createStream.js";
+import if_ from "../node_modules/@xylem-js/xylem-js/dom/if_.js";
+import map from "../node_modules/@xylem-js/xylem-js/core/map.js";
+import mountComponent from "../node_modules/@xylem-js/xylem-js/dom/mountComponent.js";
+import cumulate from "../node_modules/@xylem-js/xylem-js/core/cumulate.js";
 
 function startRequest()
 {

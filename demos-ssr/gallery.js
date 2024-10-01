@@ -1,5 +1,5 @@
-import hydrateComponent from "../js/node_modules/@xylem-js/xylem-js/ts/dom/hydrateComponent.js";
-import Root from "../js/ts/gallery/components/Root.js";
+import hydrateComponent from "../node_modules/@xylem-js/xylem-js/dom/hydrateComponent.js";
+import Root from "../gallery/components/Root.js";
 
 const component = new Root(INITIAL_DATA);
 component.setModifier(modifier);

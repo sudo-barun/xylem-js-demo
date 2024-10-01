@@ -1,8 +1,8 @@
-import Component from "../../node_modules/@xylem-js/xylem-js/js/dom/Component.js";
-import createStore from "../../node_modules/@xylem-js/xylem-js/js/core/createStore.js";
-import createStreamOfDomEvent from "../../node_modules/@xylem-js/xylem-js/js/utilities/createStreamOfDomEvent.js";
-import map from "../../node_modules/@xylem-js/xylem-js/js/core/map.js";
-import parseHTML from "../../node_modules/@xylem-js/xylem-js/js/dom/parseHTML.js";
+import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
+import createStore from "../../node_modules/@xylem-js/xylem-js/core/createStore.js";
+import createStreamOfDomEvent from "../../node_modules/@xylem-js/xylem-js/utilities/createStreamOfDomEvent.js";
+import map from "../../node_modules/@xylem-js/xylem-js/core/map.js";
+import parseHTML from "../../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
 import throttle from "../../node_modules/lodash-es/throttle.js";
 
 export default

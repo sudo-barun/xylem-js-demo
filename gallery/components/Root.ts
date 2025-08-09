@@ -4,7 +4,7 @@ import createStore from '../../node_modules/@xylem-js/xylem-js/core/createStore.
 import map from '../../node_modules/@xylem-js/xylem-js/core/map.js';
 import Gallery from './Gallery.js';
 import if_ from '../../node_modules/@xylem-js/xylem-js/dom/if_.js';
-import Image from '../types/Image.js';
+import type Image from '../types/Image.js';
 import createArrayStore from '../../node_modules/@xylem-js/xylem-js/array/createArrayStore.js';
 
 type InjectedAttributes = {

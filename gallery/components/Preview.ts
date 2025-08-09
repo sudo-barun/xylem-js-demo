@@ -97,11 +97,11 @@ class Preview extends Component<Attributes>
 									'<div>', {
 										class: [ '-image-caption-container', {
 											'-is-previous': map(
-												combineSuppliers<[number, boolean, number]>([ images$.length$, showingPrevious$, index$ ]),
+												combineSuppliers([ images$.length$, showingPrevious$, index$ ]),
 												([ l, sp, i ]) => (l > 1) && sp && (i === 0)
 											),
 											'-is-next': map(
-												combineSuppliers<[number, boolean, number]>([ images$.length$, showingNext$, index$ ]),
+												combineSuppliers([ images$.length$, showingNext$, index$ ]),
 												([ l, sn, i ]) => (l > 1) && sn && (i === 1)
 											),
 										}],

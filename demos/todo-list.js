@@ -20,7 +20,7 @@ function intersperse(array, itemToInsert)
 	}
 	return array;
 }
-console.log(intersperse([1, 2, 3, 4, 5], {}));
+// console.log(intersperse([1, 2, 3, 4, 5], {}));
 
 function getTodoListItem(index)
 {
@@ -72,7 +72,7 @@ class TodoComponent extends Component
 			todos$: todos$,
 			newTodo$: newTodo$,
 		};
-		console.log('viewModel', viewModel);
+		// console.log('viewModel', viewModel);
 
 		window.todos$ = todos$;
 
@@ -251,4 +251,4 @@ class TodoComponent extends Component
 
 const cmp = new TodoComponent();
 mountComponent(cmp, document.getElementById('root'));
-console.log(cmp)
+// console.log(cmp)

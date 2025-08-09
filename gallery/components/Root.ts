@@ -12,10 +12,12 @@ type InjectedAttributes = {
 	initialData?: null|{ galleryImages: PicsumImage[] },
 };
 
-let page = 10;
+let page = 29;
+let page$ = createStore(page);
 
 function randomizePage() {
 	page = Math.floor(Math.random() * 30) + 1;
+	page$._(page);
 }
 
 export default
@@ -167,6 +169,12 @@ class Root extends Component<{}, InjectedAttributes>
 						'</div>',
 					]))
 					.endIf(),
+					'<div>',
+					[
+						'Page ',
+						page$,
+					],
+					'</div>',
 				],
 				'</div>',
 				'<footer>', { class: 'footer' },

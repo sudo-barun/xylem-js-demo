@@ -5,9 +5,11 @@ import map from '../../node_modules/@xylem-js/xylem-js/core/map.js';
 import Gallery from './Gallery.js';
 import if_ from '../../node_modules/@xylem-js/xylem-js/dom/if_.js';
 import createArrayStore from '../../node_modules/@xylem-js/xylem-js/array/createArrayStore.js';
-let page = 10;
+let page = 29;
+let page$ = createStore(page);
 function randomizePage() {
     page = Math.floor(Math.random() * 30) + 1;
+    page$._(page);
 }
 export default class Root extends Component {
     build({ apiBaseUrl, initialData = null }) {
@@ -152,6 +154,12 @@ export default class Root extends Component {
                         '</div>',
                     ]))
                         .endIf(),
+                    '<div>',
+                    [
+                        'Page ',
+                        page$,
+                    ],
+                    '</div>',
                 ],
                 '</div>',
                 '<footer>', { class: 'footer' },

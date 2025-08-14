@@ -94,14 +94,14 @@ class Root extends Component
 							'</button>',
 							'<button>', {
 								class: 'btn btn-outline-secondary float-end ms-2',
-								hidden: map(isEditMode$, (v) => !v),
+								hidden: map(this, isEditMode$, (v) => !v),
 								'@click': () => isEditMode$._(false),
 							},
 							['Cancel'],
 							'</button>',
 							'<button>', {
 								class: 'btn btn-outline-secondary float-end',
-								hidden: map(isEditMode$, (v) => !v),
+								hidden: map(this, isEditMode$, (v) => !v),
 								'@click': onReset,
 							},
 							['Reset'],
@@ -111,12 +111,16 @@ class Root extends Component
 						'<h1>', { class: 'h2' },
 						['Resumé'],
 						'</h1>',
-						if_(isEditMode$, () => [
-							new ResumeForm({resume$: resume$.readonly, onSave}),
-						])
-						.else(() => [
-							new ResumeView({resume$: resume$.readonly}),
-						])
+						if_(isEditMode$, function () {
+							return [
+								new ResumeForm({resume$: resume$.readonly, onSave}),
+							];
+						})
+						.else(function () {
+							return [
+								new ResumeView({resume$: resume$.readonly}),
+							];
+						})
 						.endIf(),
 					],
 					'</div>',
@@ -158,48 +162,50 @@ class ResumeView extends Component
 					'</h5>',
 					'<ol>',
 					[
-						forEach(resume.projects, (project) => parseHTML([
-							'<li>', { class: 'my-3' },
-							[
-								'<div>',
-								[ '<b>', [project.title], '</b>' ],
-								'</div>',
-								'<div>',
-								[ project.description ],
-								'</div>',
-								'<div>',
+						forEach(resume.projects, function (project) {
+							return parseHTML([
+								'<li>', { class: 'my-3' },
 								[
-									'Completion Date: ',
-									project.completionDate,
+									'<div>',
+									[ '<b>', [project.title], '</b>' ],
+									'</div>',
+									'<div>',
+									[ project.description ],
+									'</div>',
+									'<div>',
+									[
+										'Completion Date: ',
+										project.completionDate,
+									],
+									'</div>',
+									'<div>',
+									[
+										'Skills: ',
+										...intersperse(project.skills.map((skill) => ([
+											'<span>', { class: 'badge text-bg-secondary' },
+											[skill],
+											'</span>',
+										])), ' ').reduce((acc, item) => {
+											acc.push(...item);
+											return acc;
+										}, []),
+									],
+									'</div>',
+									'<div>',
+									[
+										'URL: ',
+										'<a>', {
+											href: project.url,
+											target: '_blank',
+										},
+										[ project.url ],
+										'</a>',
+									],
+									'</div>',
 								],
-								'</div>',
-								'<div>',
-								[
-									'Skills: ',
-									...intersperse(project.skills.map((skill) => ([
-										'<span>', { class: 'badge text-bg-secondary' },
-										[skill],
-										'</span>',
-									])), ' ').reduce((acc, item) => {
-										acc.push(...item);
-										return acc;
-									}, []),
-								],
-								'</div>',
-								'<div>',
-								[
-									'URL: ',
-									'<a>', {
-										href: project.url,
-										target: '_blank',
-									},
-									[ project.url ],
-									'</a>',
-								],
-								'</div>',
-							],
-							'</li>',
-						]))
+								'</li>',
+							]);
+						})
 						.endForEach(),
 					],
 					'</ol>',
@@ -215,18 +221,19 @@ class ResumeForm extends Component
 {
 	build(attrs)
 	{
-		const { onSave } = attrs;
-		const resume$ = this.bindSupplier(attrs.resume$);
-		resume$.subscribe((v) => {
-			fullName$._(v.fullName);
-			fullNameInputElement$._().value = v.fullName;
-			email$._(v.email);
-			emailInputElement$._().value = v.email;
-			address$._(v.address);
-			addressInputElement$._().value = v.address;
+		const { resume$, onSave } = attrs;
+		this.beforeDetachFromDom.subscribe(
+			resume$.subscribe((v) => {
+				fullName$._(v.fullName);
+				fullNameInputElement$._().value = v.fullName;
+				email$._(v.email);
+				emailInputElement$._().value = v.email;
+				address$._(v.address);
+				addressInputElement$._().value = v.address;
 
-			projects$._(v.projects.map(getProjectViewModel));
-		});
+				projects$._(v.projects.map(getProjectViewModel));
+			})
+		);
 
 		const resume = resume$._();
 
@@ -239,7 +246,7 @@ class ResumeForm extends Component
 		const address$ = createStore(resume.address);
 		const projects$ = createArrayStore(resume.projects.map(getProjectViewModel));
 
-		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedSuppliers({
+		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedSuppliers(this, {
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
@@ -247,7 +254,7 @@ class ResumeForm extends Component
 			url: project.url$,
 		}));
 
-		const normalizedResume$ = combineNamedSuppliers({
+		const normalizedResume$ = combineNamedSuppliers(this, {
 			fullName: fullName$,
 			email: email$,
 			address: address$,
@@ -332,12 +339,12 @@ class ResumeForm extends Component
 				'</h3>',
 				'<div>',
 				[
-					forEach(projects$, (project, index$) => {
+					forEach(projects$, function (project, index$) {
 						return parseHTML([
 							'<div>', { class: 'card mt-3' },
 							[
 								'<h5>', { class: 'card-header' },
-								[ map(index$, (i) => `Project ${i+1}`) ],
+								[ map(this, index$, (i) => `Project ${i+1}`) ],
 								'</h5>',
 								'<div>', { class: 'card-body' },
 								[
@@ -345,13 +352,13 @@ class ResumeForm extends Component
 									[
 										'<label>', {
 											class: 'form-label',
-											for: map(index$, (i) => `project-${i}-title`),
+											for: map(this, index$, (i) => `project-${i}-title`),
 										},
 										['Project Title'],
 										'</label>',
 										'<input/>', {
 											class: 'form-control',
-											id: map(index$, (i) => `project-${i}-title`),
+											id: map(this, index$, (i) => `project-${i}-title`),
 											value: project.title$._(),
 											'@input': flow([
 												(ev) => ev.target.value,
@@ -364,14 +371,14 @@ class ResumeForm extends Component
 									[
 										'<label>', {
 											class: 'form-label',
-											for: map(index$, (i) => `project-${i}-description`),
+											for: map(this, index$, (i) => `project-${i}-description`),
 										},
 										['Project Description'],
 										'</label>',
 										'<textarea>', {
 											class: 'form-control',
 											rows: '5',
-											id: map(index$, (i) => `project-${i}-description`),
+											id: map(this, index$, (i) => `project-${i}-description`),
 											'@input': flow([
 												(ev) => ev.target.value,
 												(v) => project.description$._(v),
@@ -385,14 +392,14 @@ class ResumeForm extends Component
 									[
 										'<label>', {
 											class: 'form-label',
-											for: map(index$, (i) => `project-${i}-completion-date`),
+											for: map(this, index$, (i) => `project-${i}-completion-date`),
 										},
 										['Completion date'],
 										'</label>',
 										'<input/>', {
 											type: 'date',
 											class: 'form-control',
-											id: map(index$, (i) => `project-${i}-completion-date`),
+											id: map(this, index$, (i) => `project-${i}-completion-date`),
 											value: project.completionDate$._(),
 											'@input': flow([
 												(ev) => ev.target.value,
@@ -410,9 +417,7 @@ class ResumeForm extends Component
 										'</label>',
 										'<div>',
 										[
-											forEach(project.skills$, (skill$, index$2, forEachItem) => {
-												const indexProxy$ = forEachItem.bindSupplier(index$);
-
+											forEach(project.skills$, function (skill$, index$2) {
 												return parseHTML([
 													'<div>', { class: 'card mb-3' },
 													[
@@ -421,16 +426,18 @@ class ResumeForm extends Component
 															'<label>', {
 																class: 'input-group-text',
 																for: map(
-																	combineSuppliers([indexProxy$, index$2]),
+																	this,
+																	combineSuppliers(this, [index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 															},
-															[ map(index$2, (i)=>`Skill ${i+1}`) ],
+															[ map(this, index$2, (i)=>`Skill ${i+1}`) ],
 															'</label>',
 															'<input/>', {
 																class: 'form-control',
 																id: map(
-																	combineSuppliers([indexProxy$, index$2]),
+																	this,
+																	combineSuppliers(this, [index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 																value: skill$._(),
@@ -476,13 +483,13 @@ class ResumeForm extends Component
 									[
 										'<label>', {
 											class: 'form-label',
-											for: map(index$, (i) => `project-${i}-url`),
+											for: map(this, index$, (i) => `project-${i}-url`),
 										},
 										['URL'],
 										'</label>',
 										'<input/>', {
 											class: 'form-control',
-											id: map(index$, (i) => `project-${i}-url`),
+											id: map(this, index$, (i) => `project-${i}-url`),
 											value: project.url$._(),
 											'@input': flow([
 												(ev) => ev.target.value,

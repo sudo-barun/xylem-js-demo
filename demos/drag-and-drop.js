@@ -68,7 +68,7 @@ class App extends Component
 								[
 									'<code>',
 									[
-										map(colors$, (v) => JSON.stringify(
+										map(this, colors$, (v) => JSON.stringify(
 											v, null, 2
 										)),
 									],
@@ -100,12 +100,12 @@ class ColorList extends Component
 		return parseHTML([
 			'<div>', { class: 'list-group' },
 			[
-				forEach(colors$, (color, index$) => {
+				forEach(colors$, function (color, index$) {
 					const isDraggable$ = createStore(false);
 					return parseHTML([
 						'<div>', {
 							class: 'list-group-item',
-							draggable: map(isDraggable$, String),
+							draggable: map(this, isDraggable$, String),
 							'@dragstart': (ev) => {
 								ev.dataTransfer.setData(
 									'application/json',
@@ -165,7 +165,7 @@ class BonusColors extends Component
 {
 	build(attrs)
 	{
-		const colors$ = this.bindSupplier(attrs.colors$);
+		const { colors$ } = attrs;
 
 		return parseHTML([
 			'<h2>', { class: 'h3 mt-4' },
@@ -173,26 +173,28 @@ class BonusColors extends Component
 			'</h2>',
 			'<div>',
 			[
-				forEach(BONUS_COLORS, (bonusColor, index$) => parseHTML([
-					index$._() !== 0 ? ' ' : '',
-					'<span>', {
-						class: [ 'btn btn-outline-secondary fs-6 fw-bold', {
-							disabled: map(colors$, v => v.includes(bonusColor)),
-						}],
-						draggable: 'true',
-						'@dragstart': (ev) => {
-							ev.dataTransfer.setData(
-								'application/json',
-								JSON.stringify({
-									source: 'bonusColors',
-									index: index$._(),
-								})
-							);
+				forEach(BONUS_COLORS, function (bonusColor, index$) {
+					return parseHTML([
+						index$._() !== 0 ? ' ' : '',
+						'<span>', {
+							class: [ 'btn btn-outline-secondary fs-6 fw-bold', {
+								disabled: map(this, colors$, v => v.includes(bonusColor)),
+							}],
+							draggable: 'true',
+							'@dragstart': (ev) => {
+								ev.dataTransfer.setData(
+									'application/json',
+									JSON.stringify({
+										source: 'bonusColors',
+										index: index$._(),
+									})
+								);
+							},
 						},
-					},
-					[ bonusColor ],
-					'</span>',
-				]))
+						[ bonusColor ],
+						'</span>',
+					]);
+				})
 				.endForEach(),
 			],
 			'</div>',

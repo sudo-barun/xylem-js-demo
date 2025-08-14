@@ -7,10 +7,7 @@ import map from "../../node_modules/@xylem-js/xylem-js/core/map.js";
 import parseHTML from "../../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
 export default class Preview extends Component {
     build(attrs) {
-        const image$ = this.bindSupplier(attrs.image$);
-        const images$ = attrs.images$;
-        const hasPrevious$ = this.bindSupplier(attrs.hasPrevious$);
-        const hasNext$ = this.bindSupplier(attrs.hasNext$);
+        const { images$, hasPrevious$, hasNext$ } = attrs;
         const showingPrevious$ = attrs.showingPrevious$;
         const showingNext$ = attrs.showingNext$;
         const transitionToPrevious$ = attrs.transitionToPrevious$;
@@ -51,7 +48,7 @@ export default class Preview extends Component {
                         '<button>', {
                             title: 'Previous',
                             class: ['-control -left', {
-                                    disabled: map(hasPrevious$, (x) => !x),
+                                    disabled: map(this, hasPrevious$, (x) => !x),
                                 }],
                             '@click': () => showPrevious._(),
                         },
@@ -64,12 +61,12 @@ export default class Preview extends Component {
                             style: 'flex-grow: 1; height: 100%; position: relative;',
                         },
                         [
-                            forEach(images$, (image, index$) => {
+                            forEach(images$, function (image, index$) {
                                 return parseHTML([
                                     '<div>', {
                                         class: ['-image-caption-container', {
-                                                '-is-previous': map(combineSuppliers([images$.length$, showingPrevious$, index$]), ([l, sp, i]) => (l > 1) && sp && (i === 0)),
-                                                '-is-next': map(combineSuppliers([images$.length$, showingNext$, index$]), ([l, sn, i]) => (l > 1) && sn && (i === 1)),
+                                                '-is-previous': map(this, combineSuppliers(this, [images$.length$, showingPrevious$, index$]), ([l, sp, i]) => (l > 1) && sp && (i === 0)),
+                                                '-is-next': map(this, combineSuppliers(this, [images$.length$, showingNext$, index$]), ([l, sn, i]) => (l > 1) && sn && (i === 1)),
                                             }],
                                     },
                                     [
@@ -100,7 +97,7 @@ export default class Preview extends Component {
                         '<button>', {
                             title: 'Next',
                             class: ['-control -right', {
-                                    disabled: map(hasNext$, (x) => !x),
+                                    disabled: map(this, hasNext$, (x) => !x),
                                 }],
                             '@click': () => showNext._(),
                         },

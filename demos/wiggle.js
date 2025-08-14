@@ -85,9 +85,9 @@ class Wiggle extends Component
 			place: selectedPlace$,
 		};
 
-		const normalizedViewModel$ = combineNamedSuppliers(viewModel);
+		const normalizedViewModel$ = combineNamedSuppliers(this, viewModel);
 
-		const formHasError$ = map(normalizedViewModel$, (v) => {
+		const formHasError$ = map(this, normalizedViewModel$, (v) => {
 			return ! (v.country && v.activity && v.place);
 		});
 
@@ -112,9 +112,11 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Country'], '</option>',
-								forEach(countries, (country) => parseHTML([
-									'<option>', [country], '</option>',
-								])).endForEach(),
+								forEach(countries, function (country) {
+									return parseHTML([
+										'<option>', [country], '</option>',
+									]);
+								}).endForEach(),
 							],
 							'</select>',
 						],
@@ -127,7 +129,7 @@ class Wiggle extends Component
 								class: [ 'form-control', {
 									wiggle: activityHasWiggle$,
 								}],
-								disabled: map(activitiesOfSelectedCountry$, v => !v.length),
+								disabled: map(this, activitiesOfSelectedCountry$, v => !v.length),
 								'<>': activitySelectElement$,
 								'@change': flow([
 									(ev) => ev.target.value,
@@ -136,9 +138,11 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Activity'], '</option>',
-								forEach(activitiesOfSelectedCountry$, (activity) => parseHTML([
-									'<option>', [activity], '</option>',
-								])).endForEach(),
+								forEach(activitiesOfSelectedCountry$, function (activity) {
+									return parseHTML([
+										'<option>', [activity], '</option>',
+									]);
+								}).endForEach(),
 							],
 							'</select>',
 						],
@@ -151,7 +155,7 @@ class Wiggle extends Component
 								class: [ 'form-control', {
 									wiggle: placeHasWiggle$,
 								}],
-								disabled: map(placesOfSelectedActivity$, v => !v.length),
+								disabled: map(this, placesOfSelectedActivity$, v => !v.length),
 								'<>': placeSelectElement$,
 								'@change': flow([
 									(ev) => ev.target.value,
@@ -160,9 +164,11 @@ class Wiggle extends Component
 							},
 							[
 								'<option>', { value: '' }, [ 'Select Place'], '</option>',
-								forEach(placesOfSelectedActivity$, (place) => parseHTML([
-									'<option>', [place], '</option>',
-								])).endForEach(),
+								forEach(placesOfSelectedActivity$, function (place) {
+									return parseHTML([
+										'<option>', [place], '</option>',
+									]);
+								}).endForEach(),
 							],
 							'</select>',
 						],
@@ -175,7 +181,8 @@ class Wiggle extends Component
 							type: 'submit',
 							class: 'btn btn-primary float-end',
 							disabled: map(
-								combineSuppliers([formHasError$, submitInProgress$]),
+								this,
+								combineSuppliers(this, [formHasError$, submitInProgress$]),
 								([hasError, inProgress]) => hasError || inProgress
 							),
 						},
@@ -187,7 +194,7 @@ class Wiggle extends Component
 				'</form>',
 				'<pre>', { class: 'border border-4 p-3 mt-5' },
 				[
-					map(normalizedViewModel$, (v) => JSON.stringify(v, null, 2))
+					map(this, normalizedViewModel$, (v) => JSON.stringify(v, null, 2))
 				],
 				'</pre>',
 			],

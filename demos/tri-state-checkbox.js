@@ -67,18 +67,19 @@ class TriStateCheckbox extends Component
 						'<b>', [ 'Select All' ], '</b>',
 						' ',
 						'(',
-						map(combinedState$, (v) => LABELS[v]),
+						map(this, combinedState$, (v) => LABELS[v]),
 						' selected)',
 					],
 					'</label>',
 				],
 				'</div>',
-				forEach(checkboxValue$s, (item$, index$, forEachItem) => {
+				forEach(checkboxValue$s, function (item$, index$) {
 					const checkboxElement$ = createStore();
-					const itemProxy$ = forEachItem.bindSupplier(item$);
 					this.afterAttachToDom.subscribe(() => {
-						checkboxElement$._().checked = itemProxy$._();
-						itemProxy$.subscribe((v) => checkboxElement$._().checked = v);
+						checkboxElement$._().checked = item$._();
+						this.beforeDetachFromDom.subscribe(
+							item$.subscribe((v) => checkboxElement$._().checked = v)
+						);
 					});
 					return parseHTML([
 						'<div>',
@@ -90,8 +91,8 @@ class TriStateCheckbox extends Component
 									'@change': (ev) => {item$._(ev.target.checked)},
 									'<>': checkboxElement$,
 								},
-								map(index$, v => ` Item ${v+1} (`),
-								map(itemProxy$, (v) => v ? 'Selected' : 'Not selected'),
+								map(this, index$, v => ` Item ${v+1} (`),
+								map(this, item$, (v) => v ? 'Selected' : 'Not selected'),
 								')'
 							],
 							'</label>',

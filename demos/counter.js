@@ -33,14 +33,14 @@ class Counter extends Component
 				'</p>',
 				'<button>', {
 					'@click': () => cumulate(count$, (v) => v + 1),
-					'disabled': map(count$, (v) => v + 1 > MAX)
+					'disabled': map(this, count$, (v) => v + 1 > MAX)
 				},
 				['Click'],
 				'</button>',
 				' ',
 				'<button>', {
 					'@click': () => count$._(INITIAL_VALUE),
-					'disabled': map(count$, (v) => v === INITIAL_VALUE),
+					'disabled': map(this, count$, (v) => v === INITIAL_VALUE),
 				},
 				['Reset'],
 				'</button>',

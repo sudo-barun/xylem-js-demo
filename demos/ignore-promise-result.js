@@ -86,13 +86,15 @@ class Root extends Component
 						class: 'btn btn-outline-secondary float-end',
 						'@click': () => cumulate(isShown$, (v) => !v),
 					},
-					[ map(isShown$, (v) => v ? 'Hide' : 'Show') ],
+					[ map(this, isShown$, (v) => v ? 'Hide' : 'Show') ],
 					'</button>',
 				],
 				'</div>',
-				if_(isShown$, () => [
-					new IgnorePromiseResult(),
-				]).endIf(),
+				if_(isShown$, function () {
+					return [
+						new IgnorePromiseResult(),
+					];
+				}).endIf(),
 			],
 			'</div>',
 		]);

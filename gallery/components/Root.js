@@ -70,7 +70,7 @@ export default class Root extends Component {
                     [
                         '<button>', {
                             'class': 'refresh-button',
-                            'disabled': map(hasImageRequestCompleted$, v => !v),
+                            'disabled': map(this, hasImageRequestCompleted$, v => !v),
                             '@click': () => {
                                 randomizePage(),
                                     loadData();

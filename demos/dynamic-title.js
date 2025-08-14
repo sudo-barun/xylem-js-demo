@@ -13,7 +13,7 @@ class DynamicTitle extends Component
 
 		this.afterAttachToDom.subscribe(() => {
 			element.setup();
-			hydrateComponentChildren([element], [document.getElementsByTagName('title')[0]]);
+			hydrateComponentChildren([element], document.getElementsByTagName('title')[0]);
 			element.setupDom();
 		});
 

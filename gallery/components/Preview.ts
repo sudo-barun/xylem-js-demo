@@ -31,10 +31,7 @@ class Preview extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const image$: Supplier<Image> = this.bindSupplier(attrs.image$);
-		const images$: ArraySupplier<Image> = attrs.images$;
-		const hasPrevious$: Supplier<boolean> = this.bindSupplier(attrs.hasPrevious$);
-		const hasNext$: Supplier<boolean> = this.bindSupplier(attrs.hasNext$);
+		const { images$, hasPrevious$, hasNext$ } = attrs;
 		const showingPrevious$ = attrs.showingPrevious$;
 		const showingNext$ = attrs.showingNext$;
 		const transitionToPrevious$ = attrs.transitionToPrevious$;
@@ -79,7 +76,7 @@ class Preview extends Component<Attributes>
 						'<button>', {
 							title: 'Previous',
 							class: [ '-control -left', {
-								disabled: map(hasPrevious$, (x)=>!x),
+								disabled: map(this, hasPrevious$, (x)=>!x),
 							}],
 							'@click': () => showPrevious._(),
 						},
@@ -92,16 +89,18 @@ class Preview extends Component<Attributes>
 							style: 'flex-grow: 1; height: 100%; position: relative;',
 						},
 						[
-							forEach(images$, (image, index$) => {
+							forEach(images$, function (image, index$) {
 								return parseHTML([
 									'<div>', {
 										class: [ '-image-caption-container', {
 											'-is-previous': map(
-												combineSuppliers([ images$.length$, showingPrevious$, index$ ]),
+												this,
+												combineSuppliers(this, [ images$.length$, showingPrevious$, index$ ]),
 												([ l, sp, i ]) => (l > 1) && sp && (i === 0)
 											),
 											'-is-next': map(
-												combineSuppliers([ images$.length$, showingNext$, index$ ]),
+												this,
+												combineSuppliers(this, [ images$.length$, showingNext$, index$ ]),
 												([ l, sn, i ]) => (l > 1) && sn && (i === 1)
 											),
 										}],
@@ -134,7 +133,7 @@ class Preview extends Component<Attributes>
 						'<button>', {
 							title: 'Next',
 							class: [ '-control -right', {
-								disabled: map(hasNext$, (x)=>!x),
+								disabled: map(this, hasNext$, (x)=>!x),
 							}],
 							'@click': () => showNext._(),
 						},

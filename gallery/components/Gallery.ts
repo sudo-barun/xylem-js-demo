@@ -23,7 +23,7 @@ class Gallery extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const images$ = this.bindSupplier(attrs.images$);
+		const { images$ } = attrs;
 		const previewIndex$: Store<number> = createStore(-1);
 		const previewImage$: Store<Image|null> = createStore(null);
 		const previewImages$: ArrayStore<Image> = createArrayStore([]);
@@ -35,9 +35,11 @@ class Gallery extends Component<Attributes>
 		const transitionToPrevious$ = createStore(false);
 		const transitionToNext$ = createStore(false);
 
-		images$.subscribe(() => {
-			closePreview();
-		});
+		this.beforeDetachFromDom.subscribe(
+			images$.subscribe(() => {
+				closePreview();
+			})
+		);
 
 		return parseHTML([
 			'<div>', { class: 'container gallery' },

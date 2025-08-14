@@ -5,6 +5,7 @@ import createSupplier from "../node_modules/@xylem-js/xylem-js/core/createSuppli
 import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
 import createEmittableStream from "../node_modules/@xylem-js/xylem-js/core/createEmittableStream.js";
 import curryRight from "../node_modules/lodash-es/curryRight.js";
+import FakeLifecycle from "../node_modules/@xylem-js/xylem-js/utilities/FakeLifecycle.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../node_modules/@xylem-js/xylem-js/dom/forEach.js";
 import map from "../node_modules/@xylem-js/xylem-js/core/map.js";
@@ -24,7 +25,7 @@ function getTableEntry(index)
 	const productName$ = createStore(`Item ${index + 1}`);
 	const quantity$ = createStore('1');
 	const rate$ = createStore('');
-	const price$ = map(combineNamedSuppliers({
+	const price$ = map(new FakeLifecycle, combineNamedSuppliers(new FakeLifecycle, {
 		quantity: quantity$,
 		rate: rate$
 	}), (v) => isNumericString(v.quantity) && isNumericString(v.rate) ? v.quantity * v.rate : null);
@@ -43,13 +44,13 @@ class Invoice extends Component
 	{
 		const tableData$ = createArrayStore(Array.apply(null, Array(5)).map((_, index) => getTableEntry(index)));
 
-		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedSuppliers({
+		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedSuppliers(this, {
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
 			price: createSupplier(row.price$, createEmittableStream()),
 		}));
-		const totalPrice$ = map(normalizedTableData$, (tableData) => {
+		const totalPrice$ = map(this, normalizedTableData$, (tableData) => {
 			return tableData.reduce((acc, row) => {
 				return isNumericString(row.price) ? +acc + +row.price : acc;
 			}, null);
@@ -59,7 +60,7 @@ class Invoice extends Component
 		  totalPrice$: totalPrice$
 		};
 		console.log('viewModel', viewModel);
-		const normalizedModel$ = combineNamedSuppliers({
+		const normalizedModel$ = combineNamedSuppliers(this, {
 		  tableData: normalizedTableData$,
 		  totalPrice: createSupplier(totalPrice$, createEmittableStream()),
 		});
@@ -93,15 +94,13 @@ class Invoice extends Component
 								'</thead>',
 								'<tbody>',
 								[
-									forEach(tableData$, (rowData, index$) => {
+									forEach(tableData$, function (rowData, index$) {
 										const productName$ = rowData.productName$;
-										const quantity$ = this.bindSupplier(rowData.quantity$);
-										const rate$ = this.bindSupplier(rowData.rate$);
-										const price$ = this.bindSupplier(rowData.price$);
+										const { quantity$, rate$, price$ } = rowData;
 										return parseHTML([
 											'<tr>', [
 												'<td>',
-												[map(index$, (v) => v + 1)],
+												[map(this, index$, (v) => v + 1)],
 												'</td>',
 												'<td>',
 												[
@@ -120,13 +119,13 @@ class Invoice extends Component
 												[
 													'<input/>', {
 														class: [ 'form-control', {
-															'is-invalid': map(quantity$, (v) => !isNumericString(v)),
+															'is-invalid': map(this, quantity$, (v) => !isNumericString(v)),
 														}],
 														style: 'min-width: 5em',
 														value: quantity$._(),
 														'@input': flow([
 															(ev) => ev.target.value,
-															(v) => quantity$._(v),
+															(v) => rowData.quantity$._(v),
 														]),
 													},
 												],
@@ -135,20 +134,20 @@ class Invoice extends Component
 												[
 													'<input/>', {
 														class: [ 'form-control', {
-															'is-invalid': map(rate$, (v) => !isNumericString(v)),
+															'is-invalid': map(this, rate$, (v) => !isNumericString(v)),
 														}],
 														style: 'min-width: 5em',
 														value: rate$._(),
 														'@input': flow([
 															(ev) => ev.target.value,
-															(v) => rate$._(v),
+															(v) => rowData.rate$._(v),
 														]),
 													},
 												],
 												'</td>',
 												'<td>',
 												[
-													map(price$, (p) => p === null ? '–' : p),
+													map(this, price$, (p) => p === null ? '–' : p),
 												],
 												'</td>',
 												'<td>',
@@ -182,7 +181,7 @@ class Invoice extends Component
 										'</th>',
 										'<th>',
 										[
-											map(totalPrice$, (p) => p === null ? '' : p),
+											map(this, totalPrice$, (p) => p === null ? '' : p),
 										],
 										'</th>',
 										'<td>', {
@@ -214,7 +213,7 @@ class Invoice extends Component
 						'<pre>', {
 							style: 'border: 1px solid #ccc; padding: 20px',
 						},
-						[map(normalizedModel$, curryRight(JSON.stringify)(null, 2))],
+						[map(this, normalizedModel$, curryRight(JSON.stringify)(null, 2))],
 						'</pre>',
 					],
 					'</div>',

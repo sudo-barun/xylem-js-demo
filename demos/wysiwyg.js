@@ -80,9 +80,11 @@ class Wysiwyg extends Component
 					'</textarea>',
 				],
 				'</div>',
-				if_(isSaving$, () => parseHTML([
-					'<mark>', ['Auto saving...'], '</mark>',
-				]))
+				if_(isSaving$, function () {
+					return parseHTML([
+						'<mark>', ['Auto saving...'], '</mark>',
+					]);
+				})
 				.endIf(),
 				'<pre>', {
 					style: 'border: 5px solid #ccc; padding: 10px; white-space: normal',

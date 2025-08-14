@@ -4,7 +4,7 @@ import createStore from '../../node_modules/@xylem-js/xylem-js/core/createStore.
 import map from '../../node_modules/@xylem-js/xylem-js/core/map.js';
 import Gallery from './Gallery.js';
 import if_ from '../../node_modules/@xylem-js/xylem-js/dom/if_.js';
-import Image from '../types/Image.js';
+import type Image from '../types/Image.js';
 import createArrayStore from '../../node_modules/@xylem-js/xylem-js/array/createArrayStore.js';
 
 type InjectedAttributes = {
@@ -12,10 +12,12 @@ type InjectedAttributes = {
 	initialData?: null|{ galleryImages: PicsumImage[] },
 };
 
-let page = 10;
+let page = 29;
+let page$ = createStore(page);
 
 function randomizePage() {
 	page = Math.floor(Math.random() * 30) + 1;
+	page$._(page);
 }
 
 export default
@@ -83,7 +85,7 @@ class Root extends Component<{}, InjectedAttributes>
 					[
 						'<button>', {
 							'class': 'refresh-button',
-							'disabled': map(hasImageRequestCompleted$, v => !v),
+							'disabled': map(this, hasImageRequestCompleted$, v => !v),
 							'@click': () => {
 								randomizePage(),
 								loadData();
@@ -167,6 +169,12 @@ class Root extends Component<{}, InjectedAttributes>
 						'</div>',
 					]))
 					.endIf(),
+					'<div>',
+					[
+						'Page ',
+						page$,
+					],
+					'</div>',
 				],
 				'</div>',
 				'<footer>', { class: 'footer' },

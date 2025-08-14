@@ -14,4 +14,4 @@ type Image = {
 	caption: string;
 }
 
-export default Image;
+export { type Image as default };

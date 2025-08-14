@@ -1,17 +1,17 @@
-import ArrayStore from "../../node_modules/@xylem-js/xylem-js/types/ArrayStore.js";
+import type ArrayStore from "../../node_modules/@xylem-js/xylem-js/types/ArrayStore.js";
 import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
-import ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
+import type ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
 import createArrayStore from "../../node_modules/@xylem-js/xylem-js/array/createArrayStore.js";
 import createStore from "../../node_modules/@xylem-js/xylem-js/core/createStore.js";
 import forEach from "../../node_modules/@xylem-js/xylem-js/dom/forEach.js";
 import if_ from "../../node_modules/@xylem-js/xylem-js/dom/if_.js";
-import Image from "../types/Image.js";
+import type Image from "../types/Image.js";
 import Item from "./Item.js";
 import parseHTML from "../../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
 import Preview from "./Preview.js";
 import push from "../../node_modules/@xylem-js/xylem-js/array_action/push.js";
 import remove from "../../node_modules/@xylem-js/xylem-js/array_action/remove.js";
-import Store from "../../node_modules/@xylem-js/xylem-js/types/Store.js";
+import type Store from "../../node_modules/@xylem-js/xylem-js/types/Store.js";
 import unshift from "../../node_modules/@xylem-js/xylem-js/array_action/unshift.js";
 
 type Attributes = {
@@ -23,7 +23,7 @@ class Gallery extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const images$ = this.bindSupplier(attrs.images$);
+		const { images$ } = attrs;
 		const previewIndex$: Store<number> = createStore(-1);
 		const previewImage$: Store<Image|null> = createStore(null);
 		const previewImages$: ArrayStore<Image> = createArrayStore([]);
@@ -35,9 +35,11 @@ class Gallery extends Component<Attributes>
 		const transitionToPrevious$ = createStore(false);
 		const transitionToNext$ = createStore(false);
 
-		images$.subscribe(() => {
-			closePreview();
-		});
+		this.beforeDetachFromDom.subscribe(
+			images$.subscribe(() => {
+				closePreview();
+			})
+		);
 
 		return parseHTML([
 			'<div>', { class: 'container gallery' },

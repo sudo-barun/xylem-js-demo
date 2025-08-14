@@ -1,16 +1,16 @@
-import ArraySupplier from "../../node_modules/@xylem-js/xylem-js/types/ArraySupplier";
+import type ArraySupplier from "../../node_modules/@xylem-js/xylem-js/types/ArraySupplier";
 import combineSuppliers from "../../node_modules/@xylem-js/xylem-js/core/combineSuppliers.js";
 import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
-import ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
+import type ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
 import createEmittableStream from "../../node_modules/@xylem-js/xylem-js/core/createEmittableStream.js";
 import createStore from "../../node_modules/@xylem-js/xylem-js/core/createStore.js";
-import EmittableStream from "../../node_modules/@xylem-js/xylem-js/types/EmittableStream.js";
+import type EmittableStream from "../../node_modules/@xylem-js/xylem-js/types/EmittableStream.js";
 import forEach from "../../node_modules/@xylem-js/xylem-js/dom/forEach.js";
-import Image from "../types/Image.js";
+import type Image from "../types/Image.js";
 import map from "../../node_modules/@xylem-js/xylem-js/core/map.js";
 import parseHTML from "../../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
-import Subscriber from "../../node_modules/@xylem-js/xylem-js/types/Subscriber.js";
-import Supplier from "../../node_modules/@xylem-js/xylem-js/types/Supplier.js";
+import type Subscriber from "../../node_modules/@xylem-js/xylem-js/types/Subscriber.js";
+import type Supplier from "../../node_modules/@xylem-js/xylem-js/types/Supplier.js";
 
 type Attributes = {
 	image$: Supplier<Image>,
@@ -31,10 +31,7 @@ class Preview extends Component<Attributes>
 {
 	build(attrs: Attributes): ComponentChildren
 	{
-		const image$: Supplier<Image> = this.bindSupplier(attrs.image$);
-		const images$: ArraySupplier<Image> = attrs.images$;
-		const hasPrevious$: Supplier<boolean> = this.bindSupplier(attrs.hasPrevious$);
-		const hasNext$: Supplier<boolean> = this.bindSupplier(attrs.hasNext$);
+		const { images$, hasPrevious$, hasNext$ } = attrs;
 		const showingPrevious$ = attrs.showingPrevious$;
 		const showingNext$ = attrs.showingNext$;
 		const transitionToPrevious$ = attrs.transitionToPrevious$;
@@ -51,10 +48,10 @@ class Preview extends Component<Attributes>
 
 		this.afterAttachToDom.subscribe(() => {
 			document.body.style.overflow = 'hidden';
-			previewElement$._().focus();
+			previewElement$._()!.focus();
 		});
 		this.beforeDetachFromDom.subscribe(() => {
-			previewElement$._().blur();
+			previewElement$._()!.blur();
 			document.body.style.removeProperty('overflow');
 		});
 
@@ -79,7 +76,7 @@ class Preview extends Component<Attributes>
 						'<button>', {
 							title: 'Previous',
 							class: [ '-control -left', {
-								disabled: map(hasPrevious$, (x)=>!x),
+								disabled: map(this, hasPrevious$, (x)=>!x),
 							}],
 							'@click': () => showPrevious._(),
 						},
@@ -92,16 +89,18 @@ class Preview extends Component<Attributes>
 							style: 'flex-grow: 1; height: 100%; position: relative;',
 						},
 						[
-							forEach(images$, (image, index$) => {
+							forEach(images$, function (image, index$) {
 								return parseHTML([
 									'<div>', {
 										class: [ '-image-caption-container', {
 											'-is-previous': map(
-												combineSuppliers<[number, boolean, number]>([ images$.length$, showingPrevious$, index$ ]),
+												this,
+												combineSuppliers(this, [ images$.length$, showingPrevious$, index$ ]),
 												([ l, sp, i ]) => (l > 1) && sp && (i === 0)
 											),
 											'-is-next': map(
-												combineSuppliers<[number, boolean, number]>([ images$.length$, showingNext$, index$ ]),
+												this,
+												combineSuppliers(this, [ images$.length$, showingNext$, index$ ]),
 												([ l, sn, i ]) => (l > 1) && sn && (i === 1)
 											),
 										}],
@@ -134,7 +133,7 @@ class Preview extends Component<Attributes>
 						'<button>', {
 							title: 'Next',
 							class: [ '-control -right', {
-								disabled: map(hasNext$, (x)=>!x),
+								disabled: map(this, hasNext$, (x)=>!x),
 							}],
 							'@click': () => showNext._(),
 						},

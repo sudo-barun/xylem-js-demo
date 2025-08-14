@@ -26,7 +26,8 @@ class Form extends Component
 		const isSubmitting$ = createStore(false);
 
 		const selectedMultiCheckboxes$ = map(
-			combineNamedSuppliers(multiCheckboxChecked$s),
+			this,
+			combineNamedSuppliers(this, multiCheckboxChecked$s),
 			(values) => Object.keys(values).reduce((acc, key) => {
 				if (values[key]) {
 					acc.push(key);
@@ -34,7 +35,7 @@ class Form extends Component
 				return acc;
 			}, [])
 		);
-		const formData$ = combineNamedSuppliers({
+		const formData$ = combineNamedSuppliers(this, {
 			input: inputValue$,
 			textarea: textareaValue$,
 			singleSelect: singleSelectSelected$,
@@ -107,14 +108,16 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }) => parseHTML([
-							'<option>', {
-								value,
-								selected: singleSelectSelected$._() === value,
-							},
-							[ text ],
-							'</option>',
-						]))
+						], function ({ value, text }) {
+							return parseHTML([
+								'<option>', {
+									value,
+									selected: singleSelectSelected$._() === value,
+								},
+								[ text ],
+								'</option>',
+							]);
+						})
 						.endForEach(),
 					],
 					'</select>',
@@ -143,14 +146,16 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }) => parseHTML([
-							'<option>', {
-								value,
-								selected: multiSelectSelected$._().includes(value),
-							},
-							[ text ],
-							'</option>',
-						]))
+						], function ({ value, text }) {
+							return parseHTML([
+								'<option>', {
+									value,
+									selected: multiSelectSelected$._().includes(value),
+								},
+								[ text ],
+								'</option>',
+							]);
+						})
 						.endForEach(),
 					],
 					'</select>',
@@ -190,25 +195,27 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }, index$) => parseHTML([
-							'<div>', { class: 'form-check form-check-inline' },
-							[
-								'<input/>', {
-									type: 'checkbox',
-									id: `checkbox-${index$._()}`,
-									class: 'form-check-input',
-									checked: multiCheckboxChecked$s[value]._(),
-									value,
-									'@change': (ev) => multiCheckboxChecked$s[value]._(ev.target.checked),
-								},
-								'<label>', {
-									for: `checkbox-${index$._()}`,
-								},
-								[ text ],
-								'</label>',
-							],
-							'</div>',
-						]))
+						], function ({ value, text }, index$) {
+							return parseHTML([
+								'<div>', { class: 'form-check form-check-inline' },
+								[
+									'<input/>', {
+										type: 'checkbox',
+										id: `checkbox-${index$._()}`,
+										class: 'form-check-input',
+										checked: multiCheckboxChecked$s[value]._(),
+										value,
+										'@change': (ev) => multiCheckboxChecked$s[value]._(ev.target.checked),
+									},
+									'<label>', {
+										for: `checkbox-${index$._()}`,
+									},
+									[ text ],
+									'</label>',
+								],
+								'</div>',
+							]);
+						})
 						.endForEach(),
 					],
 					'</div>',
@@ -226,26 +233,28 @@ class Form extends Component
 							{ value: '1', text: 'One' },
 							{ value: '2', text: 'Two' },
 							{ value: '3', text: 'Three' }
-						], ({ value, text }, index$) => parseHTML([
-							'<div>', { class: 'form-check form-check-inline' },
-							[
-								'<input/>', {
-									type: 'radio',
-									name: 'number',
-									id: `radio-${index$._()}`,
-									class: 'form-check-input',
-									checked: value === radioChecked$._(),
-									value,
-									'@change': () => radioChecked$._(value),
-								},
-								'<label>', {
-									for: `radio-${index$._()}`,
-								},
-								[ text ],
-								'</label>',
-							],
-							'</div>',
-						]))
+						], function ({ value, text }, index$) {
+							return parseHTML([
+								'<div>', { class: 'form-check form-check-inline' },
+								[
+									'<input/>', {
+										type: 'radio',
+										name: 'number',
+										id: `radio-${index$._()}`,
+										class: 'form-check-input',
+										checked: value === radioChecked$._(),
+										value,
+										'@change': () => radioChecked$._(value),
+									},
+									'<label>', {
+										for: `radio-${index$._()}`,
+									},
+									[ text ],
+									'</label>',
+								],
+								'</div>',
+							]);
+						})
 						.endForEach(),
 					],
 					'</div>',
@@ -257,7 +266,7 @@ class Form extends Component
 					disabled: isSubmitting$,
 				},
 				[
-					map(isSubmitting$, v => v ? 'Submitting...' : 'Submit'),
+					map(this, isSubmitting$, v => v ? 'Submitting...' : 'Submit'),
 				],
 				'</button>',
 			],
@@ -306,7 +315,7 @@ class App extends Component
 							style: 'border: 1px solid #ccc; padding: 20px',
 						},
 						[
-							map(formData$, v => JSON.stringify(v, null, 4)),
+							map(this, formData$, v => JSON.stringify(v, null, 4)),
 						],
 						'</pre>',
 					],

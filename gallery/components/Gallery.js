@@ -11,7 +11,7 @@ import remove from "../../node_modules/@xylem-js/xylem-js/array_action/remove.js
 import unshift from "../../node_modules/@xylem-js/xylem-js/array_action/unshift.js";
 export default class Gallery extends Component {
     build(attrs) {
-        const images$ = this.bindSupplier(attrs.images$);
+        const { images$ } = attrs;
         const previewIndex$ = createStore(-1);
         const previewImage$ = createStore(null);
         const previewImages$ = createArrayStore([]);
@@ -21,9 +21,9 @@ export default class Gallery extends Component {
         const showingNext$ = createStore(false);
         const transitionToPrevious$ = createStore(false);
         const transitionToNext$ = createStore(false);
-        images$.subscribe(() => {
+        this.beforeDetachFromDom.subscribe(images$.subscribe(() => {
             closePreview();
-        });
+        }));
         return parseHTML([
             '<div>', { class: 'container gallery' },
             [

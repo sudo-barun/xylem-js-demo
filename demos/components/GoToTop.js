@@ -24,7 +24,7 @@ class GoToTop extends Component
 			'<button>', {
 				class: 'btn btn-light',
 				style: 'position: fixed; right: 0; bottom: 0; margin: 8px;',
-				hidden: map(isVisible$, v => !v),
+				hidden: map(this, isVisible$, v => !v),
 				'@click': function () {
 					scroll(0,0);
 				},

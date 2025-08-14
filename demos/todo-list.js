@@ -20,7 +20,7 @@ function intersperse(array, itemToInsert)
 	}
 	return array;
 }
-console.log(intersperse([1, 2, 3, 4, 5], {}));
+// console.log(intersperse([1, 2, 3, 4, 5], {}));
 
 function getTodoListItem(index)
 {
@@ -58,12 +58,12 @@ class TodoComponent extends Component
 			todos$._(getTodoList(count));
 		}
 
-		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedSuppliers({
+		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedSuppliers(this, {
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$
 		}));
 
-		const normalizedModel$ = combineNamedSuppliers({
+		const normalizedModel$ = combineNamedSuppliers(this, {
 			newTodo: newTodo$,
 			todos: normalizedTodos$
 		});
@@ -72,7 +72,7 @@ class TodoComponent extends Component
 			todos$: todos$,
 			newTodo$: newTodo$,
 		};
-		console.log('viewModel', viewModel);
+		// console.log('viewModel', viewModel);
 
 		window.todos$ = todos$;
 
@@ -130,7 +130,7 @@ class TodoComponent extends Component
 											'<button>', {
 												type: 'submit',
 												class: 'btn btn-outline-secondary',
-												disabled: map(newTodo$, (v) => v.trim() === ''),
+												disabled: map(this, newTodo$, (v) => v.trim() === ''),
 											},
 											['Add'],
 											'</button>',
@@ -141,7 +141,7 @@ class TodoComponent extends Component
 									[
 										'<button>', {
 											class: 'btn btn-outline-danger float-end',
-											disabled: map(normalizedTodos$, (todos) => {
+											disabled: map(this, normalizedTodos$, (todos) => {
 												return !todos.some((todo) => todo.isCompleted);
 											}),
 											'@click': () => {
@@ -165,54 +165,58 @@ class TodoComponent extends Component
 									todos$.length$,
 								],
 								'</div>',
-								if_(todos$.length$, () => parseHTML([
-									'<div>', { class: 'list-group' },
-									[
-										forEach(todos$, (todo, index$, forEachItem) => {
-											const isCompleted$ = forEachItem.bindSupplier(todo.isCompleted$);
-											return parseHTML([
-												'<div>', { class: 'list-group-item' },
-												[
-													'<input/>', {
-														type: 'checkbox',
-														class: 'form-check-input',
-														id: map(index$, (v) => `todo-item-${v}`),
-														checked: isCompleted$,
-														'@change': (ev) => {
-															isCompleted$._(ev.target.checked);
-														}
-													},
-													' ',
-													'<label>', {
-														for: map(index$, (v) => `todo-item-${v}`),
-														class: [ 'form-check-label', {
-															'text-muted': isCompleted$,
-															'text-decoration-line-through': isCompleted$,
-														}],
-													},
-													[todo.text],
-													'</label>',
-													'<button>', {
-														class: 'btn btn-sm btn-outline-danger float-end',
-														'@click': () => {
-															todos$.mutate(remove, index$);
-														}
-													},
-													['Remove'],
-													'</button>',
-												],
-												'</div>',
-											]);
-										})
-										.endForEach(),
-									],
-									'</div>',
-								]))
-								.else(() => parseHTML([
-									'<div>', { class: 'text-secondary text-center' },
-									['The todo list is empty.'],
-									'</div>',
-								]))
+								if_(todos$.length$, function () {
+									return parseHTML([
+										'<div>', { class: 'list-group' },
+										[
+											forEach(todos$, function (todo, index$) {
+												const isCompleted$ = todo.isCompleted$;
+												return parseHTML([
+													'<div>', { class: 'list-group-item' },
+													[
+														'<input/>', {
+															type: 'checkbox',
+															class: 'form-check-input',
+															id: map(this, index$, (v) => `todo-item-${v}`),
+															checked: isCompleted$,
+															'@change': (ev) => {
+																todo.isCompleted$._(ev.target.checked);
+															}
+														},
+														' ',
+														'<label>', {
+															for: map(this, index$, (v) => `todo-item-${v}`),
+															class: [ 'form-check-label', {
+																'text-muted': isCompleted$,
+																'text-decoration-line-through': isCompleted$,
+															}],
+														},
+														[todo.text],
+														'</label>',
+														'<button>', {
+															class: 'btn btn-sm btn-outline-danger float-end',
+															'@click': () => {
+																todos$.mutate(remove, index$);
+															}
+														},
+														['Remove'],
+														'</button>',
+													],
+													'</div>',
+												]);
+											})
+											.endForEach(),
+										],
+										'</div>',
+									]);
+								})
+								.else(function () {
+									return parseHTML([
+										'<div>', { class: 'text-secondary text-center' },
+										['The todo list is empty.'],
+										'</div>',
+									]);
+								})
 								.endIf(),
 							],
 							'</div>',
@@ -225,7 +229,7 @@ class TodoComponent extends Component
 								[
 									'<code>',
 									[
-										map(normalizedModel$, (v) => JSON.stringify(
+										map(this, normalizedModel$, (v) => JSON.stringify(
 											{
 												...v,
 												...{ todos: truncateTodos(v.todos, 20) }
@@ -251,4 +255,4 @@ class TodoComponent extends Component
 
 const cmp = new TodoComponent();
 mountComponent(cmp, document.getElementById('root'));
-console.log(cmp)
+// console.log(cmp)

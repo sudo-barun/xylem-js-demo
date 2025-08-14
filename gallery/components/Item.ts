@@ -1,10 +1,10 @@
 import parseHTML from "../../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
 import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
-import ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
+import type ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
 import createEmittableStream from "../../node_modules/@xylem-js/xylem-js/core/createEmittableStream.js";
-import EmittableStream from "../../node_modules/@xylem-js/xylem-js/types/EmittableStream.js";
-import Image from "../types/Image.js";
-import Subscriber from "../../node_modules/@xylem-js/xylem-js/types/Subscriber.js";
+import type EmittableStream from "../../node_modules/@xylem-js/xylem-js/types/EmittableStream.js";
+import type Image from "../types/Image.js";
+import type Subscriber from "../../node_modules/@xylem-js/xylem-js/types/Subscriber.js";
 
 type Attributes = {
 	image: Image,

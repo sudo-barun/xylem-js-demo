@@ -1,4 +1,4 @@
-import Component from '../node_modules/@xylem-js/xylem-js/dom/Component.js';
+import type Component from '../node_modules/@xylem-js/xylem-js/dom/Component.js';
 import mountComponent from '../node_modules/@xylem-js/xylem-js/dom/mountComponent.js';
 import Root from './components/Root.js';
 

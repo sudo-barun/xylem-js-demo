@@ -112,17 +112,19 @@ class Autocomplete extends Component
 						'<>': inputElement$,
 					},
 					' ',
-					if_(isSearching$, () => parseHTML([
-						'<mark>',
-						['searching...'],
-						'</mark>',
-					]))
+					if_(isSearching$, function () {
+						return parseHTML([
+							'<mark>',
+							['searching...'],
+							'</mark>',
+						]);
+					})
 					.endIf(),
 				],
 				'</label>',
 				'<pre>',
 				[
-					map(inputValue$, curryRight(JSON.stringify)(null, 2)),
+					map(this, inputValue$, curryRight(JSON.stringify)(null, 2)),
 				],
 				'</pre>',
 			],
@@ -138,9 +140,11 @@ class Root extends Component
 		const isDisplayed$ = createStore(true);
 
 		return parseHTML([
-			if_(isDisplayed$, () => parseHTML([
-				new Autocomplete(),
-			]))
+			if_(isDisplayed$, function () {
+				return parseHTML([
+					new Autocomplete(),
+				]);
+			})
 			.endIf(),
 			'<div>', { class: 'container' },
 			[
@@ -148,7 +152,7 @@ class Root extends Component
 					'@click': () => cumulate(isDisplayed$, (v) => !v),
 				},
 				[
-					map(isDisplayed$, (v) => v ? 'Destroy' : 'Create'),
+					map(this, isDisplayed$, (v) => v ? 'Destroy' : 'Create'),
 				],
 				'</button>',
 			],

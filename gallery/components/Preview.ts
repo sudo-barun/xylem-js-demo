@@ -1,5 +1,5 @@
 import type ArraySupplier from "../../node_modules/@xylem-js/xylem-js/types/ArraySupplier";
-import combineSuppliers from "../../node_modules/@xylem-js/xylem-js/core/combineSuppliers.js";
+import combine from "../../node_modules/@xylem-js/xylem-js/core/combine.js";
 import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import type ComponentChildren from "../../node_modules/@xylem-js/xylem-js/types/ComponentChildren.js";
 import createEmittableStream from "../../node_modules/@xylem-js/xylem-js/core/createEmittableStream.js";
@@ -46,11 +46,11 @@ class Preview extends Component<Attributes>
 		showNext.subscribe(attrs.onShowNext);
 		close.subscribe(attrs.onClose);
 
-		this.afterAttachToDom.subscribe(() => {
+		this.afterAttach.subscribe(() => {
 			document.body.style.overflow = 'hidden';
 			previewElement$._()!.focus();
 		});
-		this.beforeDetachFromDom.subscribe(() => {
+		this.beforeDetach.subscribe(() => {
 			previewElement$._()!.blur();
 			document.body.style.removeProperty('overflow');
 		});
@@ -95,12 +95,12 @@ class Preview extends Component<Attributes>
 										class: [ '-image-caption-container', {
 											'-is-previous': map(
 												this,
-												combineSuppliers(this, [ images$.length$, showingPrevious$, index$ ]),
+												combine(this, [ images$.length$, showingPrevious$, index$ ]),
 												([ l, sp, i ]) => (l > 1) && sp && (i === 0)
 											),
 											'-is-next': map(
 												this,
-												combineSuppliers(this, [ images$.length$, showingNext$, index$ ]),
+												combine(this, [ images$.length$, showingNext$, index$ ]),
 												([ l, sn, i ]) => (l > 1) && sn && (i === 1)
 											),
 										}],

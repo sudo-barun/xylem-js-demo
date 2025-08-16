@@ -1,5 +1,5 @@
 import parseHTML from "../node_modules/@xylem-js/xylem-js/dom/parseHTML.js";
-import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineNamedSuppliers.js";
+import combineNamed from "../node_modules/@xylem-js/xylem-js/core/combineNamed.js";
 import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
 import forEach from "../node_modules/@xylem-js/xylem-js/dom/forEach.js";
@@ -27,7 +27,7 @@ class Form extends Component
 
 		const selectedMultiCheckboxes$ = map(
 			this,
-			combineNamedSuppliers(this, multiCheckboxChecked$s),
+			combineNamed(this, multiCheckboxChecked$s),
 			(values) => Object.keys(values).reduce((acc, key) => {
 				if (values[key]) {
 					acc.push(key);
@@ -35,7 +35,7 @@ class Form extends Component
 				return acc;
 			}, [])
 		);
-		const formData$ = combineNamedSuppliers(this, {
+		const formData$ = combineNamed(this, {
 			input: inputValue$,
 			textarea: textareaValue$,
 			singleSelect: singleSelectSelected$,

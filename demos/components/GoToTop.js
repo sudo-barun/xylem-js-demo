@@ -18,7 +18,7 @@ class GoToTop extends Component
 
 		const scrollStream = createStreamOfDomEvent(document, 'scroll');
 		scrollStream.subscribe(throttledChangeVisibility);
-		this.beforeDetachFromDom.subscribe(scrollStream.unsubscribe);
+		this.beforeDetach.subscribe(scrollStream.unsubscribe);
 
 		return parseHTML([
 			'<button>', {

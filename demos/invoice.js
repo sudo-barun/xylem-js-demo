@@ -1,4 +1,4 @@
-import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineNamedSuppliers.js";
+import combineNamed from "../node_modules/@xylem-js/xylem-js/core/combineNamed.js";
 import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import createArrayStore from "../node_modules/@xylem-js/xylem-js/array/createArrayStore.js";
 import createSupplier from "../node_modules/@xylem-js/xylem-js/core/createSupplier.js";
@@ -25,7 +25,7 @@ function getTableEntry(index)
 	const productName$ = createStore(`Item ${index + 1}`);
 	const quantity$ = createStore('1');
 	const rate$ = createStore('');
-	const price$ = map(new FakeLifecycle, combineNamedSuppliers(new FakeLifecycle, {
+	const price$ = map(new FakeLifecycle, combineNamed(new FakeLifecycle, {
 		quantity: quantity$,
 		rate: rate$
 	}), (v) => isNumericString(v.quantity) && isNumericString(v.rate) ? v.quantity * v.rate : null);
@@ -44,7 +44,7 @@ class Invoice extends Component
 	{
 		const tableData$ = createArrayStore(Array.apply(null, Array(5)).map((_, index) => getTableEntry(index)));
 
-		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamedSuppliers(this, {
+		const normalizedTableData$ = normalizeArrayStore(tableData$, (row) => combineNamed(this, {
 			productName: row.productName$,
 			quantity: row.quantity$,
 			rate: row.rate$,
@@ -60,7 +60,7 @@ class Invoice extends Component
 		  totalPrice$: totalPrice$
 		};
 		console.log('viewModel', viewModel);
-		const normalizedModel$ = combineNamedSuppliers(this, {
+		const normalizedModel$ = combineNamed(this, {
 		  tableData: normalizedTableData$,
 		  totalPrice: createSupplier(totalPrice$, createEmittableStream()),
 		});

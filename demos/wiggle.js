@@ -1,6 +1,6 @@
 import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
-import combineSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineSuppliers.js";
-import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineNamedSuppliers.js";
+import combine from "../node_modules/@xylem-js/xylem-js/core/combine.js";
+import combineNamed from "../node_modules/@xylem-js/xylem-js/core/combineNamed.js";
 import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../node_modules/@xylem-js/xylem-js/dom/forEach.js";
@@ -85,7 +85,7 @@ class Wiggle extends Component
 			place: selectedPlace$,
 		};
 
-		const normalizedViewModel$ = combineNamedSuppliers(this, viewModel);
+		const normalizedViewModel$ = combineNamed(this, viewModel);
 
 		const formHasError$ = map(this, normalizedViewModel$, (v) => {
 			return ! (v.country && v.activity && v.place);
@@ -182,7 +182,7 @@ class Wiggle extends Component
 							class: 'btn btn-primary float-end',
 							disabled: map(
 								this,
-								combineSuppliers(this, [formHasError$, submitInProgress$]),
+								combine(this, [formHasError$, submitInProgress$]),
 								([hasError, inProgress]) => hasError || inProgress
 							),
 						},

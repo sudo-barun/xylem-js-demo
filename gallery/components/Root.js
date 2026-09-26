@@ -28,7 +28,7 @@ export default class Root extends Component {
                 .finally(() => hasImageRequestCompleted$._(true));
         }
         if (initialData === null) {
-            this.afterAttachToDom.subscribe(() => {
+            this.afterAttach.subscribe(() => {
                 loadData();
             });
         }

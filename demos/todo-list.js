@@ -1,7 +1,7 @@
 import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import createArrayStore from "../node_modules/@xylem-js/xylem-js/array/createArrayStore.js";
 import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
-import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineNamedSuppliers.js";
+import combineNamed from "../node_modules/@xylem-js/xylem-js/core/combineNamed.js";
 import forEach from "../node_modules/@xylem-js/xylem-js/dom/forEach.js";
 import GoToTop from "./components/GoToTop.js";
 import if_ from "../node_modules/@xylem-js/xylem-js/dom/if_.js";
@@ -58,12 +58,12 @@ class TodoComponent extends Component
 			todos$._(getTodoList(count));
 		}
 
-		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamedSuppliers(this, {
+		const normalizedTodos$ = normalizeArrayStore(todos$, (todo) => combineNamed(this, {
 			text: createStore(todo.text),
 			isCompleted: todo.isCompleted$
 		}));
 
-		const normalizedModel$ = combineNamedSuppliers(this, {
+		const normalizedModel$ = combineNamed(this, {
 			newTodo: newTodo$,
 			todos: normalizedTodos$
 		});

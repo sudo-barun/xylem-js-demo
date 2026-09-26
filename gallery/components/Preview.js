@@ -1,4 +1,4 @@
-import combineSuppliers from "../../node_modules/@xylem-js/xylem-js/core/combineSuppliers.js";
+import combine from "../../node_modules/@xylem-js/xylem-js/core/combine.js";
 import Component from "../../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import createEmittableStream from "../../node_modules/@xylem-js/xylem-js/core/createEmittableStream.js";
 import createStore from "../../node_modules/@xylem-js/xylem-js/core/createStore.js";
@@ -19,11 +19,11 @@ export default class Preview extends Component {
         showPrevious.subscribe(attrs.onShowPrevious);
         showNext.subscribe(attrs.onShowNext);
         close.subscribe(attrs.onClose);
-        this.afterAttachToDom.subscribe(() => {
+        this.afterAttach.subscribe(() => {
             document.body.style.overflow = 'hidden';
             previewElement$._().focus();
         });
-        this.beforeDetachFromDom.subscribe(() => {
+        this.beforeDetach.subscribe(() => {
             previewElement$._().blur();
             document.body.style.removeProperty('overflow');
         });
@@ -65,8 +65,8 @@ export default class Preview extends Component {
                                 return parseHTML([
                                     '<div>', {
                                         class: ['-image-caption-container', {
-                                                '-is-previous': map(this, combineSuppliers(this, [images$.length$, showingPrevious$, index$]), ([l, sp, i]) => (l > 1) && sp && (i === 0)),
-                                                '-is-next': map(this, combineSuppliers(this, [images$.length$, showingNext$, index$]), ([l, sn, i]) => (l > 1) && sn && (i === 1)),
+                                                '-is-previous': map(this, combine(this, [images$.length$, showingPrevious$, index$]), ([l, sp, i]) => (l > 1) && sp && (i === 0)),
+                                                '-is-next': map(this, combine(this, [images$.length$, showingNext$, index$]), ([l, sn, i]) => (l > 1) && sn && (i === 1)),
                                             }],
                                     },
                                     [

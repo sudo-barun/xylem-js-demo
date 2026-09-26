@@ -11,7 +11,7 @@ class DynamicTitle extends Component
 		const titleText$ = createStore('Dynamic Title');
 		const [ element ] = parseHTML([ '<title>', [ titleText$ ], '</title>' ]);
 
-		this.afterAttachToDom.subscribe(() => {
+		this.afterAttach.subscribe(() => {
 			element.setup();
 			hydrateComponentChildren([element], document.getElementsByTagName('title')[0]);
 			element.setupDom();

@@ -1,8 +1,8 @@
 import Component from "../node_modules/@xylem-js/xylem-js/dom/Component.js";
 import createArrayStore from "../node_modules/@xylem-js/xylem-js/array/createArrayStore.js";
 import createStore from "../node_modules/@xylem-js/xylem-js/core/createStore.js";
-import combineSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineSuppliers.js";
-import combineNamedSuppliers from "../node_modules/@xylem-js/xylem-js/core/combineNamedSuppliers.js";
+import combine from "../node_modules/@xylem-js/xylem-js/core/combine.js";
+import combineNamed from "../node_modules/@xylem-js/xylem-js/core/combineNamed.js";
 import flow from "../node_modules/lodash-es/flow.js";
 import forEach from "../node_modules/@xylem-js/xylem-js/dom/forEach.js";
 import if_ from "../node_modules/@xylem-js/xylem-js/dom/if_.js";
@@ -222,7 +222,7 @@ class ResumeForm extends Component
 	build(attrs)
 	{
 		const { resume$, onSave } = attrs;
-		this.beforeDetachFromDom.subscribe(
+		this.beforeDetach.subscribe(
 			resume$.subscribe((v) => {
 				fullName$._(v.fullName);
 				fullNameInputElement$._().value = v.fullName;
@@ -246,7 +246,7 @@ class ResumeForm extends Component
 		const address$ = createStore(resume.address);
 		const projects$ = createArrayStore(resume.projects.map(getProjectViewModel));
 
-		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamedSuppliers(this, {
+		const normalizedProjects$ = normalizeArrayStore(projects$, (project) => combineNamed(this, {
 			title: project.title$,
 			description: project.description$,
 			completionDate: project.completionDate$,
@@ -254,7 +254,7 @@ class ResumeForm extends Component
 			url: project.url$,
 		}));
 
-		const normalizedResume$ = combineNamedSuppliers(this, {
+		const normalizedResume$ = combineNamed(this, {
 			fullName: fullName$,
 			email: email$,
 			address: address$,
@@ -427,7 +427,7 @@ class ResumeForm extends Component
 																class: 'input-group-text',
 																for: map(
 																	this,
-																	combineSuppliers(this, [index$, index$2]),
+																	combine(this, [index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 															},
@@ -437,7 +437,7 @@ class ResumeForm extends Component
 																class: 'form-control',
 																id: map(
 																	this,
-																	combineSuppliers(this, [index$, index$2]),
+																	combine(this, [index$, index$2]),
 																	([i,i2])=>`project-${i}-skill-${i2}`,
 																),
 																value: skill$._(),

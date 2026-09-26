@@ -53,7 +53,7 @@ class Wysiwyg extends Component
 			editor.model.document.on('change:data', throttledEditorChange);
 		});
 
-		this.afterAttachToDom.subscribe(() => {
+		this.afterAttach.subscribe(() => {
 			ClassicEditor.create(textareaElement$._())
 			.then((editor) => editor$._(editor))
 			.catch((error) => {

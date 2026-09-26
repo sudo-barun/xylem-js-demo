@@ -43,7 +43,7 @@ class Root extends Component<{}, InjectedAttributes>
 		}
 
 		if (initialData === null) {
-			this.afterAttachToDom.subscribe(() => {
+			this.afterAttach.subscribe(() => {
 				loadData();
 			});
 		} else {

@@ -37,7 +37,7 @@ class IgnorePromiseResult extends Component
 		const responseCount$ = createStore(0);
 		const unsubscribe$ = createStore(null);
 		const setUnsubscribe$ = createSetUnsubscribe$(unsubscribe$);
-		this.beforeDetachFromDom.subscribe(() => setUnsubscribe$(null));
+		this.beforeDetach.subscribe(() => setUnsubscribe$(null));
 
 		return parseHTML([
 			'<div>',

@@ -51,7 +51,7 @@ class Autocomplete extends Component
 			},
 		]);
 
-		this.afterAttachToDom.subscribe(() => {
+		this.afterAttach.subscribe(() => {
 			$(inputElement$._()).autocomplete({
 				source: (request, response) => {
 					getSuggestions(request.term).then(response);
@@ -63,7 +63,7 @@ class Autocomplete extends Component
 			});
 		});
 
-		this.beforeDetachFromDom.subscribe(() => {
+		this.beforeDetach.subscribe(() => {
 			$(inputElement$._()).autocomplete('destroy');
 		});
 

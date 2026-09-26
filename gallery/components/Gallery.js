@@ -21,7 +21,7 @@ export default class Gallery extends Component {
         const showingNext$ = createStore(false);
         const transitionToPrevious$ = createStore(false);
         const transitionToNext$ = createStore(false);
-        this.beforeDetachFromDom.subscribe(images$.subscribe(() => {
+        this.beforeDetach.subscribe(images$.subscribe(() => {
             closePreview();
         }));
         return parseHTML([

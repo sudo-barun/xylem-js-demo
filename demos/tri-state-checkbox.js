@@ -38,7 +38,7 @@ class TriStateCheckbox extends Component
 
 		const topCheckboxElement$ = createStore();
 
-		this.afterAttachToDom.subscribe(() => {
+		this.afterAttach.subscribe(() => {
 			topCheckboxElement$._().indeterminate = combinedState$._() === SOME;
 			topCheckboxElement$._().checked = combinedState$._() === ALL;
 
@@ -75,9 +75,9 @@ class TriStateCheckbox extends Component
 				'</div>',
 				forEach(checkboxValue$s, function (item$, index$) {
 					const checkboxElement$ = createStore();
-					this.afterAttachToDom.subscribe(() => {
+					this.afterAttach.subscribe(() => {
 						checkboxElement$._().checked = item$._();
-						this.beforeDetachFromDom.subscribe(
+						this.beforeDetach.subscribe(
 							item$.subscribe((v) => checkboxElement$._().checked = v)
 						);
 					});

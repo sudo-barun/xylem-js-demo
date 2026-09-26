@@ -2,7 +2,7 @@
  * Throttle decorator
  * @param {Function} fn
  * @param {Number} freq
- * @return {Function}
+ * @return {Array<Function>}
  */
 function throttle(fn, freq) {
   let timestamp = 0;
@@ -17,28 +17,29 @@ function throttle(fn, freq) {
       clearTimeout(timer);
       timer = null;
     }
-    fn.apply(null, args);
-  }
+    fn(...args);
+  };
 
   const throttled = (...args) => {
     const now = Date.now();
     const passed = now - timestamp;
-    if ( passed >= threshold) {
+    if (passed >= threshold) {
       invoke(args, now);
     } else {
       lastArgs = args;
       if (!timer) {
         timer = setTimeout(() => {
           timer = null;
-          invoke(lastArgs)
+          invoke(lastArgs);
         }, threshold - passed);
       }
     }
-  }
+  };
 
   const flush = () => lastArgs && invoke(lastArgs);
+  const flushWith = (...args) => invoke(args);
 
-  return [throttled, flush];
+  return [throttled, flush, flushWith];
 }
 
 export default throttle;
